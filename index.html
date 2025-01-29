@@ -1,0 +1,1849 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Custom Chat</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+
+    .icon {
+      font-family: 'Material Symbols Rounded';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+
+    @media only screen and (min-width: 576px) {
+      ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+    }
+
+    @media only screen and (max-width: 576px) {
+      ::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: var(--primary-100);
+      border-radius: 10px;
+      cursor: grab;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-200);
+    }
+
+    ::-webkit-scrollbar-thumb:active {
+      background: var(--primary-300);
+      cursor: grabbing;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+
+    :root {
+      user-select: none;
+      font-family: 'Work Sans', Arial, system;
+      font-size: 18px;
+      background: black;
+      color: var(--text);
+
+      /* Global gransition variable */
+      --default-layout-transition: width 0.2s, height 0.2s, left 0.2s, right 0.2s, top 0.2s, bottom 0.2s;
+
+      /* Variables */
+      --media-phone: 576px;
+
+      --z-backdrop: 500;
+      --z-dropdown: 1000;
+      --z-overlay: 2000;
+      --z-modal: 3000;
+      --z-tooltip: 4000;
+      --z-popup: 5000;
+      --z-highest: 99999;
+      --space-S: 0.45rem;
+      --space-B: 0.75rem;
+      --space-M: 1.25rem;
+      --space-L: 2.5rem;
+      --seconds-S: 105ms;
+      --seconds-M: 1.25s;
+      --seconds-L: 2.2s;
+      --shadow-subtle: 0 0 20px hsl(0, 0.00%, 0%, 0.07);
+      --shadow-S: 0 0 8px;
+      --cubic-bezier-subtle-flow: cubic-bezier(0.2, 0.9, 0.65, 0.65);
+      --width-small: 320px;
+      --width-ample: 448px;
+      --width-medium: 640px;
+      --width-large: 960px;
+      --width-xlarge: 1216px;
+    }
+
+    :root,
+    html,
+    body {
+      margin: 0;
+      height: 100%;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+    }
+
+    body {
+      background: var(--background);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      color: inherit;
+      font-size: inherit;
+    }
+
+
+    ::selection {
+      background: var(--primary);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p {
+      margin-block: 0.8rem;
+      user-select: text;
+    }
+
+    h1 {
+      font-size: 3.6rem;
+    }
+
+    h2 {
+      font-size: 2.4rem;
+    }
+
+    h3 {
+      font-size: 1.8rem;
+    }
+
+    h4 {
+      font-size: 1.4rem;
+    }
+
+    h5 {
+      font-size: 1.2rem;
+    }
+
+    h6 {
+      font-size: 1rem;
+    }
+
+    p {
+      font-size: 1rem;
+    }
+
+    small {
+      font-size: 0.833rem;
+    }
+
+    .very-small {
+      font-size: 0.694rem;
+    }
+
+    button,
+    input,
+    textarea {
+      font-family: inherit;
+      font-size: inherit;
+      border: none;
+      outline: none;
+      background: none;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button[disabled] {
+      cursor: default;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th,
+    td {
+      text-align: left;
+      padding: 0.5rem;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    blockquote {
+      margin: 1rem 0;
+      padding: 0.8rem;
+      border-left: 4px solid #ccc;
+      font-style: italic;
+    }
+
+    code {
+      font-family: monospace;
+      font-size: 0.875rem;
+      background-color: #f4f4f4;
+      padding: 0.2rem 0.4rem;
+      border-radius: 3px;
+    }
+
+    hr {
+      border: 0;
+      border-top: 2px solid var(--text-tonal);
+    }
+
+    fieldset {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+
+    legend {
+      font-weight: bold;
+    }
+
+    button {
+      all: unset;
+      box-sizing: border-box;
+      padding: var(--space-S);
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+      border: 1px solid transparent;
+      background: transparent;
+      cursor: pointer;
+      overflow: hidden;
+      display: inline-flex;
+    }
+
+    button:focus-visible {
+      outline: currentColor;
+    }
+
+    .pane {
+      border-radius: var(--space-M);
+      padding: var(--space-S);
+    }
+
+    .pane[variant=primary] {
+      background: var(--surface);
+      box-shadow: 0 0 var(--space-S) var(--primary-shadow);
+    }
+
+    #backdrop {
+      opacity: 0;
+      visibility: hidden;
+      z-index: var(--z-backdrop);
+      background: hsl(0 0% 0% / 70%);
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      transition-property: option, visibility;
+      transition-duration: 280ms;
+      transition-timing-function: cubic-bezier(.4, .8, 0.5, 1);
+    }
+
+    #backdrop.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .fade-close {
+      animation: fade-close var(--seconds-S) var(--cubic-bezier-subtle-flow) forwards;
+    }
+
+    .fade-open {
+      animation: fade-open var(--seconds-S) var(--cubic-bezier-subtle-flow) forwards;
+    }
+
+
+    @keyframes ripple-animation {
+      to {
+        transform: scale(4);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fade-close {
+      from {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      to {
+        opacity: 0;
+        visibility: hidden;
+      }
+    }
+
+    @keyframes fade-open {
+      from {
+        opacity: 0;
+        visibility: hidden;
+      }
+
+      to {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+
+    @keyframes scale-fade-close {
+      from {
+        opacity: 1;
+        visibility: visible;
+        scale: 1;
+      }
+
+      to {
+        opacity: 0;
+        visibility: hidden;
+        scale: 0.995;
+      }
+    }
+
+    @keyframes scale-fade-open {
+      from {
+        opacity: 0;
+        visibility: hidden;
+        scale: 0.975;
+      }
+
+      to {
+        opacity: 1;
+        visibility: visible;
+        scale: 1;
+      }
+    }
+
+    input {
+      border: none;
+    }
+
+    /* --- */
+
+    /* main.css */
+    :root {
+      overflow: hidden;
+    }
+
+    #app {
+      height: 100%;
+      width: 100%;
+      display: flex;
+    }
+
+    #app-drawer {
+      display: flex;
+      position: fixed;
+      align-items: center;
+      gap: 8px;
+      left: 0;
+      top: 0;
+      padding-left: var(--space-S);
+      padding-top: var(--space-S);
+      z-index: 2001;
+    }
+
+    #app #app-navigation-wrapper {
+      width: var(--width-small);
+      background: var(--surface);
+      overflow: hidden;
+      transition: width 300ms cubic-bezier(.4, .8, 0, 1);
+      flex-shrink: 0;
+    }
+
+    .app-menu-wrapper .app-menu {
+      width: var(--width-small);
+      padding-top: 64px;
+      padding-inline: var(--space-S);
+    }
+
+    .tabs-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .tabs-container * {
+      flex: 1;
+    }
+
+    #app #app-interface {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    #app-interface header {
+      padding: var(--space-S);
+      padding-bottom: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      gap: 8px;
+    }
+
+    #app-interface .main-wrapper {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    main {
+      display: block;
+      padding: var(--space-S);
+      flex: 1;
+      width: 100%;
+      gap: 0.5rem;
+      overflow-y: auto;
+    }
+
+    @media only screen and (min-width: 768px) {
+      #settings {
+        top: 62px;
+        right: var(--space-S);
+      }
+
+      @keyframes app-navigation-close {
+        from {
+          display: block;
+          width: var(--width-small);
+        }
+
+        to {
+          width: 0;
+          display: none;
+        }
+      }
+
+      @keyframes app-navigation-open {
+        from {
+          display: none;
+          width: 0;
+        }
+
+        to {
+          display: block;
+          width: var(--width-small);
+        }
+      }
+
+      #app.close-app-navigation #app-navigation-wrapper {
+        animation: app-navigation-close 280ms cubic-bezier(.4, .8, 0, 1) forwards;
+      }
+
+      #app.open-app-navigation #app-navigation-wrapper {
+        animation: app-navigation-open 280ms cubic-bezier(.4, .8, 0, 1) forwards;
+      }
+    }
+
+    @media (max-width: 768px) {
+      #settings {
+        top: 0;
+      }
+
+      @keyframes app-navigation-show {
+        from {
+          opacity: 0;
+          transform: translateX(-100%);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes app-navigation-close {
+        from {
+          opacity: 1;
+          transform: translateX(0);
+        }
+
+        to {
+          opacity: 0;
+          transform: translateX(-100%);
+        }
+      }
+
+      #app #app-navigation-wrapper {
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        transform: translateX(-100%);
+        transition: opacity 280ms, transform 280ms;
+        z-index: var(--z-overlay);
+      }
+
+      #app.close-app-navigation #app-navigation-wrapper {
+        animation: app-navigation-close 280ms cubic-bezier(.4, .8, 0, 1) forwards;
+      }
+
+      #app.open-app-navigation #app-navigation-wrapper {
+        animation: app-navigation-show 280ms cubic-bezier(.4, .8, 0, 1) forwards;
+      }
+    }
+
+    #theme-selection {
+      gap: 4px;
+    }
+
+    #theme-selection c-button:not(.hovered):not(.pressed) {
+      background: var(--background);
+    }
+
+    #theme-selection c-button {
+      --radii: 1.6rem;
+    }
+
+    #theme-selection c-button button {
+      min-height: 54px;
+    }
+
+    #theme-selection c-button button {
+      outline-offset: 0;
+    }
+
+    #theme-selection c-button:not(:first-child):not(:last-child) {
+      border-radius: 6px;
+    }
+
+    #theme-selection c-button:first-child {
+      border-radius: var(--radii) var(--radii) 6px 6px;
+    }
+
+    #theme-selection c-button:last-child {
+      border-radius: 6px 6px var(--radii) var(--radii);
+    }
+
+    /* --- */
+
+    /* component.css */
+    c-button {
+      color: var(--button-text);
+      display: inline-flex;
+      border-radius: 9999px;
+      justify-content: center;
+      position: relative;
+      align-items: center;
+      cursor: pointer;
+      transition: box-shadow 0.34s ease-in-out;
+      min-width: 44px;
+      min-height: 44px;
+    }
+
+    c-button>button {
+      overflow: hidden;
+      display: flex;
+      position: relative;
+      align-items: center;
+      padding: 10px 18px;
+      gap: 8px;
+      outline: none;
+      border-radius: inherit;
+      flex: 1;
+    }
+
+    c-button button:focus-visible {
+      animation: outline-grow, outline-shrink;
+      animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+      outline: solid var(--text);
+    }
+
+    c-button .icon,
+    c-button .content {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    c-button .icon {
+      display: inline-flex;
+      position: relative;
+      writing-mode: horizontal-tb;
+      flex-shrink: 0;
+    }
+
+    c-button .content {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+      flex-grow: 1;
+    }
+
+    c-button[variant="icon"] button {
+      height: 44px;
+      width: 44px;
+      padding: 10px;
+    }
+
+    c-button[variant="outlined"]::before {
+      content: '';
+      inset: 0;
+      position: absolute;
+      border: 1px solid var(--tonal-outline, gray);
+      box-sizing: border-box;
+      border-radius: inherit;
+    }
+
+    c-button[variant="icon"],
+    c-button[variant="text"],
+    c-button[variant="outlined"] {
+      --button-hovered: var(--hovered);
+      --button-pressed: var(--pressed);
+    }
+
+    c-button[variant="tonal"] {
+      --button-hovered: var(--tonal-hovered);
+      --button-pressed: var(--tonal-pressed);
+      --ripple: var(--tonal-ripple);
+      background: var(--tonal);
+    }
+
+    c-button[variant="filled"] {
+      --button-hovered: var(--filled-hovered);
+      --button-pressed: var(--filled-pressed);
+      --ripple: var(--filled-ripple);
+      background: var(--filled);
+    }
+
+    c-button[variant="filled"] {
+      color: var(--filled-color);
+    }
+
+    c-button[variant="elevated"] {
+      --button-hovered: var(--elevated-hovered);
+      --button-pressed: var(--elevated-pressed);
+      background: var(--elevated);
+      box-shadow: 0 3px 4px var(--elevated-shadow-front);
+    }
+
+    c-button.hovered {
+      background: var(--button-hovered);
+    }
+
+    c-button.pressed {
+      background: var(--button-pressed);
+    }
+
+    c-button[variant="tonal"].hovered {
+      box-shadow: 0 2px 3px var(--tonal-shadow, gray);
+    }
+
+    c-button[variant="tonal"].pressed {
+      box-shadow: 0 0 transparent;
+    }
+
+    c-button[variant="filled"].hovered {
+      box-shadow: 0 2px 4px var(--filled-shadow, gray);
+    }
+
+    c-button[variant="filled"].pressed {
+      box-shadow: 0 0 transparent;
+    }
+
+    c-button[variant="elevated"].hovered {
+      box-shadow: 0 3px 8px var(--elevated-shadow-front), 0 4px 4px var(--elevated-shadow-back);
+    }
+
+    c-button[variant="elevated"].pressed {
+      box-shadow: 0 2px 6px var(--elevated-shadow-front);
+    }
+
+    c-button[disabled] {
+      background: transparent;
+      box-shadow: none !important;
+      color: var(--disabled-text) !important;
+    }
+
+    c-button[disabled]:not([variant=icon]):not([variant=text]):not([variant=outlined]) {
+      background: var(--disabled);
+    }
+
+    c-button[disabled][variant=outlined]::before {
+      border-color: var(--disabled-outline);
+    }
+
+    c-overlay {
+      position: fixed;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      z-index: var(--z-overlay);
+      opacity: 0;
+      visibility: hidden;
+      display: flex;
+      flex-direction: column;
+      background-color: hsl(0 0 0 / 0.25);
+      max-width: var(--width-ample);
+      max-height: 64vh;
+      min-height: 232px;
+      height: 100%;
+      box-shadow: var(--shadow-S) var(--overlay-shadow);
+      border-radius: var(--space-B);
+      background-color: var(--on-surface);
+    }
+
+    c-overlay .wrapper {
+      flex: 1;
+      position: absolute;
+      overflow: hidden;
+      width: 100%;
+      height: 100%;
+    }
+
+    c-overlay .overlay-close-button {
+      position: absolute;
+      z-index: 1;
+      top: 8px;
+      right: 8px;
+    }
+
+    c-overlay .wrapper .surface {
+      padding: 8px;
+      padding-top: 52px;
+      max-width: 100%;
+      max-height: 100%;
+      overflow: auto;
+    }
+
+    @media only screen and (max-width: 768px) {
+      c-overlay[priority=primary] {
+        max-height: unset;
+        min-height: unset;
+        height: 100%;
+        width: 100%;
+        max-width: unset;
+        min-width: unset;
+        border-radius: 0;
+      }
+    }
+
+    c-accordian {
+      display: flex;
+      flex-direction: column;
+
+    }
+
+    c-accordian .head {
+      min-height: 54px;
+    }
+
+    /* utility-classes.css */
+
+    /* Spacing Utilities */
+    .m-0 {
+      margin: 0;
+    }
+
+    .mt-0 {
+      margin-top: 0;
+    }
+
+    .mb-0 {
+      margin-bottom: 0;
+    }
+
+    .ml-0 {
+      margin-left: 0;
+    }
+
+    .mr-0 {
+      margin-right: 0;
+    }
+
+    .p-0 {
+      padding: 0;
+    }
+
+    .pt-0 {
+      padding-top: 0;
+    }
+
+    .pb-0 {
+      padding-bottom: 0;
+    }
+
+    .pl-0 {
+      padding-left: 0;
+    }
+
+    .pr-0 {
+      padding-right: 0;
+    }
+
+    .m-1 {
+      margin: 0.25rem;
+    }
+
+    .mt-1 {
+      margin-top: 0.25rem;
+    }
+
+    .mb-1 {
+      margin-bottom: 0.25rem;
+    }
+
+    .ml-1 {
+      margin-left: 0.25rem;
+    }
+
+    .mr-1 {
+      margin-right: 0.25rem;
+    }
+
+    .p-1 {
+      padding: 0.25rem;
+    }
+
+    .pt-1 {
+      padding-top: 0.25rem;
+    }
+
+    .pb-1 {
+      padding-bottom: 0.25rem;
+    }
+
+    .pl-1 {
+      padding-left: 0.25rem;
+    }
+
+    .pr-1 {
+      padding-right: 0.25rem;
+    }
+
+    /* Text Alignment */
+    .text-left {
+      text-align: left;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .text-right {
+      text-align: right;
+    }
+
+    /* Display Utilities */
+    .d-block {
+      display: block;
+    }
+
+    .d-inline {
+      display: inline;
+    }
+
+    .d-inline-block {
+      display: inline-block;
+    }
+
+    .d-flex {
+      display: flex;
+    }
+
+    .d-grid {
+      display: grid;
+    }
+
+    .d-none {
+      display: none;
+    }
+
+    /* Flexbox Utilities */
+    .flex-row {
+      display: flex;
+      flex-direction: row;
+    }
+
+    .flex-column {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .flex-start {
+      justify-content: flex-start;
+    }
+
+    .flex-end {
+      justify-content: flex-end;
+    }
+
+    .align-start {
+      align-items: flex-start;
+    }
+
+    .align-end {
+      align-items: flex-end;
+    }
+
+    .flex-wrap {
+      flex-wrap: wrap;
+    }
+
+    .flex-nowrap {
+      flex-wrap: nowrap;
+    }
+
+    .align-center {
+      align-items: center;
+    }
+
+    .justify-center {
+      justify-content: center;
+    }
+
+    .items-center {
+      align-items: center;
+    }
+
+    .justify-between {
+      justify-content: space-between;
+    }
+
+    /* Border Utilities */
+    .border {
+      border: 1px solid #ccc;
+    }
+
+    .border-0 {
+      border: none;
+    }
+
+    .border-radius {
+      border-radius: 0.25rem;
+    }
+
+    .border-top {
+      border-top: 1px solid #ccc;
+    }
+
+    .border-bottom {
+      border-bottom: 1px solid #ccc;
+    }
+
+    /* Background Utilities */
+    .bg-light {
+      background-color: #f4f4f4;
+    }
+
+    .bg-dark {
+      background-color: #333;
+    }
+
+    .bg-primary {
+      background-color: #007bff;
+    }
+
+    .bg-secondary {
+      background-color: #6c757d;
+    }
+
+    /* Text Color Utilities */
+    .text-light {
+      color: #f4f4f4;
+    }
+
+    .text-dark {
+      color: #333;
+    }
+
+    .text-primary {
+      color: #007bff;
+    }
+
+    .text-secondary {
+      color: #6c757d;
+    }
+
+    .text-white {
+      color: white;
+    }
+
+    /* Visibility Utilities */
+    .visible {
+      visibility: visible;
+    }
+
+    .invisible {
+      visibility: hidden;
+    }
+
+    /* Overflow Utilities */
+    .overflow-auto {
+      overflow: auto;
+    }
+
+    .overflow-hidden {
+      overflow: hidden;
+    }
+
+    /* Width and Height Utilities */
+    .w-100 {
+      width: 100%;
+    }
+
+    .h-100 {
+      height: 100%;
+    }
+
+    .w-auto {
+      width: auto;
+    }
+
+    .h-auto {
+      height: auto;
+    }
+
+    .max-w-100 {
+      max-width: 100%;
+    }
+
+    .max-h-100 {
+      max-height: 100%;
+    }
+
+    /* Custom Classes */
+
+    .group-title {
+      color: var(--text-opaque);
+    }
+  </style>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div id="app" role="application" aria-label="App Container">
+    <div id="app-drawer" aria-labelledby="menu-button">
+      <c-button id="menu-button" icon="menu" aria-label="Open Menu"></c-button>
+    </div>
+    <div id="app-navigation-wrapper" class="app-menu-wrapper" role="navigation" aria-label="Primary Navigation"
+      aria-labelledby="menu-button">
+      <div class="app-menu">
+        <nav id="app-navigation">
+          <h3>App Navigation</h3>
+          <hr>
+          <section>
+            <button id="edit-button">edit</button>
+            <div id="chat-picker"></div>
+          </section>
+        </nav>
+      </div>
+    </div>
+    <div id="app-interface">
+      <header class="app-bar" role="banner" aria-label="Application Bar">
+        <c-button icon="share" aria-label="Share">share</c-button>
+        <c-button id="settings-button" icon="settings" aria-label="Open Settings"></c-button>
+      </header>
+
+      <div class="main-wrapper">
+        <main aria-labelledby="main-content">
+          <h1 id="main-content">Main Content</h1>
+          <div id="chat-container">
+            <span style="color: red">chat-container</span>
+          </div>
+          <div id="chat-creator">
+            <h2>Add new</h2>
+            <div>
+              <label for="custom-chat-name">Name:</label>
+              <input id="custom-chat-name" name="custom-chat-name" placeholder="Channel name">
+            </div>
+            <div>
+              <label for="custom-chat-channel">Channel:</label>
+              <input id="custom-chat-channel" name="custom-chat-channel" placeholder="channel">
+            </div>
+            <div>
+              <button id="add-custom-chat-button">add</button>
+            </div>
+            <div id="user-alert" hidden></div>
+          </div>
+        </main>
+      </div>
+    </div>
+  </div>
+  <div id="backdrop" role="presentation" aria-hidden="true"></div>
+
+  <c-overlay id="settings" variant="context-menu" for="settings-button" priority="primary" role="dialog"
+    aria-labelledby="settings-button" aria-modal="true">
+    <div class="flex-column" id="theme-selection">Please wait, the themes are loading.</div>
+  </c-overlay>
+
+  <!-- scripts -->
+  <script src="https://unpkg.com/tabbable/dist/index.umd.js"></script>
+  <script src="https://unpkg.com/focus-trap/dist/focus-trap.umd.js"></script>
+  <script>
+
+    class CRipple extends HTMLElement {
+      static name = 'c-ripple';
+
+      static style = new CSSStyleSheet();
+
+      constructor() {
+        super()
+        this.attachShadow({ mode: 'open' });
+        this.shadowRoot.adoptedStyleSheets = [CRipple.style];
+      }
+
+      ripple(event) {
+        this.rippleAnimation?.cancel();
+
+        const rect = this.surface.getBoundingClientRect();
+        const rippleSize = Math.max(rect.width, rect.height) * 1.2;
+
+        const startX = event.clientX - rect.left - rippleSize / 2;
+        const startY = event.clientY - rect.top - rippleSize / 2;
+        const centerX = rect.width / 2 - rippleSize / 2;
+        const centerY = rect.height / 2 - rippleSize / 2;
+
+        this.rippleAnimation = this.surface.animate({
+          height: [`${rippleSize}px`, `${rippleSize}px`],
+          width: [`${rippleSize}px`, `${rippleSize}px`],
+          top: [`${startY}px`, `${centerY}px`],
+          left: [`${startX}px`, `${centerX}px`],
+          transform: [`scale(0.2)`, `scale(2)`]
+        }, {
+          pseudoElement: '::after',
+          duration: 160,
+          easing: 'cubic-bezier(0.54, 0.13, 0.95, 0.54)',
+          fill: 'forwards'
+        });
+      }
+
+      connectedCallback() {
+        const surface = document.createElement('div');
+        surface.classList.add('surface');
+        this.shadowRoot.appendChild(surface);
+
+        this.surface = surface;
+
+        let element = surface;
+
+        if (this.hasAttribute('for')) {
+          const id = this.getAttribute('for');
+          element = document.getElementById(id) || this.parentElement.getElementById(id) || this.shadowRoot.getElementById(id);
+        }
+
+        element.addEventListener('pointerdown', (event) => {
+
+          this.ripple(event);
+          surface.classList.add('pressed');
+
+          window.addEventListener('pointerup', () => surface.classList.remove('pressed'), { once: true });
+          surface.addEventListener('pointerleave', () => surface.classList.remove('pressed'), { once: true });
+        });
+      }
+
+      static {
+        this.style.replaceSync(`
+      :host {
+        display: flex;
+        margin: auto;
+      }
+        
+      :host, .surface {
+        border-radius: inherit;
+        position: absolute;
+        inset: 0px;
+        overflow: hidden;
+      }
+
+      .surface::after {
+        content: "";
+        opacity: 0;
+        position: absolute;
+      }
+
+      .surface::before {
+        background-color: var(--ripple-hover, #1d1b20));
+        transition: opacity 15ms linear, background-color 15ms linear;
+      }
+
+      .surface::after {
+        background: radial-gradient(closest-side, var(--ripple, black), max(100% - 70px, 65%), transparent 100%);
+        transform-origin: center center;
+        transition: opacity 475ms ease-in-out, top 375ms linear, left 375ms linear, transform 1s linear;
+        display: flex;
+        position: absolute;
+      }
+
+      .pressed::after {
+        opacity: .16;
+        transition-duration: 105ms;
+      }
+      `);
+        customElements.define(this.name, this);
+      }
+    };
+    class COverlay extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      static name = 'c-overlay';
+
+      static get observedAttributes() {
+        return ['for'];
+      }
+      toggleOverlay(element) {
+        if (element.classList.contains(string.fadeOpen)) {
+          element.classList.remove(string.fadeOpen);
+          element.classList.add(string.fadeClose);
+        } else {
+          element.classList.remove(string.fadeClose);
+          element.classList.add(string.fadeOpen);
+          closeButton.querySelector('button').focus();
+          element.addEventListener('animationend', () => {
+            closeButton.querySelector('button').focus();
+          });
+        }
+      }
+      connectedCallback() {
+        const trap = focusTrap.createFocusTrap(this);
+        const string = {
+          fadeOpen: 'fade-open',
+          fadeClose: 'fade-close'
+        };
+
+        const wrapper = document.createElement('div');
+        const surface = document.createElement('div');
+        const closeButton = document.createElement('c-button');
+        const handler = document.getElementById(this.getAttribute('for'));
+
+        closeButton.classList.add('overlay-close-button');
+        closeButton.setAttribute('icon', 'close');
+
+        wrapper.classList.add('wrapper');
+        surface.classList.add('surface');
+
+        wrapper.appendChild(closeButton);
+        wrapper.appendChild(surface);
+        surface.innerHTML = this.innerHTML;
+        this.innerHTML = '';
+
+        this.appendChild(wrapper);
+
+        handler.addEventListener('click', (event) => {
+          if (this.classList.contains(string.fadeOpen)) {
+            this.classList.remove(string.fadeOpen);
+            this.classList.add(string.fadeClose);
+          } else {
+            this.classList.remove(string.fadeClose);
+            this.classList.add(string.fadeOpen);
+            closeButton.querySelector('button').focus();
+            this.addEventListener('animationend', () => {
+              closeButton.querySelector('button').focus();
+              trap.activate();
+            });
+          }
+        }, { passive: true });
+        closeButton.addEventListener('click', () => {
+          if (this.classList.contains(string.fadeOpen)) {
+            this.classList.remove(string.fadeOpen);
+            this.classList.add(string.fadeClose);
+            handler.focus();
+            handler.querySelector('button').focus();
+          }
+        }, { passive: true });
+
+        window.addEventListener('pointerdown', (event) => {
+          if (!this.contains(event.target) && event.target !== handler && !handler.contains(event.target)) {
+            if (this.classList.contains(string.fadeOpen)) {
+              this.classList.remove(string.fadeOpen);
+              this.classList.add(string.fadeClose);
+            }
+          }
+        });
+
+      }
+
+      static {
+        customElements.define(this.name, this);
+      }
+    };
+    class CAccordian extends HTMLElement {
+      static name = 'c-accordian';
+
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        const head = document.createElement('c-button');
+        const content = document.createElement('div');
+
+        head.classList.add('head')
+        head.innerText = this.getAttribute('label');
+        head.setAttribute('icon', 'expand_circle_down');
+        head.setAttribute('trailing-icon', '');
+
+        if (!this.getAttribute('aria-expanded')) {
+          this.setAttribute('aria-expanded', 'false');
+        }
+
+        content.classList.add('content')
+        content.innerHTML = this.innerHTML;
+        this.innerHTML = '';
+
+        this.appendChild(head);
+        this.appendChild(content);
+      }
+
+      static {
+        customElements.define(this.name, this);
+      }
+    };
+    class CButton extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      static name = 'c-button';
+
+      static get observedAttributes() {
+        return ['disabled', 'icon'];
+      }
+
+      attributeChangedCallback(name, oldValue, newValue) {
+        if (!this.button || !this.icon) return;
+
+        if (name === 'disabled') {
+          if (newValue !== null) {
+            this.button.disabled = true;
+          } else {
+            this.button.disabled = false;
+          }
+        }
+
+        if (name === 'icon') {
+          if (oldValue !== newValue) {
+            this.icon.innerText = newValue;
+          }
+        }
+      }
+
+      connectedCallback() {
+        const button = document.createElement('button');
+        const icon = document.createElement('span');
+        const content = document.createElement('span');
+
+        this.button = button;
+        this.icon = icon;
+
+        icon.classList.add('icon');
+        content.classList.add('content');
+
+        const currentHTML = this.innerHTML;
+        content.innerHTML = currentHTML;
+
+        if (this.innerHTML) {
+          this.innerHTML = '';
+          button.appendChild(content);
+          if (!this.hasAttribute('variant')) {
+            this.setAttribute('variant', 'text');
+          }
+        } else if (this.hasAttribute('icon')) {
+          this.setAttribute('variant', 'icon');
+        }
+
+        if (this.hasAttribute('icon')) {
+          if (this.hasAttribute('trailing-icon')) {
+            button.appendChild(icon);
+          } else {
+            button.prepend(icon);
+          }
+        }
+
+        if (this.hasAttribute('disabled')) {
+          button.disabled = true;
+        }
+
+        icon.innerText = this.getAttribute('icon');
+        this.appendChild(button);
+
+        button.addEventListener('pointerenter', () => {
+          if (!button.disabled) {
+            const _class = 'hovered';
+            this.classList.add(_class);
+
+            button.addEventListener('pointerleave', () => this.classList.remove(_class), { once: true });
+          }
+        }, { passive: true });
+
+        button.addEventListener('pointerdown', () => {
+          if (!button.disabled) {
+            const _class = 'pressed';
+            this.classList.add(_class);
+
+            window.addEventListener('pointerup', () => this.classList.remove(_class), { once: true });
+            button.addEventListener('pointerleave', () => this.classList.remove(_class), { once: true });
+          }
+        }, { passive: true });
+
+        button.addEventListener('touchstart', () => {
+          if (!button.disabled) {
+            button.classList.add('touched');
+
+            button.addEventListener('focusout', () => {
+              button.classList.remove('touched');
+            }, { passive: true, once: true });
+          }
+        }, { passive: true });
+
+        button.addEventListener('keydown', (event) => {
+          const _class = 'pressed';
+          if (event.key === ' ' || event.key === 'Enter') {
+            this.classList.add(_class);
+          } else {
+            return
+          }
+
+          window.addEventListener('keyup', () => this.classList.remove(_class), { once: true });
+        }, { passive: true });
+
+        // connected callback end
+      }
+
+      static {
+        customElements.define(this.name, this);
+      }
+    };
+
+    const app = {
+      theme: {
+        ["Warm Light"]: {
+          "description": "A light theme with warm colors to create a visually appealing design; embrace the light.",
+          "value": `
+      color-scheme: light;
+
+      /* palette */
+      --primary: hsl(39, 75%, 64%);
+      --primary-100: hsl(39, 50%, 90%);
+      --primary-200: hsl(39, 60%, 85%);
+      --primary-300: hsl(39, 60%, 70%);
+      --primary-shadow: hsl(40, 32%, 38%, 32%);
+      --primary-opaque: hsl(39, 70%, 74% / 0.8);
+
+      --secondary: hsl(40, 80%, 23%);
+      --secondary-100: hsl(40, 80%, 26%);
+      --secondary-200: hsl(40, 60%, 32%);
+      --secondary-300: hsl(40, 45%, 38%);
+      --secondary-shadow: hsl(40, 45%, 38%, 32%);
+
+      --hovered: hsl(43, 70%, 92%);
+      --pressed: hsl(40, 74%, 74%);
+
+      --tonal: hsl(33, 90%, 74%);
+      --tonal-hovered: hsl(33, 90%, 70%);
+      --tonal-pressed: hsl(33, 90%, 65%);
+      --tonal-ripple: hsl(33, 60%, 70%);
+      --tonal-shadow: hsl(33, 32%, 30%, 80%);
+      --tonal-outline: hsl(33, 80%, 74%);
+
+      --elevated: hsl(40, 80%, 88%);
+      --elevated-hovered: hsl(40, 60%, 80%);
+      --elevated-pressed: hsl(40, 50%, 76%);
+      --elevated-shadow-front: hsl(40, 32%, 40%, 80%);
+      --elevated-shadow-back: hsl(40, 32%, 40%, 30%);
+
+      --accent: hsl(15, 31%, 52%);
+
+      --background: hsl(40, 80%, 98%);
+      --surface: hsl(43, 44%, 94%);
+      --overlay-shadow: hsl(16 12% 20% / 0.6);
+      --on-surface: hsl(44, 34%, 92%);
+
+      --text: hsl(37, 8%, 20%);
+      --text-primary: hsl(38, 25%, 36%);
+      --text-tonal: hsl(38, 35%, 40%);
+      --button-text: hsl(38, 9%, 36%);
+
+      --filled: hsl(33 60% 50%);
+      --filled-color: hsl(40, 60%, 88%);
+      --filled-hovered: hsl(33 68% 54%);
+      --filled-pressed: hsl(33 72% 60%);
+      --filled-ripple: hsl(33, 60%, 70%);
+      --filled-shadow: hsl(33, 32%, 30%);
+
+      --ripple: hsl(33, 80%, 74%);
+      --button-hover: hsl(40, 70%, 90%);
+
+      --disabled: hsl(32, 34%, 68% / 0.8);
+      --disabled-text: hsl(32, 20%, 60% / 0.6);
+      --disabled-outline: hsl(32, 20%, 40% / 0.4);
+      `
+        },
+        ["Warm Dark"]: {
+          "description": "A dark theme with warm tones for a soothing design; welcome to the dark side.",
+          "value": `
+      color-scheme: dark;
+
+      /* palette */
+      --primary: hsl(18 24% 20% / 1);
+      --primary-100: hsl(16 18% 18%);
+      --primary-200: hsl(16 18% 22%);
+      --primary-300: hsl(16 18% 28%);
+      --primary-shadow: hsl(16, 20%, 30%, 32%);
+      --primary-opaque: hsl(22 26% 64% / 0.8);
+
+      --secondary: hsl(32 72% 75% / 1);
+      --secondary-100: hsl(32 66% 68% / 1);
+      --secondary-200: hsl(32 62% 62% / 1);
+      --secondary-300: hsl(32 44% 76% / 1);
+      --secondary-shadow: hsl(32 34% 70% / 72%);
+
+      --hovered: hsl(16 18% 18%);
+      --pressed: hsl(16 18% 22%);
+
+      --tonal: hsl(16 18% 26%);
+      --tonal-hovered: hsl(16, 18%, 32%);
+      --tonal-pressed: hsl(16, 20%, 38%);
+      --tonal-ripple: hsl(16, 76%, 68%);
+      --tonal-shadow: hsl(16, 50%, 30%, 80%);
+      --tonal-outline: hsl(22 100% 74%);
+
+      --elevated: hsl(16 16% 16%);
+      --elevated-hovered: hsl(16 10% 20%);
+      --elevated-pressed: hsl(16 12% 24%);
+      --elevated-shadow-front: hsl(16, 40%, 14%, 80%);
+      --elevated-shadow-back: hsl(16, 20%, 20%, 30%);
+
+      --accent: hsl(16, 80%, 70%);
+
+      --background: hsl(22 14% 7%);
+      --surface: hsl(16 12% 10%);
+      --overlay-shadow: transparent;
+      --on-surface: hsl(22 10% 14%);
+
+      --text: hsl(22 100% 92%);
+      --text-primary: hsl(16, 10%, 85%);
+      --text-tonal: hsl(22 100% 84%);
+      --button-text: hsl(22 100% 84%);
+
+      --filled: hsl(32 72% 75% / 1);
+      --filled-color: hsl(22 44% 14%);
+      --filled-hovered: hsl(32 66% 68% / 1);
+      --filled-pressed: hsl(32 62% 62% / 1);
+      --filled-ripple: hsl(32 36% 14% / 1);
+      --filled-shadow: hsl(32 16% 24% / 1);
+
+      --ripple: hsl(32 34% 66% / 1);
+      --button-hover: hsl(32 18% 16% / 1);
+
+      --disabled: hsl(16 8% 16% / 0.6);
+      --disabled-text: hsl(22 20% 60% / 0.4);
+      --disabled-outline: hsl(22 10% 40% / 0.25);
+      `
+        }
+      },
+      iconAxeConfig: ':opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200',
+      themeList: function () {
+        return Object.keys(this.theme);
+      },
+      getAllThemes: function () {
+        return this.theme;
+      }
+    };
+
+    (() => {
+      // theme initializer 
+      const storedTheme = localStorage.getItem('theme');
+
+      if (storedTheme) {
+        document.documentElement.setAttribute('data-theme', storedTheme);
+      } else {
+        const prefersDarkmode = window.matchMedia('prefers-color-scheme: dark').matches;
+
+        document.documentElement.setAttribute('data-theme', (prefersDarkmode ? 'Warm Dark' : 'Warm Light'));
+      }
+
+      const themeStyles = document.createElement('style');
+
+      Object.entries(app.theme).forEach(([themeName, themeObject]) => {
+        themeStyles.innerHTML += `[data-theme="${themeName}"] { ${themeObject.value} }\n`;
+
+        document.body.appendChild(themeStyles);
+      });
+    })();
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        const requestFullscreen =
+          document.documentElement.requestFullscreen ||
+          document.documentElement.mozRequestFullScreen ||
+          document.documentElement.webkitRequestFullscreen ||
+          document.documentElement.msRequestFullscreen;
+
+        if (requestFullscreen) requestFullscreen.call(document.documentElement);
+      } else {
+        const exitFullscreen =
+          document.exitFullscreen ||
+          document.mozCancelFullScreen ||
+          document.webkitExitFullscreen ||
+          document.msExitFullscreen;
+
+        if (exitFullscreen) exitFullscreen.call(document);
+      }
+    }
+
+    async function getUsedIcons() {
+      const icons = document.querySelectorAll('.icon');
+      let iconList;
+      if (icons) {
+        iconList = new Set();
+        icons.forEach((item) => {
+          if (!iconList.has(item.innerHTML.trim())) {
+            iconList.add(item.innerHTML.trim());
+          }
+        });
+      }
+
+      return iconList;
+    }
+
+    async function injectIcon() {
+      const iconStyle = document.createElement('link');
+
+      const iconList = await getUsedIcons();
+
+      let e = Object.prototype.toString.call(iconList) === '[object Set]' ? '' : '&icon_names=';
+
+      const iconNames = Array.from(iconList).sort().join(',');
+      const queryString = `&icon_names=${iconNames}`;
+
+      iconStyle.setAttribute('href', `https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded${app.iconAxeConfig}${queryString}`);
+      iconStyle.setAttribute('rel', 'stylesheet');
+
+      document.body.appendChild(iconStyle);
+    };
+
+    function renderMD(source) {
+      console.log(`Source:\n${source}`);
+      const mappedMD = {
+        italic: /\*(.*?)\*/g,
+        bold: /\*\*(?!\*.*\*\*)(.*?)\*\*/g
+      };
+
+      function replaceDelimiters(source, target, by) {
+        return target.test(source) ? source.replace(target, by) : source;
+      };
+
+      source = replaceDelimiters(source, mappedMD.bold, `<b>$1</b>`);
+      source = replaceDelimiters(source, mappedMD.italic, `<i>$1</i>`);
+
+      console.log(`Output:\n${source}`);
+      return source;
+    };
+
+    // ---
+
+    const mediaSmallPhone = 384;
+    const mediaPhone = 768;
+
+    const appBody = document.querySelector('#app');
+    const menuButton = document.querySelector('#menu-button');
+    const appNavigationWrapper = document.querySelector('#app-navigation-wrapper');
+    const appNavigation = document.querySelector('#app-navigation');
+    const backdrop = document.querySelector('#backdrop');
+    const themeSelection = document.querySelector('#theme-selection');
+
+    themeSelection.innerHTML = '';
+
+
+    const configDB = indexedDB.open("config");
+
+    (async () => {
+      for (const item of app.themeList()) {
+        const theme = document.createElement('c-button');
+        theme.innerHTML = item;
+
+        themeSelection.appendChild(theme);
+
+        theme.addEventListener('click', () => {
+          document.documentElement.setAttribute('data-theme', item);
+          localStorage.setItem('theme', item);
+        });
+
+        await new Promise(resolve => setTimeout(resolve, 0));
+      }
+    })();
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const hamburgerMenu = document.querySelector('#menu-button .icon');
+      if (Math.random() <= 0.01) {
+        hamburgerMenu.innerText = '🍔';
+        hamburgerMenu.style.paddingBottom = '8px';
+      }
+    })
+
+
+
+    function displayBackdrop(display) {
+      if (display) {
+        if (backdrop.classList.contains('close') || !backdrop.classList.contains('show')) {
+          backdrop.classList.add('show');
+          backdrop.classList.remove('close');
+        }
+      } else {
+        backdrop.classList.remove('show');
+        backdrop.classList.add('close');
+      }
+    }
+
+
+    function toggleMenu() {
+      const close = 'close-app-navigation';
+      const open = 'open-app-navigation';
+
+      if (window.innerWidth >= mediaPhone) {
+        if (appBody.classList.contains(close)) {
+          appBody.classList.remove(close);
+          appBody.classList.add(open);
+          appNavigationWrapper.removeAttribute('inert', '');
+
+          displayBackdrop(false);
+        } else {
+          appBody.classList.add(close);
+          appBody.classList.remove(open);
+          appNavigationWrapper.setAttribute('inert', '');
+
+          displayBackdrop(false);
+        }
+      } else {
+        if (appBody.classList.contains(open)) {
+          appBody.classList.remove(open);
+          appBody.classList.add(close)
+          appNavigationWrapper.setAttribute('inert', '');
+
+          displayBackdrop(false);
+        } else {
+          appBody.classList.remove(close);
+          appBody.classList.add(open);
+          appNavigationWrapper.removeAttribute('inert', '');
+
+          displayBackdrop(true);
+        }
+      }
+    }
+
+    menuButton.addEventListener('click', () => {
+      toggleMenu();
+    }, { passive: true });
+
+    backdrop.addEventListener('click', () => {
+      if (appBody.classList.contains('open-app-navigation')) {
+        appBody.classList.remove('open-app-navigation');
+        appBody.classList.add('close-app-navigation')
+        appNavigationWrapper.setAttribute('inert', '');
+
+        displayBackdrop(false);
+      }
+    }, { passive: true });
+
+    document.addEventListener('resize', () => {
+      const close = 'close-app-navigation';
+      const open = 'open-app-navigation';
+
+      if (window.innerWidth <= mediaPhone) {
+        if (appBody.classList.contains(close)) {
+          appBody.classList.remove(close);
+          appBody.classList.add(open);
+          appNavigationWrapper.removeAttribute('inert', '');
+        } else {
+          appBody.classList.add(close);
+          appBody.classList.remove(open);
+          appNavigationWrapper.setAttribute('inert', '');
+        }
+      }
+    }, { passive: true })
+
+    injectIcon();
+
+    const shortcuts = {
+      'save': 'ctrl + s',
+      'toggle menu': 'ctrl + m',
+      'toggle settings': 'alt + m'
+    };
+
+    window.addEventListener('keydown', (event) => {
+      const pressedKeys = [];
+      if (event.ctrlKey && event.key !== 'Control') pressedKeys.push('ctrl');
+      if (event.altKey && event.key !== 'Alt') pressedKeys.push('alt');
+      if (event.key && event.key !== 'Control' && event.key !== 'Alt') {
+        pressedKeys.push(event.key.toLowerCase());
+      }
+
+      const shortcutPressed = pressedKeys.join(' + ');
+
+      if (Object.values(shortcuts).includes(shortcutPressed)) {
+        event.preventDefault();
+      }
+      console.log(shortcutPressed);
+
+      switch (shortcutPressed) {
+        case shortcuts['save']:
+          event.preventDefault();
+          console.log('save');
+          break;
+        case shortcuts['toggle menu']:
+          event.preventDefault();
+          console.log('toggle menu');
+          toggleMenu();
+          break;
+        case shortcuts['toggle settings']:
+          event.preventDefault();
+          console.log('toggle settings');
+          break;
+        default:
+          break;
+      }
+    });
+  </script>
+  <script>
+    console.log(focusTrap);
+  </script>
+  <script src="script.js"></script>
+</body>
+
+</html>

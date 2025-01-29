@@ -1,0 +1,76 @@
+#chat-container {
+  padding: 10px;
+  margin-block: 2rem;
+  text-align: center;
+}
+
+#chat-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+body[data-mode=editing] #chat-picker {
+  flex-direction: column;
+}
+
+.card {
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0.6rem;
+  border-radius: 0.6rem;
+  border: 1px solid hsl(0, 0%, 18%);
+  user-select: none;
+  background-color: transparent;
+  min-width: 140px;
+}
+
+.card.editing {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.card.editing * {
+  margin: 0;
+}
+
+.card.editing div,
+h4 {
+  width: 100%;
+}
+
+.card .open-chat-button-container {
+  text-align: right;
+}
+
+.card .open-chat-button {
+  min-width: 120px;
+}
+
+.card input {
+  padding: 0;
+  width: 100%;
+}
+
+#chat-creator {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 4px;
+  padding: 0.6rem;
+  border-radius: 0.4rem;
+  border: 1px solid rgb(61, 61, 61);
+}
+
+#drawer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+#drawer-handle {
+  cursor: grabbing;
+  padding: 8px;
+}
