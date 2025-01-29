@@ -22,31 +22,19 @@ const system = {
 // The array of global chats to be available by default
 const chats = [
   {
-    version: 1,
     type: 'system',
     name: 'General',
-    channel: 'general',
-    timestamp: '1735689600000',
-    modified: null,
-    records: []
+    channel: 'general'
   },
   {
-    version: 1,
     type: 'system',
     name: 'Feedback',
-    channel: 'feedback',
-    timestamp: '1735689600000',
-    modified: null,
-    records: []
+    channel: 'feedback'
   },
   {
-    version: 1,
     type: 'system',
     name: 'Support',
-    channel: 'support',
-    timestamp: '1735689600000',
-    modified: null,
-    records: []
+    channel: 'support'
   }
 ];
 // An empty array to populate it with custom chat objects later
@@ -192,11 +180,13 @@ function searchForDuplicate(channel) {
 updateChatInterface();
 
 addCustomChatButton.addEventListener('click', () => {
+  
   const customChatObject = {
     version: 1,
     type: 'custom',
     name: customChatName.value,
     channel: customChatChannel.value,
+    token: crypto.randomUUID(),
     timestamp: new Date().getTime(),
     modified: null,
     records: []
