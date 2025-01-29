@@ -1241,6 +1241,7 @@
       }
       connectedCallback() {
         const trap = focusTrap.createFocusTrap(this);
+        console.log(trap);
         const string = {
           fadeOpen: 'fade-open',
           fadeClose: 'fade-close'
@@ -1274,7 +1275,11 @@
             closeButton.querySelector('button').focus();
             this.addEventListener('animationend', () => {
               closeButton.querySelector('button').focus();
-              trap.activate();
+              if (!trap.paused) {
+                trap.activate({ allowOutsideClick: true });
+              } else {
+                trap.unpause();
+              }
             });
           }
         }, { passive: true });
@@ -1282,6 +1287,7 @@
           if (this.classList.contains(string.fadeOpen)) {
             this.classList.remove(string.fadeOpen);
             this.classList.add(string.fadeClose);
+            trap.pause();
             handler.focus();
             handler.querySelector('button').focus();
           }
@@ -1292,6 +1298,7 @@
             if (this.classList.contains(string.fadeOpen)) {
               this.classList.remove(string.fadeOpen);
               this.classList.add(string.fadeClose);
+              trap.pause();
             }
           }
         });
