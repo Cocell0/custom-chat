@@ -1,5 +1,5 @@
 # Custom Chat
 
-Custom Chat is an app hosted in [Perchance](https://perchance.org), it uses the comment's plug-in under the hood.
+Custom Chat is a web-based application hosted on [Perchance](https://perchance.org), using the platform's comment's plugin as its foundation.
 
-Its main purpose is to provide extensive tools for users to chat in a secure manner; though due to the structure of the comment's plug-in, absolute security cannot be achieved.
+While the app adds safeguards to protect user privacy, the underlying comment's plugin architecture also adds inherent limitations. As such, absolute security cannot be guaranteed.
