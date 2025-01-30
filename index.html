@@ -383,7 +383,7 @@
       top: 0;
       padding-left: var(--space-S);
       padding-top: var(--space-S);
-      z-index: 2001;
+      z-index: var(--z-overlay);
     }
 
     #app #app-navigation-wrapper {
@@ -514,7 +514,7 @@
         left: 0;
         transform: translateX(-100%);
         transition: opacity 280ms, transform 280ms;
-        z-index: var(--z-overlay);
+        z-index: 1999;
       }
 
       #app.close-app-navigation #app-navigation-wrapper {
@@ -1275,19 +1275,21 @@
             closeButton.querySelector('button').focus();
             this.addEventListener('animationend', () => {
               closeButton.querySelector('button').focus();
-              if (!trap.paused) {
-                trap.activate({ allowOutsideClick: true });
-              } else {
+              if (trap.paused) {
                 trap.unpause();
+              } else {
+                trap.activate({ allowOutsideClick: true });
+                console.log(trap);
               }
-            });
+            }, { once: true });
           }
         }, { passive: true });
         closeButton.addEventListener('click', () => {
           if (this.classList.contains(string.fadeOpen)) {
+            trap.pause();
             this.classList.remove(string.fadeOpen);
             this.classList.add(string.fadeClose);
-            trap.pause();
+            console.log(trap);
             handler.focus();
             handler.querySelector('button').focus();
           }
@@ -1296,9 +1298,9 @@
         window.addEventListener('pointerdown', (event) => {
           if (!this.contains(event.target) && event.target !== handler && !handler.contains(event.target)) {
             if (this.classList.contains(string.fadeOpen)) {
+              trap.pause();
               this.classList.remove(string.fadeOpen);
               this.classList.add(string.fadeClose);
-              trap.pause();
             }
           }
         });
