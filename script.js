@@ -180,7 +180,7 @@ function searchForDuplicate(channel) {
 updateChatInterface();
 
 addCustomChatButton.addEventListener('click', () => {
-  
+
   const customChatObject = {
     version: 1,
     type: 'custom',
@@ -197,3 +197,18 @@ addCustomChatButton.addEventListener('click', () => {
 
   createChat(customChatObject);
 });
+
+// Create a broadcast channel (use the same name across all tabs)
+const channel = new BroadcastChannel('crossTabLogChannel');
+
+// Function to log messages in all tabs
+function logAcrossTabs(message) {
+  channel.postMessage({ type: 'log', message });
+}
+
+// Listen for messages in all tabs (including the sender)
+channel.onmessage = (event) => {
+  if (event.data.type === 'log') {
+    console.log('Logged in all tabs:', event.data.message);
+  }
+};

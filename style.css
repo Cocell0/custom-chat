@@ -26,6 +26,10 @@ body[data-mode=editing] #chat-picker {
   min-width: 140px;
 }
 
+.card:not(.editing) * {
+  user-select: none;
+}
+
 .card.editing {
   display: flex;
   flex-direction: column;
