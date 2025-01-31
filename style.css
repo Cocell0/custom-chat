@@ -26,6 +26,20 @@ body[data-mode=editing] #chat-picker {
   min-width: 140px;
 }
 
+@media (hover: hover) {
+  .card:hover {
+    background: var(--hovered);
+  }
+}
+
+.card:active {
+  background: var(--pressed);
+}
+
+.card:focus-visible {
+  outline: 2px solid currentColor;
+}
+
 .card:not(.editing) * {
   user-select: none;
 }
