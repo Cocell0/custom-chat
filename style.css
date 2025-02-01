@@ -384,12 +384,19 @@ input {
   overflow: hidden;
   transition: width 300ms cubic-bezier(.4, .8, 0, 1);
   flex-shrink: 0;
+  display: flex;
 }
 
 .app-menu-wrapper .app-menu {
   width: var(--width-small);
   padding-top: 64px;
+  display: flex;
+}
+
+#app #app-navigation {
   padding-inline: var(--space-S);
+  flex: 1;
+  overflow: auto;
 }
 
 .tabs-container {
@@ -462,11 +469,11 @@ main {
   }
 
   #app.close-app-navigation #app-navigation-wrapper {
-    animation: app-navigation-close 280ms cubic-bezier(.4, .8, 0, 1) forwards;
+    animation: app-navigation-close 200ms cubic-bezier(.4, .8, 0, 1) forwards;
   }
 
   #app.open-app-navigation #app-navigation-wrapper {
-    animation: app-navigation-open 280ms cubic-bezier(.4, .8, 0, 1) forwards;
+    animation: app-navigation-open 200ms cubic-bezier(.4, .8, 0, 1) forwards;
   }
 }
 
@@ -1055,6 +1062,7 @@ c-accordian .head {
 
 #chat-picker {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   gap: 0.6rem;
 }
@@ -1064,25 +1072,29 @@ body[data-mode=editing] #chat-picker {
 }
 
 .card {
+  display: flex;
   flex: 1;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 0.6rem;
   border-radius: 0.6rem;
   border: 1px solid hsl(0, 0%, 18%);
-  user-select: none;
-  background-color: transparent;
   min-width: 140px;
 }
 
-@media (hover: hover) {
-  .card:hover {
-    background: var(--hovered);
-  }
+c-button.card button {
+  padding: 0.6rem;
 }
 
-.card:active {
-  background: var(--pressed);
+c-button.card button .content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  user-select: none;
+  background-color: transparent;
+}
+
+c-button.card button .content * {
+  white-space: normal;
 }
 
 .card:focus-visible {
@@ -1097,6 +1109,7 @@ body[data-mode=editing] #chat-picker {
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
+  padding: 0.6rem;
 }
 
 .card.editing * {

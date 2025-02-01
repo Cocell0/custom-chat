@@ -33,7 +33,7 @@ class CRipple extends HTMLElement {
       fill: 'forwards'
     });
   };
-  
+
   connectedCallback() {
     const surface = document.createElement('div');
     surface.classList.add('surface');
@@ -109,9 +109,10 @@ class COverlay extends HTMLElement {
   static get observedAttributes() {
     return ['for'];
   }
-  
+
   connectedCallback() {
     const trap = focusTrap.createFocusTrap(this);
+    this.trap = trap;
     const wrapper = document.createElement('div');
     const surface = document.createElement('div');
     const closeButton = document.createElement('c-button');
@@ -167,15 +168,15 @@ class COverlay extends HTMLElement {
       this.closeButton.querySelector('button').focus();
       this.addEventListener('animationend', () => {
         this.closeButton.querySelector('button').focus();
-        if (trap.paused) {
-          trap.unpause();
+        if (this.trap.paused) {
+          this.trap.unpause();
         } else {
-          trap.activate({ allowOutsideClick: true });
+          this.trap.activate({ allowOutsideClick: true });
         }
       }, { once: true });
     }
   }
-  
+
   static {
     customElements.define(this.name, this);
   }
@@ -336,7 +337,7 @@ const app = {
   color-scheme: light;
 
   /* palette */
-  --primary: hsl(39, 75%, 64%);
+  --primary: hsl(39, 64%, 64%);
   --primary-100: hsl(39, 50%, 90%);
   --primary-200: hsl(39, 60%, 85%);
   --primary-300: hsl(39, 60%, 70%);
@@ -349,8 +350,8 @@ const app = {
   --secondary-300: hsl(40, 45%, 38%);
   --secondary-shadow: hsl(40, 45%, 38%, 32%);
 
-  --hovered: hsl(43, 70%, 92%);
-  --pressed: hsl(40, 74%, 74%);
+  --hovered: hsl(43 56% 86%);
+  --pressed: hsl(40, 66%, 74%);
 
   --tonal: hsl(33, 90%, 74%);
   --tonal-hovered: hsl(33, 90%, 70%);
@@ -837,7 +838,7 @@ function createChat(item) {
   }
 
   if (system.mode !== 'editing') {
-    channel.innerText = item.channel;
+    channel.innerText = '#' + item.channel;
   } else {
     const input = document.createElement('input');
     input.name = 'chat-channel'
