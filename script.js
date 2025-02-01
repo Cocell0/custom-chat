@@ -32,8 +32,8 @@ class CRipple extends HTMLElement {
       easing: 'cubic-bezier(0.54, 0.13, 0.95, 0.54)',
       fill: 'forwards'
     });
-  }
-
+  };
+  
   connectedCallback() {
     const surface = document.createElement('div');
     surface.classList.add('surface');
@@ -109,30 +109,13 @@ class COverlay extends HTMLElement {
   static get observedAttributes() {
     return ['for'];
   }
-  toggleOverlay(element) {
-    if (element.classList.contains(string.fadeOpen)) {
-      element.classList.remove(string.fadeOpen);
-      element.classList.add(string.fadeClose);
-    } else {
-      element.classList.remove(string.fadeClose);
-      element.classList.add(string.fadeOpen);
-      closeButton.querySelector('button').focus();
-      element.addEventListener('animationend', () => {
-        closeButton.querySelector('button').focus();
-      });
-    }
-  }
+  
   connectedCallback() {
     const trap = focusTrap.createFocusTrap(this);
-    console.log(trap);
-    const string = {
-      fadeOpen: 'fade-open',
-      fadeClose: 'fade-close'
-    };
-
     const wrapper = document.createElement('div');
     const surface = document.createElement('div');
     const closeButton = document.createElement('c-button');
+    this.closeButton = closeButton;
     const handler = document.getElementById(this.getAttribute('for'));
 
     closeButton.classList.add('overlay-close-button');
@@ -149,29 +132,13 @@ class COverlay extends HTMLElement {
     this.appendChild(wrapper);
 
     handler.addEventListener('click', (event) => {
-      if (this.classList.contains(string.fadeOpen)) {
-        this.classList.remove(string.fadeOpen);
-        this.classList.add(string.fadeClose);
-      } else {
-        this.classList.remove(string.fadeClose);
-        this.classList.add(string.fadeOpen);
-        closeButton.querySelector('button').focus();
-        this.addEventListener('animationend', () => {
-          closeButton.querySelector('button').focus();
-          if (trap.paused) {
-            trap.unpause();
-          } else {
-            trap.activate({ allowOutsideClick: true });
-            console.log(trap);
-          }
-        }, { once: true });
-      }
+      this.toggle();
     }, { passive: true });
     closeButton.addEventListener('click', () => {
-      if (this.classList.contains(string.fadeOpen)) {
+      if (this.classList.contains('fade-open')) {
         trap.pause();
-        this.classList.remove(string.fadeOpen);
-        this.classList.add(string.fadeClose);
+        this.classList.remove('fade-open');
+        this.classList.add('fade-close');
         console.log(trap);
         handler.focus();
         handler.querySelector('button').focus();
@@ -180,16 +147,35 @@ class COverlay extends HTMLElement {
 
     window.addEventListener('pointerdown', (event) => {
       if (!this.contains(event.target) && event.target !== handler && !handler.contains(event.target)) {
-        if (this.classList.contains(string.fadeOpen)) {
+        if (this.classList.contains('fade-open')) {
           trap.pause();
-          this.classList.remove(string.fadeOpen);
-          this.classList.add(string.fadeClose);
+          this.classList.remove('fade-open');
+          this.classList.add('fade-close');
         }
       }
     });
 
   }
 
+  toggle() {
+    if (this.classList.contains('fade-open')) {
+      this.classList.remove('fade-open');
+      this.classList.add('fade-close');
+    } else {
+      this.classList.remove('fade-close');
+      this.classList.add('fade-open');
+      this.closeButton.querySelector('button').focus();
+      this.addEventListener('animationend', () => {
+        this.closeButton.querySelector('button').focus();
+        if (trap.paused) {
+          trap.unpause();
+        } else {
+          trap.activate({ allowOutsideClick: true });
+        }
+      }, { once: true });
+    }
+  }
+  
   static {
     customElements.define(this.name, this);
   }
@@ -830,7 +816,7 @@ function createChat(item) {
   if (system.mode === 'editing') {
     card = document.createElement('div');
   } else {
-    card = document.createElement('button');
+    card = document.createElement('c-button');
   }
   const name = document.createElement('h4');
   const channel = document.createElement('div');
@@ -878,9 +864,9 @@ function createChat(item) {
   if (system.mode !== 'editing') {
     card.addEventListener('click', () => openChat(item));
   } else {
-    const deleteButton = document.createElement('button');
+    const deleteButton = document.createElement('c-button');
     card.classList.add('editing');
-    deleteButton.innerText = 'delete';
+    deleteButton.innerText = 'Delete';
     deleteButton.addEventListener('click', () => removeChat(card, item));
 
     card.appendChild(deleteButton);
