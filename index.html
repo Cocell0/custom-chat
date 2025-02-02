@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Custom Chat</title>
   <link rel="stylesheet" href="style.css">
+  <!-- <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close,menu,sell,settings,share"
+    rel="stylesheet"> -->
 </head>
 
 <body>
@@ -34,10 +37,6 @@
 
       <div class="main-wrapper">
         <main aria-labelledby="main-content">
-          <h1 id="main-content">Main Content</h1>
-          <div id="chat-container">
-            <span style="color: red">chat-container</span>
-          </div>
           <div id="chat-creator">
             <h2>Add new</h2>
             <div>
@@ -53,6 +52,10 @@
             </div>
             <div id="user-alert" hidden></div>
           </div>
+          <h1 id="display-channel-name" style="word-break: break-all;">[customChat.channelLabel ?? 'General']</h1>
+          <div id="chat-container">
+            <div>[chat(customChat)]</div>
+          </div>
         </main>
       </div>
     </div>
@@ -67,8 +70,11 @@
   <!-- scripts -->
   <script src="https://unpkg.com/tabbable/dist/index.umd.js"></script>
   <script src="https://unpkg.com/focus-trap/dist/focus-trap.umd.js"></script>
+  <style>
+
+  </style>
   <script>
-    console.log(focusTrap);
+
   </script>
   <script src="script.js"></script>
 </body>

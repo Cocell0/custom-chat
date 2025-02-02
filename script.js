@@ -506,7 +506,7 @@ function toggleFullscreen() {
   }
 }
 
-async function getUsedIcons() {
+function getUsedIcons() {
   const icons = document.querySelectorAll('.icon');
   let iconList;
   if (icons) {
@@ -519,22 +519,23 @@ async function getUsedIcons() {
   }
 
   return iconList;
-}
+};
 
-async function injectIcon() {
-  const iconStyle = document.createElement('link');
+const iconStyle = document.createElement('link');
+document.body.appendChild(iconStyle);
 
-  const iconList = await getUsedIcons();
+function injectIcon() {
+  const iconList = getUsedIcons();
 
   let e = Object.prototype.toString.call(iconList) === '[object Set]' ? '' : '&icon_names=';
 
   const iconNames = Array.from(iconList).sort().join(',');
   const queryString = `&icon_names=${iconNames}`;
-
-  iconStyle.setAttribute('href', `https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded${app.iconAxeConfig}${queryString}`);
   iconStyle.setAttribute('rel', 'stylesheet');
 
-  document.body.appendChild(iconStyle);
+  if (iconStyle.getAttribute('href') !== `https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded${app.iconAxeConfig}${queryString}`) {
+    iconStyle.setAttribute('href', `https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded${app.iconAxeConfig}${queryString}`)
+  }
 };
 
 function renderMD(source) {
@@ -678,6 +679,9 @@ document.addEventListener('resize', () => {
 }, { passive: true })
 
 injectIcon();
+setInterval(() => {
+  injectIcon();
+}, 1000);
 
 const shortcuts = {
   'save': 'ctrl + s',
@@ -754,13 +758,13 @@ const chats = [
   },
   {
     type: 'system',
-    name: 'Feedback',
-    channel: 'feedback'
+    name: 'Share Chats',
+    channel: 'share-chats'
   },
   {
     type: 'system',
-    name: 'Support',
-    channel: 'support'
+    name: 'Feedback',
+    channel: 'feedback'
   }
 ];
 // An empty array to populate it with custom chat objects later
@@ -797,8 +801,15 @@ function slugify(source) {
 };
 function openChat(item) {
   if (window.location.href.includes('perchance.org/custom-chat')) {
-    customChat.channel = item.channel;
-    update();
+    if (item.type == 'custom') {
+      customChat.channel = `${item.channel}-${item.token}`;
+      customChat.channelLabel = item.name;
+      update();
+    } else {
+      customChat.channel = item.channel;
+      customChat.channelLabel = item.name;
+      update();
+    }
   } else {
     console.log(`\n\n$ Open chat\nName: ${item.name}\nChannel: ${item.channel}\n\n`)
   }
@@ -863,6 +874,24 @@ function createChat(item) {
   card.appendChild(channel);
 
   if (system.mode !== 'editing') {
+    if (item.type == 'custom') {
+      const token = document.createElement('p');
+      const icon = document.createElement('i');
+      const text = document.createElement('span');
+
+      token.classList.add('token');
+      token.classList.add('very-small');
+      icon.classList.add('icon');
+      text.classList.add('text');
+
+      icon.innerText = 'sell'
+      text.innerText = item.token;
+
+      token.appendChild(icon);
+      token.appendChild(text);
+      card.appendChild(token);
+    }
+
     card.addEventListener('click', () => openChat(item));
   } else {
     const deleteButton = document.createElement('c-button');
@@ -905,14 +934,43 @@ function searchForDuplicate(channel) {
 
 updateChatInterface();
 
+let __customChannelInternalCheck__;
+if (customChatChannel.value == '') {
+  __customChannelInternalCheck__ = true;
+}
+customChatChannel.oninput = () => {
+  __customChannelInternalCheck__ = false
+  if (customChatChannel.value == '') __customChannelInternalCheck__ = true;
+};
+
+
+customChatName.oninput = () => {
+  if (__customChannelInternalCheck__) {
+    customChatChannel.value = slugify(customChatName.value);
+    console.log(slugify(customChatName.value));
+  }
+};
+
 addCustomChatButton.addEventListener('click', () => {
 
   const customChatObject = {
     version: 1,
+    /* This is the type, I defined a type to distinguish
+     this from the system chats that are predefined. */
     type: 'custom',
-    name: customChatName.value,
+    /* This is the name of the channel, it serves no
+    purpose other than customizeability. */
+    name: customChatName.value || customChatChannel.value,
+    // This is the channel name, this should be self-explanatory.
     channel: customChatChannel.value,
+    /* This is the token, and this is the real thing that
+    distinguishes one chat from another.
+    A token is a randomly generated unique ID, the reason
+    I had to use this is because every chat is public, and
+    the unique ID makes sure no one can just randomly
+    access a private chat. */
     token: crypto.randomUUID(),
+    // The rest are for sorting and organizing
     timestamp: new Date().getTime(),
     modified: null,
     records: []

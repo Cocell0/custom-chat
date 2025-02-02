@@ -99,6 +99,7 @@ body {
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
+  text-align: left;
 }
 
 body {
@@ -394,7 +395,7 @@ input {
 }
 
 #app #app-navigation {
-  padding-inline: var(--space-S);
+  padding: var(--space-S);
   flex: 1;
   overflow: auto;
 }
@@ -452,7 +453,7 @@ main {
 
     to {
       width: 0;
-      display: none;
+      display: flex;
     }
   }
 
@@ -463,7 +464,7 @@ main {
     }
 
     to {
-      display: block;
+      display: flex;
       width: var(--width-small);
     }
   }
@@ -1058,6 +1059,16 @@ c-accordian .head {
   padding: 10px;
   margin-block: 2rem;
   text-align: center;
+  height: clamp(300px, 80%, 90vh);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#chat-container>div {
+  width: 100%;
+  height: 100%;
 }
 
 #chat-picker {
@@ -1132,6 +1143,15 @@ h4 {
 .card input {
   padding: 0;
   width: 100%;
+}
+
+.card .token .icon {
+  font-size: inherit;
+}
+
+.card .token {
+  display: flex;
+  gap: 4px;
 }
 
 #chat-creator {
