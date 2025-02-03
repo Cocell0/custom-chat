@@ -6,9 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Custom Chat</title>
   <link rel="stylesheet" href="style.css">
-  <!-- <link
-    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close,menu,sell,settings,share"
-    rel="stylesheet"> -->
 </head>
 
 <body>
@@ -22,8 +19,11 @@
         <nav id="app-navigation">
           <h3>App Navigation</h3>
           <hr>
+          <div class="flex-row flex-*1 flex-gap-space-S mb-1">
+            <c-button id="edit-button">Edit</c-button>
+            <c-button id="add-custom-chat-button-modal">Add new</c-button>
+          </div>
           <section>
-            <c-button id="edit-button">edit</c-button>
             <div id="chat-picker"></div>
           </section>
         </nav>
@@ -31,27 +31,12 @@
     </div>
     <div id="app-interface">
       <header class="app-bar" role="banner" aria-label="Application Bar">
-        <c-button icon="share" aria-label="Share">share</c-button>
+        <c-button icon="share" aria-label="Share">Share</c-button>
         <c-button id="settings-button" icon="settings" aria-label="Open Settings"></c-button>
       </header>
 
       <div class="main-wrapper">
         <main aria-labelledby="main-content">
-          <div id="chat-creator">
-            <h2>Add new</h2>
-            <div>
-              <label for="custom-chat-name">Name:</label>
-              <input id="custom-chat-name" name="custom-chat-name" placeholder="Channel name">
-            </div>
-            <div>
-              <label for="custom-chat-channel">Channel:</label>
-              <input id="custom-chat-channel" name="custom-chat-channel" placeholder="channel">
-            </div>
-            <div>
-              <c-button id="add-custom-chat-button">add</c-button>
-            </div>
-            <div id="user-alert" hidden></div>
-          </div>
           <h1 id="display-channel-name" style="word-break: break-all;">[customChat.channelLabel ?? 'General']</h1>
           <div id="chat-container">
             <div>[chat(customChat)]</div>
@@ -66,6 +51,23 @@
     aria-labelledby="settings-button" aria-modal="true">
     <div class="flex-column" id="theme-selection">Please wait, the themes are loading.</div>
   </c-overlay>
+  <dialog id="add-custom-chat-modal" variant="content-action">
+    <div class="content">
+      <h2>Add new</h2>
+      <div style="margin-bottom: 0.6rem;">
+        <label for="custom-chat-name">Name:</label>
+        <input id="custom-chat-name" name="custom-chat-name" placeholder="Channel name">
+      </div>
+      <div>
+        <label for="custom-chat-channel">Channel:</label>
+        <input id="custom-chat-channel" name="custom-chat-channel" placeholder="Channel">
+      </div>
+    </div>
+    <div class="flex-row flex-*1 action">
+      <c-button id="add-custom-chat-cancel" variant="tonal">Cancel</c-button>
+      <c-button id="add-custom-chat-button" variant="filled">Add</c-button>
+    </div>
+  </dialog>
 
   <!-- scripts -->
   <script src="https://unpkg.com/tabbable/dist/index.umd.js"></script>

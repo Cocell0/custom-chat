@@ -1,3 +1,38 @@
+class CModal extends HTMLDialogElement {
+  static name = 'c-modal';
+
+  constructor() {
+    super();
+    this.shown = false;
+  };
+
+  connectedCallback() {
+    const modal = document.createElement('dialog');
+    this.modal = modal;
+
+    modal.addEventListener('close', () => this.shown = false);
+
+    Array.from(this.children).forEach((item) => {
+      modal.appendChild(item);
+    });
+
+    this.appendChild(modal);
+  };
+
+  show() {
+    this.modal.showModal();
+    this.shown = true;
+  };
+
+  close() {
+    this.modal.close();
+    this.shown = false;
+  }
+
+  static {
+    customElements.define(this.name, this);
+  }
+}
 class CRipple extends HTMLElement {
   static name = 'c-ripple';
 
@@ -729,7 +764,10 @@ const chatContainer = document.querySelector('#chat-container');
 const chatPicker = document.querySelector('#chat-picker');
 const customChatName = document.querySelector('#custom-chat-name');
 const customChatChannel = document.querySelector('#custom-chat-channel');
-const addCustomChatButton = document.querySelector('#add-custom-chat-button');
+const addCustomChatButtonModal = document.querySelector('#add-custom-chat-button-modal');
+const addCustomChatCancel = document.querySelector('#add-custom-chat-cancel');
+const addCustomChatModal = document.querySelector('#add-custom-chat-modal');
+const addCustomChatButton = document.createElement('c-button');
 const editButton = document.querySelector('#edit-button');
 
 // Events
@@ -946,6 +984,16 @@ customChatName.oninput = () => {
   }
 };
 
+addCustomChatButtonModal.addEventListener('click', () => {
+  if (!addCustomChatModal.hasAttribute('open')) {
+    addCustomChatModal.showModal();
+  }
+})
+
+addCustomChatCancel.addEventListener('click', () => {
+  addCustomChatModal.close();
+})
+
 addCustomChatButton.addEventListener('click', () => {
 
   const customChatObject = {
@@ -977,17 +1025,138 @@ addCustomChatButton.addEventListener('click', () => {
   createChat(customChatObject);
 });
 
-// Create a broadcast channel (use the same name across all tabs)
-const channel = new BroadcastChannel('crossTabLogChannel');
-
-// Function to log messages in all tabs
-function logAcrossTabs(message) {
-  channel.postMessage({ type: 'log', message });
-}
-
-// Listen for messages in all tabs (including the sender)
-channel.onmessage = (event) => {
-  if (event.data.type === 'log') {
-    console.log('Logged in all tabs:', event.data.message);
+const comments = [
+  {
+    "message": "Checking feedback channel. ✅",
+    "channel": "feedback",
+    "time": 1737642153006,
+    "user": {
+      "isAdmin": true,
+      "id": "bd9702c1db6ae669c7b6",
+      "visualId": "9jx0",
+      "nickname": "",
+      "avatarUrl": null
+    },
+    "id": "679250a9cb0a720ad459220a",
+    "byCurrentUser": false,
+    "autoSent": false
+  },
+  {
+    "message": "I forgot the password. 🤦",
+    "channel": "feedback",
+    "time": 1738525877005,
+    "user": {
+      "isAdmin": false,
+      "id": "5df291a4941a6a448e3d",
+      "visualId": "ujfe",
+      "name": "cocell",
+      "nickname": "",
+      "avatarUrl": null
+    },
+    "id": "679fccb5eb40c00ad3ccee09",
+    "byCurrentUser": false,
+    "autoSent": false
+  },
+  {
+    "message": "Nvm. ",
+    "channel": "feedback",
+    "time": 1738525924938,
+    "user": {
+      "isAdmin": true,
+      "id": "5df291a4941a6a448e3d",
+      "visualId": "ujfe",
+      "name": "cocell",
+      "nickname": "",
+      "avatarUrl": null
+    },
+    "id": "679fcce4eb40c00ad3ccee54",
+    "byCurrentUser": false,
+    "autoSent": false
+  },
+  {
+    "message": "Cocell- js a suggestion, can we have like a kinda like 'send messages privately thing' where you can send a message to somebody and nobody else can see it, like for making pcs for example, to stop the 'breaking into pcs' issue?",
+    "channel": "feedback",
+    "time": 1738527746910,
+    "user": {
+      "isAdmin": false,
+      "id": "fb874c1a7d8c2de9f597",
+      "visualId": "kibn",
+      "name": "rucilia",
+      "nickname": "",
+      "avatarUrl": null
+    },
+    "id": "679fd402eb40c00ad3ccf711",
+    "byCurrentUser": false,
+    "autoSent": false
+  },
+  {
+    "message": "YOU SILLY GOOBER- /jkjk",
+    "channel": "feedback",
+    "time": 1738529825153,
+    "user": {
+      "isAdmin": false,
+      "id": "fb874c1a7d8c2de9f597",
+      "visualId": "kibn",
+      "name": "rucilia",
+      "nickname": "",
+      "avatarUrl": null
+    },
+    "id": "679fdc21eb40c00ad3cd0202",
+    "byCurrentUser": false,
+    "replyingTo": "679fccb5eb40c00ad3ccee09",
+    "replyingToData": {
+      "folderName": "custom-chat+feedback",
+      "message": "I forgot the password. 🤦",
+      "messageId": "679fccb5eb40c00ad3ccee09",
+      "publicId": "5df291a4941a6a448e3d",
+      "selfDeclaredHistorialPublicIds": [],
+      "time": 1738525877005,
+      "userNickname": null,
+      "userAvatarUrl": null,
+      "username": "cocell"
+    },
+    "autoSent": false
+  },
+  {
+    "message": "So, the current plugin does not support these features. But theoretically, it could be achieved by encrypting your message, which would then be decrypted in the other person's device. However, this is very inefficient, since an encrypted message is incredibly long, there is a high probability that it won't even fit inside the text limit of a message.",
+    "channel": "feedback",
+    "time": 1738555160404,
+    "user": {
+      "isAdmin": true,
+      "id": "bd9702c1db6ae669c7b6",
+      "visualId": "9jx0",
+      "nickname": "Coc̀éll",
+      "avatarUrl": null
+    },
+    "id": "67a03f18eb40c00ad3cdaf8b",
+    "byCurrentUser": false,
+    "replyingTo": "679fd402eb40c00ad3ccf711",
+    "replyingToData": {
+      "folderName": "custom-chat+feedback",
+      "message": "Cocell- js a suggestion, can we have like a kinda like 'send messages privately thing' where you can send a message to somebody and nobody else can see it, like for making pcs for example, to stop the 'breaking into pcs' issue?",
+      "messageId": "679fd402eb40c00ad3ccf711",
+      "publicId": "fb874c1a7d8c2de9f597",
+      "selfDeclaredHistorialPublicIds": [],
+      "time": 1738527746910,
+      "userNickname": null,
+      "userAvatarUrl": null,
+      "username": "rucilia"
+    },
+    "autoSent": false
+  },
+  {
+    "message": "e",
+    "channel": "feedback",
+    "time": 1738574311575,
+    "user": {
+      "isAdmin": true,
+      "id": "2fba3e4fb46897dc6897",
+      "visualId": "mhah",
+      "nickname": "Coc̀éll",
+      "avatarUrl": "https://user-uploads.perchance.org/file/287841fdb0439bd3a1c9d03282fd8a8f.jpg"
+    },
+    "id": "67a089e7eb40c00ad3ce0e26",
+    "byCurrentUser": false,
+    "autoSent": false
   }
-};
+];

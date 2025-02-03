@@ -114,6 +114,9 @@ body {
   font-size: inherit;
 }
 
+:focus-visible {
+  outline: none;
+}
 
 ::selection {
   background: var(--primary);
@@ -163,7 +166,7 @@ small {
 }
 
 .very-small {
-  font-size: 0.694rem;
+  font-size: 0.64rem;
 }
 
 button,
@@ -560,7 +563,7 @@ main {
 
 /* --- */
 
-/* component.css */
+/* Components */
 c-button {
   color: var(--button-text);
   display: inline-flex;
@@ -771,7 +774,46 @@ c-accordian .head {
   min-height: 54px;
 }
 
-/* utility-classes.css */
+dialog {
+  user-select: inherit;
+  overflow: hidden;
+  border: none;
+  border-radius: var(--space-M);
+  padding: var(--space-B);
+  background: var(--surface);
+  height: clamp(140px, 240px, 62%);
+  width: clamp(240px, 380px, 86%);
+}
+
+dialog::backdrop {
+  background: hsl(0 0% 0% / 80%);
+  backdrop-filter: blur(8px);
+}
+
+dialog[variant=content-action][open] {
+  display: flex;
+  flex-direction: column;
+}
+
+dialog[variant=content-action] {
+  padding: 0;
+
+  .content {
+    padding: var(--space-B);
+    flex: 1;
+  }
+
+  .action {
+    padding: var(--space-S);
+    gap: var(--space-S);
+
+    c-button button {
+      padding: 0;
+    }
+  }
+}
+
+/* Utility Classes */
 
 /* Spacing Utilities */
 .m-0 {
@@ -816,6 +858,14 @@ c-accordian .head {
 
 .m-1 {
   margin: 0.25rem;
+}
+
+.mb-1 {
+  margin-block: 0.25rem;
+}
+
+.mi-1 {
+  margin-inline: 0.25rem;
 }
 
 .mt-1 {
@@ -903,12 +953,20 @@ c-accordian .head {
   flex-direction: column;
 }
 
+.flex-\*1 * {
+  flex: 1;
+}
+
 .flex-start {
   justify-content: flex-start;
 }
 
 .flex-end {
   justify-content: flex-end;
+}
+
+.flex-gap-space-S {
+  gap: var(--space-S);
 }
 
 .align-start {
