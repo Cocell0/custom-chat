@@ -556,6 +556,38 @@ function renderMD(source) {
   return source;
 };
 
+function getTime(time, timeConfig = {}) {
+  const now = Date.now();
+  const differenceInMs = now - time;
+  const differenceInDays = Math.floor(differenceInMs / (1000 * 60 * 60 * 24));
+
+  const date = new Date(time);
+  const nowDate = new Date(now);
+  const isToday = date.toDateString() === nowDate.toDateString();
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const isPM = date.getHours() >= 12;
+  const hour12 = isPM ? (date.getHours() - 12 || 12) : (date.getHours() || 12);
+  const hourFormatted = timeConfig.timeFormat === '24-hour' ? hours : String(hour12).padStart(2, '0');
+  const timeString = `${hourFormatted}:${minutes} ${isPM ? 'PM' : 'AM'}`;
+
+  if (isToday) {
+    return timeString;
+  } else if (differenceInDays === 1) {
+    return "yesterday";
+  } else if (differenceInDays === 2) {
+    return "2 days ago";
+  } else {
+    let formattedDate = timeConfig.dateFormat || 'yyyy/mm/dd';
+    formattedDate = formattedDate.replace('yyyy', year).replace('yy', String(year).slice(-2)).replace('mm', month).replace('dd', day);
+    return formattedDate;
+  }
+}
+
 // ---
 
 const mediaSmallPhone = 384;
@@ -683,45 +715,8 @@ setInterval(() => {
   injectIcon();
 }, 1000);
 
-const shortcuts = {
-  'save': 'ctrl + s',
-  'toggle menu': 'ctrl + m',
-  'toggle settings': 'alt + m'
-};
 
-window.addEventListener('keydown', (event) => {
-  const pressedKeys = [];
-  if (event.ctrlKey && event.key !== 'Control') pressedKeys.push('ctrl');
-  if (event.altKey && event.key !== 'Alt') pressedKeys.push('alt');
-  if (event.key && event.key !== 'Control' && event.key !== 'Alt') {
-    pressedKeys.push(event.key.toLowerCase());
-  }
 
-  const shortcutPressed = pressedKeys.join(' + ');
-
-  if (Object.values(shortcuts).includes(shortcutPressed)) {
-    event.preventDefault();
-  }
-  console.log(shortcutPressed);
-
-  switch (shortcutPressed) {
-    case shortcuts['save']:
-      event.preventDefault();
-      console.log('save');
-      break;
-    case shortcuts['toggle menu']:
-      event.preventDefault();
-      console.log('toggle menu');
-      toggleMenu();
-      break;
-    case shortcuts['toggle settings']:
-      event.preventDefault();
-      console.log('toggle settings');
-      break;
-    default:
-      break;
-  }
-});
 
 
 
@@ -782,14 +777,14 @@ editButton.addEventListener('click', () => {
     system.setMode('normal');
   }
 });
-customChatChannel.oninput = () => {
+customChatChannel.addEventListener('input', () => {
   const input = customChatChannel;
   const caretPosition = input.selectionStart;
   input.value = slugify(input.value);
   input.setSelectionRange(caretPosition, caretPosition);
 
   searchForDuplicate(input.value);
-};
+});
 
 
 
@@ -938,10 +933,10 @@ let __customChannelInternalCheck__;
 if (customChatChannel.value == '') {
   __customChannelInternalCheck__ = true;
 }
-customChatChannel.oninput = () => {
+customChatChannel.addEventListener("input", () => {
   __customChannelInternalCheck__ = false
   if (customChatChannel.value == '') __customChannelInternalCheck__ = true;
-};
+});
 
 
 customChatName.oninput = () => {
