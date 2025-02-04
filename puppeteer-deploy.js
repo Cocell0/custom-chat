@@ -12,11 +12,14 @@ const appLocation = process.env.APP_LOCATION;
 
   await page.waitForSelector('#mainOutputTemplateEditorCtn', { visible: true });
 
+  // await new Promise(resolve => setTimeout(resolve, 600));
+
   await page.evaluate(() => {
     document.querySelector('#aiHelperCtn').hidden = true;
   });
 
-  await page.click('#mainOutputTemplateEditorCtn');
+  await page.click('#f');
+  
   await page.keyboard.down('Control');
   await page.keyboard.press('A');
   await page.keyboard.up('Control');
@@ -27,8 +30,13 @@ const appLocation = process.env.APP_LOCATION;
 
   await page.evaluate(() => {
     app.saveGenerator();
-  })
+  });
 
+  await page.waitForFunction(
+    'document.querySelector("#menuBarEl span.menu-item-label[data-ref=saveText]").textContent.includes("saved")'
+  );
+
+  await new Promise(resolve => setTimeout(resolve, 20000));
 
   await browser.close();
 })();
