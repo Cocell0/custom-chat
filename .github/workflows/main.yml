@@ -1,4 +1,4 @@
-name: Puppeteer Automation
+name: Deploy with Puppeteer
 
 on:
   workflow_dispatch:
@@ -23,4 +23,3 @@ jobs:
         env:
           APP_LOCATION: ${{ secrets.APP_LOCATION }}
         run: node puppeteer-deploy.js
-        working-directory: ./custom-chat
