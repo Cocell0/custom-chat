@@ -1,0 +1,15 @@
+{
+  "name": "custom-chat",
+  "version": "1.0.0",
+  "description": "Custom Chat is a web-based application hosted on [Perchance](https://perchance.org), using the platform's comment's plugin as its foundation.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^24.1.1"
+  }
+}
