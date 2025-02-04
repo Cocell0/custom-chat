@@ -840,70 +840,60 @@ function removeChat(card, item) {
   }
 }
 function createChat(item) {
-  let card;
-  if (system.mode === 'editing') {
-    card = document.createElement('div');
-  } else {
-    card = document.createElement('c-button');
-  }
+  const card = document.createElement('div');
+  const button = document.createElement('c-button');
   const icon = document.createElement('i');
   const name = document.createElement('div');
   const channel = document.createElement('div');
 
-
-  if (system.mode !== 'editing') {
-    name.innerText = item.name;
-    icon.classList.add('icon');
-    icon.innerText = 'forum';
-  } else {
-    const input = document.createElement('input');
-    input.name = 'chat-name'
-    input.value = item.name;
-
-    input.oninput = () => {
-      item.name = input.value;
-      localStorage.setItem('saved-custom-chats', JSON.stringify(customChats));
-    }
-
-    name.appendChild(input);
-  }
-
-  if (system.mode !== 'editing') {
-    channel.innerText = '#' + item.channel;
-  } else {
-    const input = document.createElement('input');
-    input.name = 'chat-channel'
-    input.value = item.channel;
-
-    input.oninput = () => {
-      const caretPosition = input.selectionStart;
-      item.channel = slugify(input.value);
-      input.value = slugify(input.value);
-      input.setSelectionRange(caretPosition, caretPosition);
-      localStorage.setItem('saved-custom-chats', JSON.stringify(customChats));
-    }
-
-    channel.appendChild(input);
-  }
+  const nameInput = document.createElement('input');
+  const channelInput = document.createElement('input');
 
   card.classList.add('card');
   name.classList.add('name');
   channel.classList.add('channel');
 
-  card.appendChild(icon);
-  card.appendChild(name);
-  card.appendChild(channel);
+  name.innerText = item.name;
+  icon.classList.add('icon');
+  icon.innerText = 'forum';
 
-  if (system.mode !== 'editing') {
-    card.addEventListener('click', () => openChat(item));
-  } else {
-    const deleteButton = document.createElement('c-button');
-    card.classList.add('editing');
-    deleteButton.innerText = 'Delete';
-    deleteButton.addEventListener('click', () => removeChat(card, item));
+  nameInput.name = 'chat-name'
+  nameInput.value = item.name;
 
-    card.appendChild(deleteButton);
-  }
+  channel.innerText = '#' + item.channel;
+
+  channelInput.name = 'chat-channel'
+  channelInput.value = item.channel;
+
+  button.appendChild(icon);
+  button.appendChild(name);
+  button.appendChild(channel);
+
+  card.appendChild(button);
+
+  nameInput.addEventListener('input', () => {
+    item.name = nameInput.value;
+    localStorage.setItem('saved-custom-chats', JSON.stringify(customChats));
+  });
+
+  channelInput.addEventListener('input', () => {
+    const caretPosition = channelInput.selectionStart;
+    item.channel = slugify(channelInput.value);
+    channelInput.value = slugify(channelInput.value);
+    channelInput.setSelectionRange(caretPosition, caretPosition);
+    localStorage.setItem('saved-custom-chats', JSON.stringify(customChats));
+  });
+
+
+  button.addEventListener('click', () => openChat(item));
+
+  const deleteButton = document.createElement('c-button');
+  card.classList.add('editing');
+  deleteButton.innerText = 'Delete';
+  deleteButton.addEventListener('click', () => removeChat(card, item));
+
+  card.appendChild(deleteButton);
+
 
   chatPicker.appendChild(card);
 };

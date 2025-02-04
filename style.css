@@ -1142,16 +1142,19 @@ body[data-mode=editing] #chat-picker {
 
 .card {
   flex: 1;
-  border-radius: 18px;
-  border: 1px solid hsl(0, 0%, 18%);
   min-width: 140px;
+
+  c-button {
+    border-radius: 18px;
+    border: 1px solid hsl(0, 0%, 18%);
+  }
 }
 
-c-button.card button {
+.card button {
   padding: 0.4rem;
 }
 
-c-button.card button .content {
+.card button .content {
   flex: 1;
   display: grid;
   user-select: none;
@@ -1170,7 +1173,7 @@ c-button.card button .content {
   }
 }
 
-c-button.card button .content * {
+.card button .content * {
   white-space: normal;
 }
 
