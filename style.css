@@ -1141,7 +1141,6 @@ body[data-mode=editing] #chat-picker {
 }
 
 .card {
-  display: flex;
   flex: 1;
   border-radius: 18px;
   border: 1px solid hsl(0, 0%, 18%);
@@ -1149,17 +1148,26 @@ body[data-mode=editing] #chat-picker {
 }
 
 c-button.card button {
-  padding: 0.6rem;
+  padding: 0.4rem;
 }
 
 c-button.card button .content {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
+  display: grid;
   user-select: none;
   background-color: transparent;
+  grid-template-columns: 1fr 6fr;
+  grid-template-rows: 1fr 1fr;
+
+  .icon {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    height: 44px;
+    width: 44px;
+    background: var(--tonal);
+    border-radius: 8px;
+    margin-right: 10px;
+  }
 }
 
 c-button.card button .content * {
@@ -1172,9 +1180,11 @@ c-button.card button .content * {
 
 .card:not(.editing) {
   user-select: none;
+
   .name {
     font-weight: 600;
   }
+
   .channel {
     font-size: 0.7rem;
   }

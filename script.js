@@ -1,36 +1,19 @@
 class CModal extends HTMLDialogElement {
   static name = 'c-modal';
 
-  constructor() {
-    super();
-    this.shown = false;
-  };
-
   connectedCallback() {
-    const modal = document.createElement('dialog');
-    this.modal = modal;
+    const trap = focusTrap.createFocusTrap(this);
+    this.trap = trap;
+    this.addEventListener('close', () => this.trap.pause());
+  }
 
-    modal.addEventListener('close', () => this.shown = false);
-
-    Array.from(this.children).forEach((item) => {
-      modal.appendChild(item);
-    });
-
-    this.appendChild(modal);
-  };
-
-  show() {
-    this.modal.showModal();
-    this.shown = true;
-  };
-
-  close() {
-    this.modal.close();
-    this.shown = false;
+  open() {
+    this.showModal();
+    this.trap.activate();
   }
 
   static {
-    customElements.define(this.name, this);
+    customElements.define(this.name, this, { extends: 'dialog' });
   }
 }
 class CRipple extends HTMLElement {
@@ -866,10 +849,12 @@ function createChat(item) {
   const icon = document.createElement('i');
   const name = document.createElement('div');
   const channel = document.createElement('div');
-  
+
 
   if (system.mode !== 'editing') {
     name.innerText = item.name;
+    icon.classList.add('icon');
+    icon.innerText = 'forum';
   } else {
     const input = document.createElement('input');
     input.name = 'chat-name'
@@ -879,8 +864,7 @@ function createChat(item) {
       item.name = input.value;
       localStorage.setItem('saved-custom-chats', JSON.stringify(customChats));
     }
-  icon.classList.add('icon');
- 
+
     name.appendChild(input);
   }
 
@@ -906,6 +890,7 @@ function createChat(item) {
   name.classList.add('name');
   channel.classList.add('channel');
 
+  card.appendChild(icon);
   card.appendChild(name);
   card.appendChild(channel);
 
@@ -970,7 +955,7 @@ customChatName.oninput = () => {
 
 addCustomChatButtonModal.addEventListener('click', () => {
   if (!addCustomChatModal.hasAttribute('open')) {
-    addCustomChatModal.showModal();
+    addCustomChatModal.open();
   }
 })
 
