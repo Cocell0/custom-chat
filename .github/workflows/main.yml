@@ -18,10 +18,8 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-        working-directory: ./custom-chat
 
       - name: Run Puppeteer script
         env:
           APP_LOCATION: ${{ secrets.APP_LOCATION }}
         run: node puppeteer-deploy.js
-        working-directory: ./custom-chat
