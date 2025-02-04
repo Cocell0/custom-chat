@@ -863,8 +863,10 @@ function createChat(item) {
   } else {
     card = document.createElement('c-button');
   }
-  const name = document.createElement('h4');
+  const icon = document.createElement('i');
+  const name = document.createElement('div');
   const channel = document.createElement('div');
+  
 
   if (system.mode !== 'editing') {
     name.innerText = item.name;
@@ -877,7 +879,8 @@ function createChat(item) {
       item.name = input.value;
       localStorage.setItem('saved-custom-chats', JSON.stringify(customChats));
     }
-
+  icon.classList.add('icon');
+ 
     name.appendChild(input);
   }
 
@@ -907,24 +910,6 @@ function createChat(item) {
   card.appendChild(channel);
 
   if (system.mode !== 'editing') {
-    if (item.type == 'custom') {
-      const token = document.createElement('p');
-      const icon = document.createElement('i');
-      const text = document.createElement('span');
-
-      token.classList.add('token');
-      token.classList.add('very-small');
-      icon.classList.add('icon');
-      text.classList.add('text');
-
-      icon.innerText = 'sell'
-      text.innerText = item.token;
-
-      token.appendChild(icon);
-      token.appendChild(text);
-      card.appendChild(token);
-    }
-
     card.addEventListener('click', () => openChat(item));
   } else {
     const deleteButton = document.createElement('c-button');
@@ -979,9 +964,8 @@ customChatChannel.addEventListener("input", () => {
 
 customChatName.oninput = () => {
   if (__customChannelInternalCheck__) {
-    customChatChannel.value = slugify(customChatName.value);
-    console.log(slugify(customChatName.value));
-  }
+    customChatChannel.value = slugify(customChatName.value.trim());
+  };
 };
 
 addCustomChatButtonModal.addEventListener('click', () => {
