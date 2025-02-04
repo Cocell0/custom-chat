@@ -36,7 +36,7 @@ const appLocation = process.env.APP_LOCATION;
     'document.querySelector("#menuBarEl span.menu-item-label[data-ref=saveText]").textContent.includes("saved")'
   );
 
-  await new Promise(resolve => setTimeout(resolve, 20000));
+  await new Promise(resolve => setTimeout(resolve, 5000));
 
   await browser.close();
 })();
