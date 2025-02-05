@@ -25,7 +25,7 @@ const appLocation = process.env.APP_LOCATION;
   await page.keyboard.up('Control');
   await page.keyboard.press('Backspace');
 
-  await page.keyboard.sendCharacter(fs.readFileSync('index.html', 'utf8'));
+  await page.keyboard.sendCharacter(fs.readFileSync('filo-index.html', 'utf8'));
 
 
   await page.evaluate(() => {

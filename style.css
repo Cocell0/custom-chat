@@ -4,7 +4,7 @@
   font-family: 'Material Symbols Rounded';
   font-weight: normal;
   font-style: normal;
-  font-size: 2rem;
+  font-size: 24px;
   line-height: 1;
   letter-spacing: normal;
   text-transform: none;
@@ -1149,13 +1149,29 @@ body[data-mode=editing] #chat-picker {
     border-radius: 18px;
     border: 1px solid hsl(0, 0%, 18%);
   }
-  
+
   .edit-button {
     position: absolute;
     top: 0.4rem;
     right: 0.4rem;
-    width: 44px;
-    height: 44px;
+    min-width: 0;
+    min-height: 0;
+    width: 28px;
+    height: 28px;
+
+    button,
+    .content {
+      height: 100%;
+      width: 100%;
+    }
+
+    button {
+      padding: 0;
+
+      .icon {
+        font-size: 22px;
+      }
+    }
   }
 }
 
@@ -1163,7 +1179,7 @@ body[data-mode=editing] #chat-picker {
   padding: 0.4rem;
 }
 
-.card button .content {
+.card .main-button .content {
   flex: 1;
   display: grid;
   user-select: none;
@@ -1171,7 +1187,7 @@ body[data-mode=editing] #chat-picker {
   grid-template-columns: 1fr 6fr;
   grid-template-rows: 1fr 1fr;
 
-  .icon {
+  .card-icon {
     grid-column: 1;
     grid-row: 1 / span 2;
     height: 44px;
@@ -1182,7 +1198,7 @@ body[data-mode=editing] #chat-picker {
   }
 }
 
-.card button .content * {
+.card .main-button .content * {
   white-space: normal;
 }
 
