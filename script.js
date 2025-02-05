@@ -842,7 +842,9 @@ function removeChat(card, item) {
 function createChat(item) {
   const card = document.createElement('div');
   const button = document.createElement('c-button');
+  const editButton = document.createElement('c-button');
   const icon = document.createElement('i');
+  const editIcon = document.createElement('i');
   const name = document.createElement('div');
   const channel = document.createElement('div');
 
@@ -852,10 +854,13 @@ function createChat(item) {
   card.classList.add('card');
   name.classList.add('name');
   channel.classList.add('channel');
+  editButton.classList.add('edit-button');
 
   name.innerText = item.name;
   icon.classList.add('icon');
   icon.innerText = 'forum';
+  editIcon.classList.add('icon');
+  editIcon.innerText = 'edit';
 
   nameInput.name = 'chat-name'
   nameInput.value = item.name;
@@ -868,8 +873,10 @@ function createChat(item) {
   button.appendChild(icon);
   button.appendChild(name);
   button.appendChild(channel);
+  editButton.appendChild(editIcon);
 
   card.appendChild(button);
+  card.appendChild(editButton);
 
   nameInput.addEventListener('input', () => {
     item.name = nameInput.value;

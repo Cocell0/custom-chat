@@ -4,7 +4,7 @@
   font-family: 'Material Symbols Rounded';
   font-weight: normal;
   font-style: normal;
-  font-size: 24px;
+  font-size: 2rem;
   line-height: 1;
   letter-spacing: normal;
   text-transform: none;
@@ -1143,10 +1143,19 @@ body[data-mode=editing] #chat-picker {
 .card {
   flex: 1;
   min-width: 140px;
+  position: relative;
 
   c-button {
     border-radius: 18px;
     border: 1px solid hsl(0, 0%, 18%);
+  }
+  
+  .edit-button {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.4rem;
+    width: 44px;
+    height: 44px;
   }
 }
 
