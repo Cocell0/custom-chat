@@ -34,8 +34,3 @@ jobs:
         env:
           APP_LOCATION: ${{ secrets.APP_LOCATION }}
         run: node puppeteer-deploy.js
-
-      - name: Send Discord Notification
-        run: |
-          $content = '{"content": "Deployment completed for repository: ' + $env:GITHUB_REPOSITORY + '. Branch: ' + $env:GITHUB_REF + '. Commit: ' + $env:GITHUB_SHA + ' - ' + $env:GITHUB_EVENT_NAME + '.' + '"}'
-          curl -Uri ${{ secrets.DISCORD_WEBHOOK }} -Method POST -Body $content -ContentType "application/json"
