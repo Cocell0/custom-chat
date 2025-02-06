@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Custom Chat</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -50,12 +51,11 @@
     aria-labelledby="settings-button" aria-modal="true">
     <div class="flex-column" id="theme-selection">Please wait, the themes are loading.</div>
   </c-overlay>
-  <dialog is="c-modal" id="add-custom-chat-modal" variant="content-action">
+  <dialog is="c-modal" data-title="Add new" id="add-custom-chat-modal" variant="content-action">
     <div class="content">
-      <h2>Add new</h2>
       <div style="margin-bottom: 0.6rem;">
         <label for="custom-chat-name">Name:</label>
-        <input id="custom-chat-name" name="custom-chat-name" placeholder="Channel name">
+        <input id="custom-chat-name" name="custom-chat-name" placeholder="Channel name" autofocus>
       </div>
       <div>
         <label for="custom-chat-channel">Channel:</label>
@@ -63,7 +63,6 @@
       </div>
     </div>
     <div class="flex-row flex-*1 action">
-      <c-button id="add-custom-chat-cancel" variant="tonal">Cancel</c-button>
       <c-button id="add-custom-chat-button" variant="filled">Add</c-button>
     </div>
   </dialog>
@@ -73,8 +72,7 @@
   <script src="https://unpkg.com/focus-trap/dist/focus-trap.umd.js"></script>
   <script src="script.js"></script>
   <style>
-    @import url(style.css);
-    /*${filo:style.css}(<^'e'\n\n$\n\n)*/
+    /*${filo:style.css}(<)*/
   </style>
   <script>
     //${filo:script.js}

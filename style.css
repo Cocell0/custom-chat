@@ -778,11 +778,27 @@ dialog {
   user-select: inherit;
   overflow: hidden;
   border: none;
-  border-radius: var(--space-M);
+  border-radius: 26px;
   padding: var(--space-B);
   background: var(--surface);
   height: clamp(140px, 240px, 62%);
   width: clamp(240px, 380px, 86%);
+
+  .head {
+    display: flex;
+    padding: 0.4rem;
+
+    .title {
+      flex: 1;
+      text-align: center;
+      margin: 0.6rem 0 0 0;
+    }
+
+    c-button {
+      width: 44px;
+      height: 44px;
+    }
+  }
 }
 
 dialog::backdrop {
@@ -1136,42 +1152,48 @@ dialog[variant=content-action] {
   gap: 0.4rem;
 }
 
-body[data-mode=editing] #chat-picker {
-  flex-direction: column;
-}
-
 .card {
   flex: 1;
   min-width: 140px;
   position: relative;
 
-  c-button {
+  c-button.main-button {
     border-radius: 18px;
     border: 1px solid hsl(0, 0%, 18%);
   }
 
-  .edit-button {
+  .edit-button-container {
     position: absolute;
-    top: 0.4rem;
-    right: 0.4rem;
-    min-width: 0;
-    min-height: 0;
-    width: 28px;
-    height: 28px;
+    top: 0;
+    right: 0;
+    height: 100%;
+    padding-right: 0.4rem;
+    display: flex;
+    align-items: center;
+  }
 
-    button,
-    .content {
-      height: 100%;
-      width: 100%;
+  .edit-button button {
+    padding: 0;
+    height: 44px;
+    width: 44px;
+
+    .icon {
+      font-size: 22px;
     }
+  }
+}
 
-    button {
-      padding: 0;
+@media (hover: hover) {
+  .card .edit-button-container {
+    display: none;
+  }
 
-      .icon {
-        font-size: 22px;
-      }
-    }
+  .card:hover .edit-button-container {
+    display: flex;
+  }
+
+  .card:focus-within .edit-button-container {
+    display: flex;
   }
 }
 

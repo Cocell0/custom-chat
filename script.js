@@ -1,10 +1,34 @@
 class CModal extends HTMLDialogElement {
   static name = 'c-modal';
 
+  static get observedAttributes() {
+    return ['data-title'];
+  }
+
   connectedCallback() {
     const trap = focusTrap.createFocusTrap(this);
+    const head = document.createElement('div');
+    const title = document.createElement('h3');
+    const closeButton = document.createElement('c-button');
+
     this.trap = trap;
     this.addEventListener('close', () => this.trap.pause());
+    closeButton.addEventListener('click', () => this.close());
+
+    head.classList.add('head');
+    title.classList.add('title');
+    closeButton.classList.add('close-button');
+    closeButton.setAttribute('icon', 'close');
+    closeButton.setAttribute('variant', 'icon');
+
+    if (this.hasAttribute('data-title')) {
+      title.innerText = this.getAttribute('data-title');
+      head.prepend(title);
+    }
+
+    head.appendChild(closeButton);
+
+    this.prepend(head);
   }
 
   open() {
@@ -842,6 +866,7 @@ function removeChat(card, item) {
 function createChat(item) {
   const card = document.createElement('div');
   const button = document.createElement('c-button');
+  const editButtonContainer = document.createElement('div');
   const editButton = document.createElement('c-button');
   const icon = document.createElement('i');
   const editIcon = document.createElement('i');
@@ -855,6 +880,7 @@ function createChat(item) {
   button.classList.add('main-button');
   name.classList.add('name');
   channel.classList.add('channel');
+  editButtonContainer.classList.add('edit-button-container');
   editButton.classList.add('edit-button');
 
   name.innerText = item.name;
@@ -862,7 +888,7 @@ function createChat(item) {
   icon.classList.add('card-icon');
   icon.innerText = 'forum';
   editIcon.classList.add('icon');
-  editIcon.innerText = 'edit';
+  editIcon.innerText = 'tune';
 
   nameInput.name = 'chat-name'
   nameInput.value = item.name;
@@ -876,15 +902,21 @@ function createChat(item) {
   button.appendChild(name);
   button.appendChild(channel);
   editButton.appendChild(editIcon);
+  editButtonContainer.appendChild(editButton)
 
   card.appendChild(button);
-  card.appendChild(editButton);
+  card.appendChild(editButtonContainer);
+
+  const deleteButton = document.createElement('c-button');
+  deleteButton.innerText = 'Delete';
+
+  // card.appendChild(deleteButton);
+
 
   nameInput.addEventListener('input', () => {
     item.name = nameInput.value;
     localStorage.setItem('saved-custom-chats', JSON.stringify(customChats));
   });
-
   channelInput.addEventListener('input', () => {
     const caretPosition = channelInput.selectionStart;
     item.channel = slugify(channelInput.value);
@@ -892,16 +924,9 @@ function createChat(item) {
     channelInput.setSelectionRange(caretPosition, caretPosition);
     localStorage.setItem('saved-custom-chats', JSON.stringify(customChats));
   });
-
-
   button.addEventListener('click', () => openChat(item));
-
-  const deleteButton = document.createElement('c-button');
-  deleteButton.innerText = 'Delete';
   deleteButton.addEventListener('click', () => removeChat(card, item));
-
-  card.appendChild(deleteButton);
-
+  editButton.addEventListener('click', () => card.classList.add('editing'));
 
   chatPicker.appendChild(card);
 };
@@ -955,10 +980,6 @@ addCustomChatButtonModal.addEventListener('click', () => {
   if (!addCustomChatModal.hasAttribute('open')) {
     addCustomChatModal.open();
   }
-})
-
-addCustomChatCancel.addEventListener('click', () => {
-  addCustomChatModal.close();
 })
 
 addCustomChatButton.addEventListener('click', () => {

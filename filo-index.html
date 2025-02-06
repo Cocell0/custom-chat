@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Custom Chat</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -50,12 +51,11 @@
     aria-labelledby="settings-button" aria-modal="true">
     <div class="flex-column" id="theme-selection">Please wait, the themes are loading.</div>
   </c-overlay>
-  <dialog is="c-modal" id="add-custom-chat-modal" variant="content-action">
+  <dialog is="c-modal" data-title="Add new" id="add-custom-chat-modal" variant="content-action">
     <div class="content">
-      <h2>Add new</h2>
       <div style="margin-bottom: 0.6rem;">
         <label for="custom-chat-name">Name:</label>
-        <input id="custom-chat-name" name="custom-chat-name" placeholder="Channel name">
+        <input id="custom-chat-name" name="custom-chat-name" placeholder="Channel name" autofocus>
       </div>
       <div>
         <label for="custom-chat-channel">Channel:</label>
@@ -63,7 +63,6 @@
       </div>
     </div>
     <div class="flex-row flex-*1 action">
-      <c-button id="add-custom-chat-cancel" variant="tonal">Cancel</c-button>
       <c-button id="add-custom-chat-button" variant="filled">Add</c-button>
     </div>
   </dialog>
@@ -73,7 +72,6 @@
   <script src="https://unpkg.com/focus-trap/dist/focus-trap.umd.js"></script>
   <script src="script.js"></script>
   <style>
-    @import url(style.css);
 @import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 
 .icon {
@@ -854,11 +852,27 @@ dialog {
   user-select: inherit;
   overflow: hidden;
   border: none;
-  border-radius: var(--space-M);
+  border-radius: 26px;
   padding: var(--space-B);
   background: var(--surface);
   height: clamp(140px, 240px, 62%);
   width: clamp(240px, 380px, 86%);
+
+  .head {
+    display: flex;
+    padding: 0.4rem;
+
+    .title {
+      flex: 1;
+      text-align: center;
+      margin: 0.6rem 0 0 0;
+    }
+
+    c-button {
+      width: 44px;
+      height: 44px;
+    }
+  }
 }
 
 dialog::backdrop {
@@ -1212,42 +1226,48 @@ dialog[variant=content-action] {
   gap: 0.4rem;
 }
 
-body[data-mode=editing] #chat-picker {
-  flex-direction: column;
-}
-
 .card {
   flex: 1;
   min-width: 140px;
   position: relative;
 
-  c-button {
+  c-button.main-button {
     border-radius: 18px;
     border: 1px solid hsl(0, 0%, 18%);
   }
 
-  .edit-button {
+  .edit-button-container {
     position: absolute;
-    top: 0.4rem;
-    right: 0.4rem;
-    min-width: 0;
-    min-height: 0;
-    width: 28px;
-    height: 28px;
+    top: 0;
+    right: 0;
+    height: 100%;
+    padding-right: 0.4rem;
+    display: flex;
+    align-items: center;
+  }
 
-    button,
-    .content {
-      height: 100%;
-      width: 100%;
+  .edit-button button {
+    padding: 0;
+    height: 44px;
+    width: 44px;
+
+    .icon {
+      font-size: 22px;
     }
+  }
+}
 
-    button {
-      padding: 0;
+@media (hover: hover) {
+  .card .edit-button-container {
+    display: none;
+  }
 
-      .icon {
-        font-size: 22px;
-      }
-    }
+  .card:hover .edit-button-container {
+    display: flex;
+  }
+
+  .card:focus-within .edit-button-container {
+    display: flex;
   }
 }
 
@@ -1367,10 +1387,34 @@ h4 {
 class CModal extends HTMLDialogElement {
   static name = 'c-modal';
 
+  static get observedAttributes() {
+    return ['data-title'];
+  }
+
   connectedCallback() {
     const trap = focusTrap.createFocusTrap(this);
+    const head = document.createElement('div');
+    const title = document.createElement('h3');
+    const closeButton = document.createElement('c-button');
+
     this.trap = trap;
     this.addEventListener('close', () => this.trap.pause());
+    closeButton.addEventListener('click', () => this.close());
+
+    head.classList.add('head');
+    title.classList.add('title');
+    closeButton.classList.add('close-button');
+    closeButton.setAttribute('icon', 'close');
+    closeButton.setAttribute('variant', 'icon');
+
+    if (this.hasAttribute('data-title')) {
+      title.innerText = this.getAttribute('data-title');
+      head.prepend(title);
+    }
+
+    head.appendChild(closeButton);
+
+    this.prepend(head);
   }
 
   open() {
@@ -2208,6 +2252,7 @@ function removeChat(card, item) {
 function createChat(item) {
   const card = document.createElement('div');
   const button = document.createElement('c-button');
+  const editButtonContainer = document.createElement('div');
   const editButton = document.createElement('c-button');
   const icon = document.createElement('i');
   const editIcon = document.createElement('i');
@@ -2221,6 +2266,7 @@ function createChat(item) {
   button.classList.add('main-button');
   name.classList.add('name');
   channel.classList.add('channel');
+  editButtonContainer.classList.add('edit-button-container');
   editButton.classList.add('edit-button');
 
   name.innerText = item.name;
@@ -2228,7 +2274,7 @@ function createChat(item) {
   icon.classList.add('card-icon');
   icon.innerText = 'forum';
   editIcon.classList.add('icon');
-  editIcon.innerText = 'edit';
+  editIcon.innerText = 'tune';
 
   nameInput.name = 'chat-name'
   nameInput.value = item.name;
@@ -2242,15 +2288,21 @@ function createChat(item) {
   button.appendChild(name);
   button.appendChild(channel);
   editButton.appendChild(editIcon);
+  editButtonContainer.appendChild(editButton)
 
   card.appendChild(button);
-  card.appendChild(editButton);
+  card.appendChild(editButtonContainer);
+
+  const deleteButton = document.createElement('c-button');
+  deleteButton.innerText = 'Delete';
+
+  // card.appendChild(deleteButton);
+
 
   nameInput.addEventListener('input', () => {
     item.name = nameInput.value;
     localStorage.setItem('saved-custom-chats', JSON.stringify(customChats));
   });
-
   channelInput.addEventListener('input', () => {
     const caretPosition = channelInput.selectionStart;
     item.channel = slugify(channelInput.value);
@@ -2258,16 +2310,9 @@ function createChat(item) {
     channelInput.setSelectionRange(caretPosition, caretPosition);
     localStorage.setItem('saved-custom-chats', JSON.stringify(customChats));
   });
-
-
   button.addEventListener('click', () => openChat(item));
-
-  const deleteButton = document.createElement('c-button');
-  deleteButton.innerText = 'Delete';
   deleteButton.addEventListener('click', () => removeChat(card, item));
-
-  card.appendChild(deleteButton);
-
+  editButton.addEventListener('click', () => card.classList.add('editing'));
 
   chatPicker.appendChild(card);
 };
@@ -2321,10 +2366,6 @@ addCustomChatButtonModal.addEventListener('click', () => {
   if (!addCustomChatModal.hasAttribute('open')) {
     addCustomChatModal.open();
   }
-})
-
-addCustomChatCancel.addEventListener('click', () => {
-  addCustomChatModal.close();
 })
 
 addCustomChatButton.addEventListener('click', () => {

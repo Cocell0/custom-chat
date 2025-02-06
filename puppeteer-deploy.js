@@ -5,21 +5,33 @@ require('dotenv').config();
 const appLocation = process.env.APP_LOCATION;
 
 (async () => {
-  const browser = await puppeteer.launch({ headless: true });
-  const [page] = await browser.pages();
+  const browser = await puppeteer.launch({ headless: false, slowMo: 60, defaultViewport: null, args: ['--disable-notifications', '--disable-infobars', '--start-maximized', '--disable-popup-blocking'] });
+  const page = await browser.newPage();
 
   await page.goto(appLocation);
+  await page.bringToFront();
 
+  page.on('dialog', dialog => dialog.dismiss());
   await page.waitForSelector('#mainOutputTemplateEditorCtn', { visible: true });
 
-  // await new Promise(resolve => setTimeout(resolve, 600));
-
   await page.evaluate(() => {
+    document.documentElement.style.userSelect = 'none';
     document.querySelector('#aiHelperCtn').hidden = true;
   });
 
-  await page.click('#f');
-  
+  await new Promise(resolve => setTimeout(resolve, 600));
+
+  await page.click('#mainOutputTemplateEditorCtn');
+
+  await page.keyboard.down('Control');
+  await page.keyboard.press('A');
+  await page.keyboard.up('Control');
+  await page.keyboard.press('Backspace');
+
+  await page.keyboard.sendCharacter('Setting contents...')
+
+  await new Promise(resolve => setTimeout(resolve, 200));
+
   await page.keyboard.down('Control');
   await page.keyboard.press('A');
   await page.keyboard.up('Control');
@@ -31,10 +43,6 @@ const appLocation = process.env.APP_LOCATION;
   await page.evaluate(() => {
     app.saveGenerator();
   });
-
-  await page.waitForFunction(
-    'document.querySelector("#menuBarEl span.menu-item-label[data-ref=saveText]").textContent.includes("saved")'
-  );
 
   await new Promise(resolve => setTimeout(resolve, 5000));
 
