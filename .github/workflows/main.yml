@@ -37,7 +37,4 @@ jobs:
 
       - name: Send Discord Notification
         run: |
-          curl -H "Content-Type: application/json" \
-              -X POST \
-              -d '{"content": "Deployment completed for repository: ${GITHUB_REPOSITORY}. Branch: ${GITHUB_REF}. Commit: ${GITHUB_SHA} - ${GITHUB_EVENT_NAME}."}' \
-              ${{ secrets.DISCORD_WEBHOOK }}
+          curl -Uri ${{ secrets.DISCORD_WEBHOOK }} -Method POST -Body '{"content": "Deployment completed for repository: ${GITHUB_REPOSITORY}. Branch: ${GITHUB_REF}. Commit: ${GITHUB_SHA} - ${GITHUB_EVENT_NAME}."}' -ContentType "application/json"
