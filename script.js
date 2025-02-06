@@ -74,7 +74,7 @@ class CRipple extends HTMLElement {
       easing: 'cubic-bezier(0.54, 0.13, 0.95, 0.54)',
       fill: 'forwards'
     });
-  };
+  }
 
   connectedCallback() {
     const surface = document.createElement('div');
@@ -140,7 +140,7 @@ class CRipple extends HTMLElement {
   `);
     customElements.define(this.name, this);
   }
-};
+}
 class COverlay extends HTMLElement {
   constructor() {
     super();
@@ -222,7 +222,7 @@ class COverlay extends HTMLElement {
   static {
     customElements.define(this.name, this);
   }
-};
+}
 class CAccordian extends HTMLElement {
   static name = 'c-accordian';
 
@@ -254,7 +254,7 @@ class CAccordian extends HTMLElement {
   static {
     customElements.define(this.name, this);
   }
-};
+}
 class CButton extends HTMLElement {
   constructor() {
     super();
@@ -369,7 +369,7 @@ class CButton extends HTMLElement {
   static {
     customElements.define(this.name, this);
   }
-};
+}
 
 const app = {
   theme: {
@@ -508,7 +508,7 @@ const app = {
 };
 
 (() => {
-  // theme initializer 
+  // theme initializer
   const storedTheme = localStorage.getItem('theme');
 
   if (storedTheme) {
@@ -561,7 +561,7 @@ function getUsedIcons() {
   }
 
   return iconList;
-};
+}
 
 const iconStyle = document.createElement('link');
 document.body.appendChild(iconStyle);
@@ -578,25 +578,25 @@ function injectIcon() {
   if (iconStyle.getAttribute('href') !== `https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded${app.iconAxeConfig}${queryString}`) {
     iconStyle.setAttribute('href', `https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded${app.iconAxeConfig}${queryString}`)
   }
-};
+}
 
 function renderMD(source) {
   console.log(`Source:\n${source}`);
   const mappedMD = {
     italic: /\*(.*?)\*/g,
     bold: /\*\*(?!\*.*\*\*)(.*?)\*\*/g
-  };
+  }
 
   function replaceDelimiters(source, target, by) {
     return target.test(source) ? source.replace(target, by) : source;
-  };
+  }
 
   source = replaceDelimiters(source, mappedMD.bold, `<b>$1</b>`);
   source = replaceDelimiters(source, mappedMD.italic, `<i>$1</i>`);
 
   console.log(`Output:\n${source}`);
   return source;
-};
+}
 
 function getTime(time, timeConfig = {}) {
   const now = Date.now();
@@ -772,9 +772,8 @@ const chatPicker = document.querySelector('#chat-picker');
 const customChatName = document.querySelector('#custom-chat-name');
 const customChatChannel = document.querySelector('#custom-chat-channel');
 const addCustomChatButtonModal = document.querySelector('#add-custom-chat-button-modal');
-const addCustomChatCancel = document.querySelector('#add-custom-chat-cancel');
 const addCustomChatModal = document.querySelector('#add-custom-chat-modal');
-const addCustomChatButton = document.createElement('c-button');
+const addCustomChatButton = document.querySelector('#add-custom-chat-button');
 const editButton = document.querySelector('#edit-button');
 
 // Events
@@ -787,7 +786,7 @@ const system = {
 
     updateChatInterface();
   }
-};
+}
 
 // The array of global chats to be available by default
 const chats = [
@@ -838,7 +837,7 @@ customChatChannel.addEventListener('input', () => {
 
 function slugify(source) {
   return source.toLowerCase().replace(/[^a-z0-9]/g, '-');
-};
+}
 function openChat(item) {
   if (window.location.href.includes('perchance.org/custom-chat')) {
     if (item.type == 'custom') {
@@ -853,7 +852,7 @@ function openChat(item) {
   } else {
     console.log(`\n\n$ Open chat\nName: ${item.name}\nChannel: ${item.channel}\n\n`)
   }
-};
+}
 function removeChat(card, item) {
   const index = customChats.indexOf(item);
 
@@ -865,8 +864,8 @@ function removeChat(card, item) {
 }
 function createChat(item) {
   const card = document.createElement('div');
+  const buttonContainer = document.createElement('div'); // I NEED CONTAINERS JUST TO MANAGE MY OTHER CONTAINER BECAUSE ELEMENT.HIDDEN = TRUE WON'T WORK
   const button = document.createElement('c-button');
-  const editButtonContainer = document.createElement('div');
   const editButton = document.createElement('c-button');
   const icon = document.createElement('i');
   const editIcon = document.createElement('i');
@@ -877,10 +876,10 @@ function createChat(item) {
   const channelInput = document.createElement('input');
 
   card.classList.add('card');
+  buttonContainer.classList.add('main-button-container');
   button.classList.add('main-button');
   name.classList.add('name');
   channel.classList.add('channel');
-  editButtonContainer.classList.add('edit-button-container');
   editButton.classList.add('edit-button');
 
   name.innerText = item.name;
@@ -891,33 +890,56 @@ function createChat(item) {
   editIcon.innerText = 'tune';
 
   nameInput.name = 'chat-name'
+  nameInput.placeholder = 'Chat name'
   nameInput.value = item.name;
 
   channel.innerText = '#' + item.channel;
 
   channelInput.name = 'chat-channel'
+  channelInput.placeholder = 'Chat channel'
   channelInput.value = item.channel;
 
+  buttonContainer.appendChild(button);
   button.appendChild(icon);
   button.appendChild(name);
   button.appendChild(channel);
   editButton.appendChild(editIcon);
-  editButtonContainer.appendChild(editButton)
 
-  card.appendChild(button);
-  card.appendChild(editButtonContainer);
+  card.appendChild(buttonContainer);
+  card.appendChild(editButton);
 
   const deleteButton = document.createElement('c-button');
   deleteButton.innerText = 'Delete';
 
-  // card.appendChild(deleteButton);
+  function toggleEdit() {
+    if (card.classList.contains('editing')) {
+      card.classList.remove('editing');
+      card.edit = false;
+    } else {
+      card.classList.add('editing');
+      card.edit = true;
+    }
 
+    if (card.edit) {
+      buttonContainer.hidden = true;
+      card.appendChild(nameInput);
+      card.appendChild(channelInput);
+    } else {
+      buttonContainer.hidden = false;
+      nameInput.remove();
+      channelInput.remove();
+    }
+  }
 
   nameInput.addEventListener('input', () => {
     item.name = nameInput.value;
+    name.innerText = nameInput.value;
+    console.log(name);
     localStorage.setItem('saved-custom-chats', JSON.stringify(customChats));
   });
   channelInput.addEventListener('input', () => {
+    channel.innerText = channelInput.value;
+
     const caretPosition = channelInput.selectionStart;
     item.channel = slugify(channelInput.value);
     channelInput.value = slugify(channelInput.value);
@@ -926,10 +948,10 @@ function createChat(item) {
   });
   button.addEventListener('click', () => openChat(item));
   deleteButton.addEventListener('click', () => removeChat(card, item));
-  editButton.addEventListener('click', () => card.classList.add('editing'));
+  editButton.addEventListener('click', () => toggleEdit());
 
   chatPicker.appendChild(card);
-};
+}
 
 function updateChatInterface() {
   chatPicker.innerHTML = '';
@@ -938,7 +960,7 @@ function updateChatInterface() {
     chats.forEach((item) => createChat(item));
   }
   customChats.forEach((item) => createChat(item));
-};
+}
 function searchForDuplicate(channel) {
   const userAlert = document.querySelector('#user-alert');
   const isDuplicate = customChats.some(chat => chat.channel === channel);
@@ -949,7 +971,7 @@ function searchForDuplicate(channel) {
   } else {
     userAlert.hidden = true;
   }
-};
+}
 
 
 
@@ -973,8 +995,8 @@ customChatChannel.addEventListener("input", () => {
 customChatName.oninput = () => {
   if (__customChannelInternalCheck__) {
     customChatChannel.value = slugify(customChatName.value.trim());
-  };
-};
+  }
+}
 
 addCustomChatButtonModal.addEventListener('click', () => {
   if (!addCustomChatModal.hasAttribute('open')) {
@@ -1005,11 +1027,12 @@ addCustomChatButton.addEventListener('click', () => {
     timestamp: new Date().getTime(),
     modified: null,
     records: []
-  };
+  }
 
   customChats.push(customChatObject);
   localStorage.setItem('saved-custom-chats', JSON.stringify(customChats));
 
+  addCustomChatModal.close();
   createChat(customChatObject);
 });
 

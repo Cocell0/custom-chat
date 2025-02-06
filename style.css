@@ -1155,21 +1155,27 @@ dialog[variant=content-action] {
 .card {
   flex: 1;
   min-width: 140px;
+  min-height: 63px;
+  border: 1px solid transparent;
   position: relative;
 
-  c-button.main-button {
+  .main-button {
     border-radius: 18px;
     border: 1px solid hsl(0, 0%, 18%);
+
+    .name {
+      font-weight: 600;
+    }
+
+    .channel {
+      font-size: 0.7rem;
+    }
   }
 
-  .edit-button-container {
+  .edit-button {
     position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    padding-right: 0.4rem;
-    display: flex;
-    align-items: center;
+    top: 9.5px;
+    right: 9.5px;
   }
 
   .edit-button button {
@@ -1184,15 +1190,15 @@ dialog[variant=content-action] {
 }
 
 @media (hover: hover) {
-  .card .edit-button-container {
+  .card .edit-button {
     display: none;
   }
 
-  .card:hover .edit-button-container {
+  .card:hover .edit-button {
     display: flex;
   }
 
-  .card:focus-within .edit-button-container {
+  .card:focus-within .edit-button {
     display: flex;
   }
 }
@@ -1228,36 +1234,19 @@ dialog[variant=content-action] {
   outline: 2px solid currentColor;
 }
 
-.card:not(.editing) {
-  user-select: none;
-
-  .name {
-    font-weight: 600;
-  }
-
-  .channel {
-    font-size: 0.7rem;
-  }
-}
-
+.card:not(.editing),
 .card:not(.editing) * {
   user-select: none;
 }
 
+.card.editing .main-button {
+  border-style: dashed;
+}
+
 .card.editing {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-  padding: 0.6rem;
-}
-
-.card.editing * {
-  margin: 0;
-}
-
-.card.editing div,
-h4 {
-  width: 100%;
+  padding: 0.4rem;
+  border-radius: 18px;
+  border: 1px dashed hsl(0, 0%, 18%);
 }
 
 .card .open-chat-button-container {
