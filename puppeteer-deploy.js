@@ -11,7 +11,7 @@ const appLocation = process.env.APP_LOCATION;
   await page.goto(appLocation);
   await page.bringToFront();
 
-  page.on('dialog', dialog => dialog.dismiss());
+  page.on('dialog', dialog => dialog.accept());
   await page.waitForSelector('#mainOutputTemplateEditorCtn', { visible: true });
 
   await page.evaluate(() => {
@@ -19,7 +19,7 @@ const appLocation = process.env.APP_LOCATION;
     document.querySelector('#aiHelperCtn').hidden = true;
   });
 
-  await new Promise(resolve => setTimeout(resolve, 600));
+  await new Promise(resolve => setTimeout(resolve, 200));
 
   await page.click('#mainOutputTemplateEditorCtn');
 
@@ -44,7 +44,11 @@ const appLocation = process.env.APP_LOCATION;
     app.saveGenerator();
   });
 
-  await new Promise(resolve => setTimeout(resolve, 5000));
+  await new Promise(resolve => setTimeout(resolve, 200));
+
+  await page.waitForFunction(
+    'window.menuBar && window.menuBar.saveState === "saved"'
+  );
 
   await browser.close();
 })();

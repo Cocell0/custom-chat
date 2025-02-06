@@ -1,6 +1,7 @@
 name: Deploy with Puppeteer
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -26,7 +27,17 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Process index.html
+        run: node filo.js index.html
+
       - name: Run Puppeteer script
         env:
           APP_LOCATION: ${{ secrets.APP_LOCATION }}
         run: node puppeteer-deploy.js
+
+      - name: Send Discord Notification
+        run: |
+          curl -H "Content-Type: application/json" \
+              -X POST \
+              -d '{"content": "Deployment completed for repository: ${GITHUB_REPOSITORY}. Branch: ${GITHUB_REF}. Commit: ${GITHUB_SHA} - ${GITHUB_EVENT_NAME}."}' \
+              ${{ secrets.DISCORD_WEBHOOK }}
