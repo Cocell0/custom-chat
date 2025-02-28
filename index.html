@@ -5,23 +5,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Custom Chat</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="./assets/app.css">
+  <link rel="stylesheet" href="./assets/style.css">
 </head>
 
 <body>
   <div id="app" role="application" aria-label="App Container">
     <div id="app-drawer" aria-labelledby="menu-button">
-      <c-button id="menu-button" icon="menu" aria-label="Open Menu"></c-button>
+      <button is="c-button" id="menu-button" icon="menu" aria-label="Open Menu"></button>
     </div>
-    <div id="app-navigation-wrapper" class="app-menu-wrapper" role="navigation" aria-label="Primary Navigation"
-      aria-labelledby="menu-button">
+    <div id="app-navigation-wrapper" class="app-menu-wrapper" role="navigation" aria-label="Primary Navigation" aria-labelledby="menu-button">
       <div class="app-menu">
         <nav id="app-navigation">
           <h3>App Navigation</h3>
           <hr>
           <div class="flex-row flex-*1 flex-gap-space-S mb-1">
-            <c-button id="edit-button">Edit</c-button>
-            <c-button id="add-custom-chat-button-modal">Add new</c-button>
+            <button is="c-button" id="edit-button">Edit</button>
+            <button is="c-button" id="add-custom-chat-button-modal">Add new</button>
           </div>
           <section>
             <div id="chat-picker"></div>
@@ -31,8 +31,8 @@
     </div>
     <div id="app-interface">
       <header class="app-bar" role="banner" aria-label="Application Bar">
-        <c-button icon="share" aria-label="Share">Share</c-button>
-        <c-button id="settings-button" icon="settings" aria-label="Open Settings"></c-button>
+        <button is="c-button" icon="share" aria-label="Share">Share</button>
+        <button is="c-button" id="settings-button" icon="settings" aria-label="Open Settings"></button>
       </header>
 
       <div class="main-wrapper">
@@ -47,8 +47,7 @@
   </div>
   <div id="backdrop" role="presentation" aria-hidden="true"></div>
 
-  <c-overlay id="settings" variant="context-menu" for="settings-button" priority="primary" role="dialog"
-    aria-labelledby="settings-button" aria-modal="true">
+  <c-overlay id="settings" variant="context-menu" for="settings-button" priority="primary" role="dialog" aria-labelledby="settings-button" aria-modal="true">
     <div class="flex-column" id="theme-selection">Please wait, the themes are loading.</div>
   </c-overlay>
   <dialog is="c-modal" data-title="Add new" id="add-custom-chat-modal" variant="content-action">
@@ -63,20 +62,31 @@
       </div>
     </div>
     <div class="flex-row flex-*1 action">
-      <c-button id="add-custom-chat-button" variant="filled">Add</c-button>
+      <button is="c-button" id="add-custom-chat-button" variant="filled">Add</button>
     </div>
   </dialog>
 
   <!-- scripts -->
   <script src="https://unpkg.com/tabbable/dist/index.umd.js"></script>
   <script src="https://unpkg.com/focus-trap/dist/focus-trap.umd.js"></script>
-  <script src="script.js"></script>
+  <script src="./assets/app.js"></script>
+  <script src="./assets/script.js"></script>
+  <script src="./assets/component.js"></script>
+  <!-- styles -->
   <style>
-    /*${filo:style.css}(<)*/
+    /* Files inlined by Filo during GitHub workflow */
+    /*${filo:./assets/app.css}*/
+    /* Filo placeholders to inject CSS during production */
+    /*${filo:./assets/style.css}*/
+    /*${filo:./assets/paramount.css}*/
   </style>
   <script>
-    //${filo:script.js}
+    // Files inlined by Filo during GitHub workflow
+    //${filo:./assets/component.js} Filo placeholders to inject JavaScript during production
+    //${filo:./assets/app.js}
+    // ${filo:./assets/script.js}
   </script>
+  <link rel="stylesheet" href="./assets/paramount.css">
 </body>
 
 </html>
