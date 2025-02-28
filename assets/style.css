@@ -20,7 +20,7 @@
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  gap: 0.4rem;
+  gap: var(--space-S);
 }
 
 .card {
@@ -36,10 +36,12 @@
 
     .name {
       font-weight: 600;
+      text-align: left;
     }
 
     .channel {
       font-size: 0.7rem;
+      text-align: left;
     }
   }
 
@@ -47,16 +49,7 @@
     position: absolute;
     top: 9.5px;
     right: 9.5px;
-  }
-
-  .edit-button button {
-    padding: 0;
-    height: 44px;
-    width: 44px;
-
-    .icon {
-      font-size: 22px;
-    }
+    display: flex;
   }
 }
 
@@ -65,10 +58,7 @@
     display: none;
   }
 
-  .card:hover .edit-button {
-    display: flex;
-  }
-
+  .card:hover .edit-button,
   .card:focus-within .edit-button {
     display: flex;
   }
@@ -78,11 +68,10 @@
   padding: 0.4rem;
 }
 
-.card .main-button .content {
+.card button {
   flex: 1;
   display: grid;
   user-select: none;
-  background-color: transparent;
   grid-template-columns: 1fr 6fr;
   grid-template-rows: 1fr 1fr;
 
@@ -99,10 +88,6 @@
 
 .card .main-button .content * {
   white-space: normal;
-}
-
-.card:focus-visible {
-  outline: 2px solid currentColor;
 }
 
 .card:not(.editing),

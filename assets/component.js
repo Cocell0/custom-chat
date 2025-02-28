@@ -1,5 +1,5 @@
 // component.js
-class CModalElement extends HTMLDialogElement {
+class ModalElement extends HTMLDialogElement {
   static name = 'c-modal';
 
   static get observedAttributes() {
@@ -41,7 +41,7 @@ class CModalElement extends HTMLDialogElement {
     customElements.define(this.name, this, { extends: 'dialog' });
   }
 }
-class CRippleElement extends HTMLElement {
+class RippleElement extends HTMLElement {
   static name = 'c-ripple';
 
   static style = new CSSStyleSheet();
@@ -142,7 +142,7 @@ class CRippleElement extends HTMLElement {
     customElements.define(this.name, this);
   }
 }
-class COverlayElement extends HTMLElement {
+class OverlayElement extends HTMLElement {
   static elementName = 'c-overlay';
   constructor() {
     super();
@@ -219,7 +219,7 @@ class COverlayElement extends HTMLElement {
     }
   }
 }
-class CAccordianElement extends HTMLElement {
+class AccordianElement extends HTMLElement {
   static name = 'c-accordian';
 
   constructor() {
@@ -299,6 +299,16 @@ class TabsElement extends HTMLInputElement {
     })
   }
 }
+class MatIcon extends HTMLElement {
+  static name = 'mat-icon';
 
-customElements.define(COverlayElement.elementName, COverlayElement);
-customElements.define(TabsElement.elementName, TabsElement, { extends: 'input' });
+  constructor() {
+    super();
+
+    this.translate = false;
+  }
+}
+
+customElements.define(MatIcon.name, MatIcon)
+customElements.define(TabsElement.elementName, TabsElement, { extends: 'input' })
+customElements.define(OverlayElement.elementName, OverlayElement)

@@ -97,10 +97,10 @@ function removeChat(card, item) {
 function createChat(item) {
   const card = document.createElement('div');
   const buttonContainer = document.createElement('div'); // I NEED CONTAINERS JUST TO MANAGE MY OTHER CONTAINER BECAUSE ELEMENT.HIDDEN = TRUE WON'T WORK
-  const button = document.createElement('c-button');
-  const editButton = document.createElement('c-button');
-  const icon = document.createElement('i');
-  const editIcon = document.createElement('i');
+  const button = document.createElement('button');
+  const editButton = document.createElement('button');
+  const icon = document.createElement('mat-icon');
+  const editIcon = document.createElement('mat-icon');
   const name = document.createElement('div');
   const channel = document.createElement('div');
 
@@ -113,12 +113,11 @@ function createChat(item) {
   name.classList.add('name');
   channel.classList.add('channel');
   editButton.classList.add('edit-button');
+  editButton.classList.add('icon-button');
 
   name.innerText = item.name;
-  icon.classList.add('icon');
   icon.classList.add('card-icon');
   icon.innerText = 'forum';
-  editIcon.classList.add('icon');
   editIcon.innerText = 'tune';
 
   nameInput.name = 'chat-name'
@@ -140,7 +139,7 @@ function createChat(item) {
   card.appendChild(buttonContainer);
   card.appendChild(editButton);
 
-  const deleteButton = document.createElement('c-button');
+  const deleteButton = document.createElement('button');
   deleteButton.innerText = 'Delete';
 
   function toggleEdit() {

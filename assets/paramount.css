@@ -3,6 +3,7 @@
 @media (pointer: coarse) {
   * {
     cursor: default !important;
+    /* When developing, I noticed that mobile devices adds a blue overlay on any element with the  */
   }
 }
 

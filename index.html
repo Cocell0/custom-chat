@@ -12,7 +12,9 @@
 <body>
   <div id="app" role="application" aria-label="App Container">
     <div id="app-drawer" aria-labelledby="menu-button">
-      <button is="c-button" id="menu-button" icon="menu" aria-label="Open Menu"></button>
+      <button id="menu-button" aria-label="Open Menu">
+        <mat-icon>menu</mat-icon>
+      </button>
     </div>
     <div id="app-navigation-wrapper" class="app-menu-wrapper" role="navigation" aria-label="Primary Navigation" aria-labelledby="menu-button">
       <div class="app-menu">
@@ -20,8 +22,8 @@
           <h3>App Navigation</h3>
           <hr>
           <div class="flex-row flex-*1 flex-gap-space-S mb-1">
-            <button is="c-button" id="edit-button">Edit</button>
-            <button is="c-button" id="add-custom-chat-button-modal">Add new</button>
+            <button class="outlined" id="edit-button">Edit</button>
+            <button id="add-custom-chat-button-modal">Add new</button>
           </div>
           <section>
             <div id="chat-picker"></div>
@@ -31,8 +33,13 @@
     </div>
     <div id="app-interface">
       <header class="app-bar" role="banner" aria-label="Application Bar">
-        <button is="c-button" icon="share" aria-label="Share">Share</button>
-        <button is="c-button" id="settings-button" icon="settings" aria-label="Open Settings"></button>
+        <button aria-label="Share">
+          <mat-icon>share</mat-icon>
+          Share
+        </button>
+        <button id="settings-button" aria-label="Open Settings">
+          <mat-icon>settings</mat-icon>
+        </button>
       </header>
 
       <div class="main-wrapper">
@@ -62,7 +69,7 @@
       </div>
     </div>
     <div class="flex-row flex-*1 action">
-      <button is="c-button" id="add-custom-chat-button" variant="filled">Add</button>
+      <button id="add-custom-chat-button" class="filled">Add</button>
     </div>
   </dialog>
 

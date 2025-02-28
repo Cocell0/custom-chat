@@ -27,8 +27,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install Filo globally dependencies
+        run: npm install -g @cocell/filo
+
       - name: Process index.html
-        run: node filo.js index.html
+        run: filo index.html
 
       - name: Run Puppeteer script
         env:

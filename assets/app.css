@@ -3,11 +3,12 @@
 :root {
   user-select: none;
   font-family: "Work Sans", system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  font-size: 18px;
+  font-size: 1.125rem;
   background: black;
   color: var(--text);
 
-  /* Global gransition variable */  
+  /* Global gransition variable */
+  --outline: outline 0.4s cubic-bezier(0.2, 0, 0, 1) 1 forwards;
   --default-layout-transition: width 0.2s, height 0.2s, left 0.2s, right 0.2s, top 0.2s, bottom 0.2s;
 
   /* Variables */
@@ -20,6 +21,7 @@
   --z-tooltip: 4000;
   --z-popup: 5000;
   --z-highest: 99999;
+  --space-SX: 0.25rem;
   --space-S: 0.45rem;
   --space-B: 0.75rem;
   --space-M: 1.25rem;
@@ -37,15 +39,16 @@
   --width-xlarge: 1216px;
 }
 
-.icon {
-  font-family: 'Material Symbols Rounded';
+mat-icon {
+  font-family: 'Material Symbols Rounded', 'Work Sans';
   font-weight: normal;
   font-style: normal;
-  font-size: 24px;
+  font-size: 1.5rem;
   line-height: 1;
   letter-spacing: normal;
   text-transform: none;
-  display: inline-block;
+  display: inline-flex;
+  overflow: hidden;
   white-space: nowrap;
   word-wrap: normal;
   direction: ltr;
@@ -242,7 +245,6 @@ legend {
 }
 
 button {
-  all: unset;
   box-sizing: border-box;
   padding: var(--space-S);
   align-items: center;
@@ -253,10 +255,6 @@ button {
   cursor: pointer;
   overflow: hidden;
   display: inline-flex;
-}
-
-button:focus-visible {
-  outline: 2px solid var(--primary-opaque);
 }
 
 .pane {
@@ -547,179 +545,161 @@ main>* {
   gap: 4px;
 }
 
-#theme-selection c-button:not(.hovered):not(.pressed) {
+#theme-selection button:not(.hovered):not(.pressed) {
   background: var(--background);
 }
 
-#theme-selection c-button {
+#theme-selection button {
   --radii: 1.6rem;
 }
 
-#theme-selection c-button button {
+#theme-selection button {
   min-height: 54px;
 }
 
-#theme-selection c-button button {
+#theme-selection button {
   outline-offset: 0;
 }
 
-#theme-selection c-button:not(:first-child):not(:last-child) {
+#theme-selection button:not(:first-child):not(:last-child) {
   border-radius: 6px;
 }
 
-#theme-selection c-button:first-child {
+#theme-selection button:first-child {
   border-radius: var(--radii) var(--radii) 6px 6px;
 }
 
-#theme-selection c-button:last-child {
+#theme-selection button:last-child {
   border-radius: 6px 6px var(--radii) var(--radii);
 }
 
 /* --- */
 
 /* Components */
-c-button {
+button {
   color: var(--button-text);
   display: inline-flex;
+  min-width: 44px;
+  min-height: 44px;
   border-radius: 9999px;
   justify-content: center;
   position: relative;
   align-items: center;
   cursor: pointer;
   transition: box-shadow 0.34s ease-in-out;
-  min-width: 44px;
-  min-height: 44px;
-}
-
-c-button>button {
   overflow: hidden;
-  display: flex;
-  position: relative;
-  align-items: center;
   padding: 10px 18px;
   gap: 8px;
   outline: none;
-  border-radius: inherit;
   flex: 1;
 }
 
-c-button button:focus-visible {
-  animation: outline-grow, outline-shrink;
-  animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
-  outline: solid var(--primary-opaque);
+button:focus-visible {
+  outline: 0 solid var(--primary-opaque);
+  animation: var(--outline);
 }
 
-c-button .icon,
-c-button .content {
+button mat-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-}
-
-c-button .icon {
-  display: inline-flex;
   position: relative;
   writing-mode: horizontal-tb;
   flex-shrink: 0;
 }
 
-c-button .content {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  flex-grow: 1;
-}
-
-c-button[variant="icon"] button {
+button.icon-button {
   height: 44px;
   width: 44px;
   padding: 10px;
 }
 
-c-button[variant="outlined"]::before {
+button.outlined::after {
   content: '';
   inset: 0;
   position: absolute;
-  border: 1px solid var(--tonal-outline, gray);
+  border: 2px solid var(--tonal-outline);
   box-sizing: border-box;
   border-radius: inherit;
 }
 
-c-button[variant="icon"],
-c-button[variant="text"],
-c-button[variant="outlined"] {
+button,
+button.icon,
+button.outlined {
   --button-hovered: var(--hovered);
   --button-pressed: var(--pressed);
 }
 
-c-button[variant="tonal"] {
+button.tonal {
   --button-hovered: var(--tonal-hovered);
   --button-pressed: var(--tonal-pressed);
   --ripple: var(--tonal-ripple);
   background: var(--tonal);
 }
 
-c-button[variant="filled"] {
+button.filled {
   --button-hovered: var(--filled-hovered);
   --button-pressed: var(--filled-pressed);
   --ripple: var(--filled-ripple);
   background: var(--filled);
 }
 
-c-button[variant="filled"] {
+button.filled {
   color: var(--filled-color);
 }
 
-c-button[variant="elevated"] {
+button.elevated {
   --button-hovered: var(--elevated-hovered);
   --button-pressed: var(--elevated-pressed);
   background: var(--elevated);
   box-shadow: 0 3px 4px var(--elevated-shadow-front);
 }
 
-c-button.hovered {
-  background: var(--button-hovered);
+@media (hover: hover) {
+  button:hover {
+    background: var(--button-hovered);
+  }
+
+  button.tonal.hovered {
+    box-shadow: 0 2px 3px var(--tonal-shadow, gray);
+  }
+
+  button.filled.hovered {
+    box-shadow: 0 2px 4px var(--filled-shadow, gray);
+  }
+
+  button.elevated.hovered {
+    box-shadow: 0 3px 8px var(--elevated-shadow-front), 0 4px 4px var(--elevated-shadow-back);
+  }
 }
 
-c-button.pressed {
+button:active {
   background: var(--button-pressed);
 }
 
-c-button[variant="tonal"].hovered {
-  box-shadow: 0 2px 3px var(--tonal-shadow, gray);
-}
-
-c-button[variant="tonal"].pressed {
+button.tonal:active {
   box-shadow: 0 0 transparent;
 }
 
-c-button[variant="filled"].hovered {
-  box-shadow: 0 2px 4px var(--filled-shadow, gray);
-}
-
-c-button[variant="filled"].pressed {
+button.filled:active {
   box-shadow: 0 0 transparent;
 }
 
-c-button[variant="elevated"].hovered {
-  box-shadow: 0 3px 8px var(--elevated-shadow-front), 0 4px 4px var(--elevated-shadow-back);
-}
-
-c-button[variant="elevated"].pressed {
+button.elevated:active {
   box-shadow: 0 2px 6px var(--elevated-shadow-front);
 }
 
-c-button[disabled] {
+button[disabled] {
   background: transparent;
   box-shadow: none !important;
   color: var(--disabled-text) !important;
 }
 
-c-button[disabled]:not([variant=icon]):not([variant=text]):not([variant=outlined]) {
+button[disabled]:not(.icon):not(.text):not(.outlined) {
   background: var(--disabled);
 }
 
-c-button[disabled][variant=outlined]::before {
+button.outlined[disabled]::before {
   border-color: var(--disabled-outline);
 }
 
@@ -808,7 +788,7 @@ dialog {
       margin: 0.6rem 0 0 0;
     }
 
-    c-button {
+    button {
       width: 44px;
       height: 44px;
     }
@@ -1175,4 +1155,18 @@ label:has(input[is=c-tab]:checked) {
 
 .group-title {
   color: var(--text-opaque);
+}
+
+@keyframes outline {
+  0% {
+    outline-width: 0;
+  }
+
+  50% {
+    outline-width: 6px;
+  }
+
+  100% {
+    outline-width: 3px;
+  }
 }
