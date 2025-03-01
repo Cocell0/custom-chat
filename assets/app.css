@@ -365,216 +365,6 @@ input[type=radio]:focus-visible {
 
 /* --- */
 
-/* main.css */
-:root {
-  overflow: hidden;
-}
-
-#app {
-  height: 100%;
-  width: 100%;
-  display: flex;
-}
-
-#app-drawer {
-  display: flex;
-  position: fixed;
-  align-items: center;
-  gap: 8px;
-  left: 0;
-  top: 0;
-  padding-left: var(--space-S);
-  padding-top: calc(14px + var(--space-S));
-  z-index: var(--z-overlay);
-}
-
-#app #app-navigation-wrapper {
-  width: var(--width-small);
-  background: var(--surface);
-  overflow: hidden;
-  transition: width 300ms cubic-bezier(.4, .8, 0, 1);
-  flex-shrink: 0;
-  display: flex;
-}
-
-.app-menu-wrapper .app-menu {
-  width: var(--width-small);
-  padding-top: 64px;
-  display: flex;
-}
-
-#app #app-navigation {
-  padding: var(--space-S);
-  flex: 1;
-  overflow: auto;
-}
-
-.tabs-container {
-  display: flex;
-  flex-direction: column;
-  gap: calc(var(--space-S) / 2);
-}
-
-.tabs-container * {
-  flex: 1;
-}
-
-#app #app-interface {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-}
-
-#app-interface header {
-  padding: var(--space-S);
-  padding-bottom: 2px;
-  padding-top: calc(14px + var(--space-S));
-  display: flex;
-  align-items: center;
-  justify-content: end;
-  gap: 8px;
-}
-
-#app-interface .main-wrapper {
-  flex: 1;
-  display: flex;
-  overflow: hidden;
-}
-
-main {
-  display: flex;
-  padding: var(--space-S);
-  flex: 1;
-  width: 100%;
-  gap: 0.5rem;
-  overflow-y: auto;
-}
-
-main>* {
-  flex: 1;
-}
-
-@media only screen and (min-width: 768px) {
-  #settings {
-    top: 76px;
-    right: var(--space-S);
-  }
-
-  @keyframes app-navigation-close {
-    from {
-      display: block;
-      width: var(--width-small);
-    }
-
-    to {
-      width: 0;
-      display: flex;
-    }
-  }
-
-  @keyframes app-navigation-open {
-    from {
-      display: none;
-      width: 0;
-    }
-
-    to {
-      display: flex;
-      width: var(--width-small);
-    }
-  }
-
-  #app.close-app-navigation #app-navigation-wrapper {
-    animation: app-navigation-close 200ms cubic-bezier(.4, .8, 0, 1) forwards;
-  }
-
-  #app.open-app-navigation #app-navigation-wrapper {
-    animation: app-navigation-open 200ms cubic-bezier(.4, .8, 0, 1) forwards;
-  }
-}
-
-@media (max-width: 768px) {
-  #settings {
-    top: 0;
-  }
-
-  @keyframes app-navigation-show {
-    from {
-      opacity: 0;
-      transform: translateX(-100%);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes app-navigation-close {
-    from {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    to {
-      opacity: 0;
-      transform: translateX(-100%);
-    }
-  }
-
-  #app #app-navigation-wrapper {
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    transform: translateX(-100%);
-    transition: opacity 280ms, transform 280ms;
-    z-index: 1999;
-  }
-
-  #app.close-app-navigation #app-navigation-wrapper {
-    animation: app-navigation-close 280ms cubic-bezier(.4, .8, 0, 1) forwards;
-  }
-
-  #app.open-app-navigation #app-navigation-wrapper {
-    animation: app-navigation-show 280ms cubic-bezier(.4, .8, 0, 1) forwards;
-  }
-}
-
-#theme-selection {
-  gap: 4px;
-}
-
-#theme-selection button:not(.hovered):not(.pressed) {
-  background: var(--background);
-}
-
-#theme-selection button {
-  --radii: 1.6rem;
-}
-
-#theme-selection button {
-  min-height: 54px;
-}
-
-#theme-selection button {
-  outline-offset: 0;
-}
-
-#theme-selection button:not(:first-child):not(:last-child) {
-  border-radius: 6px;
-}
-
-#theme-selection button:first-child {
-  border-radius: var(--radii) var(--radii) 6px 6px;
-}
-
-#theme-selection button:last-child {
-  border-radius: 6px 6px var(--radii) var(--radii);
-}
-
-/* --- */
-
 /* Components */
 button {
   color: var(--button-text);
@@ -588,14 +378,21 @@ button {
   cursor: pointer;
   transition: box-shadow 0.34s ease-in-out;
   overflow: hidden;
-  padding: 10px 18px;
+  padding: 6px 18px;
   gap: 8px;
   outline: none;
   flex: 1;
 }
 
+button::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  scale: 1.1;
+}
+
 button:focus-visible {
-  outline: 0 solid var(--primary-opaque);
+  outline: solid var(--primary-opaque);
   animation: var(--outline);
 }
 
@@ -611,7 +408,9 @@ button mat-icon {
 button.icon-button {
   height: 44px;
   width: 44px;
-  padding: 10px;
+  max-height: 44px;
+  max-width: 44px;
+  padding: 6px;
 }
 
 button.outlined::after {
@@ -860,6 +659,218 @@ label:has(input[is=c-tab]:focus-visible) {
 label:has(input[is=c-tab]:checked) {
   background: var(--primary-100);
 }
+
+/* --- */
+
+/* main.css */
+:root {
+  overflow: hidden;
+}
+
+#app {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+#app-drawer {
+  display: flex;
+  position: fixed;
+  align-items: center;
+  gap: 8px;
+  left: 0;
+  top: 0;
+  padding-left: var(--space-S);
+  padding-top: calc(14px + var(--space-S));
+  z-index: var(--z-overlay);
+}
+
+#app #app-navigation-wrapper {
+  width: var(--width-small);
+  background: var(--surface);
+  overflow: hidden;
+  transition: width 300ms cubic-bezier(.4, .8, 0, 1);
+  flex-shrink: 0;
+  display: flex;
+}
+
+.app-menu-wrapper .app-menu {
+  width: var(--width-small);
+  padding-top: 78px;
+  display: flex;
+}
+
+#app #app-navigation {
+  padding: var(--space-S);
+  flex: 1;
+  overflow: auto;
+}
+
+.tabs-container {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--space-S) / 2);
+}
+
+.tabs-container * {
+  flex: 1;
+}
+
+#app #app-interface {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+#app-interface header {
+  padding: var(--space-S);
+  padding-bottom: 2px;
+  padding-top: calc(14px + var(--space-S));
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 8px;
+}
+
+#app-interface .main-wrapper {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+main {
+  display: flex;
+  padding: var(--space-S);
+  flex: 1;
+  width: 100%;
+  gap: 0.5rem;
+  overflow-y: auto;
+}
+
+main>* {
+  flex: 1;
+}
+
+@media only screen and (min-width: 768px) {
+  #settings {
+    top: 76px;
+    right: var(--space-S);
+  }
+
+  @keyframes app-navigation-close {
+    from {
+      display: block;
+      width: var(--width-small);
+    }
+
+    to {
+      width: 0;
+      display: flex;
+    }
+  }
+
+  @keyframes app-navigation-open {
+    from {
+      display: none;
+      width: 0;
+    }
+
+    to {
+      display: flex;
+      width: var(--width-small);
+    }
+  }
+
+  #app.close-app-navigation #app-navigation-wrapper {
+    animation: app-navigation-close 200ms cubic-bezier(.4, .8, 0, 1) forwards;
+  }
+
+  #app.open-app-navigation #app-navigation-wrapper {
+    animation: app-navigation-open 200ms cubic-bezier(.4, .8, 0, 1) forwards;
+  }
+}
+
+@media (max-width: 768px) {
+  #settings {
+    top: 0;
+  }
+
+  @keyframes app-navigation-show {
+    from {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  @keyframes app-navigation-close {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    to {
+      opacity: 0;
+      transform: translateX(-100%);
+    }
+  }
+
+  #app #app-navigation-wrapper {
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+    transition: opacity 280ms, transform 280ms;
+    z-index: 1999;
+  }
+
+  #app.close-app-navigation #app-navigation-wrapper {
+    animation: app-navigation-close 280ms cubic-bezier(.4, .8, 0, 1) forwards;
+  }
+
+  #app.open-app-navigation #app-navigation-wrapper {
+    animation: app-navigation-show 280ms cubic-bezier(.4, .8, 0, 1) forwards;
+  }
+}
+
+#theme-selection {
+  gap: 4px;
+}
+
+#theme-selection button:not(.hovered):not(.pressed) {
+  background: var(--background);
+}
+
+#theme-selection button {
+  --radii: 1.6rem;
+}
+
+#theme-selection button {
+  min-height: 54px;
+}
+
+#theme-selection button {
+  outline-offset: 0;
+}
+
+#theme-selection button:not(:first-child):not(:last-child) {
+  border-radius: 6px;
+}
+
+#theme-selection button:first-child {
+  border-radius: var(--radii) var(--radii) 6px 6px;
+}
+
+#theme-selection button:last-child {
+  border-radius: 6px 6px var(--radii) var(--radii);
+}
+
+/* --- */
 
 /* Utility Classes */
 

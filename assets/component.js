@@ -304,8 +304,12 @@ class MatIcon extends HTMLElement {
 
   constructor() {
     super();
+  }
 
-    this.translate = false;
+  connectedCallback() {
+    this.hasAttribute('translate') || (this.translate = false);
+    this.hasAttribute('role') || (this.role = 'img');
+    this.hasAttribute('aria-hidden') || (this.ariaHidden = true);
   }
 }
 

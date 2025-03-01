@@ -164,7 +164,7 @@ app.themes.forEach((theme) => {
 themeSelection.innerHTML = '';
 
 app.themes.forEach((theme) => {
-  let themeButton = document.createElement('c-button');
+  let themeButton = document.createElement('button');
   themeButton.innerHTML = theme.name;
 
   themeSelection.appendChild(themeButton);
@@ -196,7 +196,7 @@ function toggleFullscreen() {
 }
 
 function getUsedIcons() {
-  const icons = document.querySelectorAll('.icon');
+  const icons = document.querySelectorAll('mat-icon');
   let iconList;
   if (icons) {
     iconList = new Set();

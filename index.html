@@ -12,7 +12,7 @@
 <body>
   <div id="app" role="application" aria-label="App Container">
     <div id="app-drawer" aria-labelledby="menu-button">
-      <button id="menu-button" aria-label="Open Menu">
+      <button id="menu-button" class="icon-button" aria-label="Open Menu">
         <mat-icon>menu</mat-icon>
       </button>
     </div>
@@ -22,7 +22,7 @@
           <h3>App Navigation</h3>
           <hr>
           <div class="flex-row flex-*1 flex-gap-space-S mb-1">
-            <button class="outlined" id="edit-button">Edit</button>
+            <button id="edit-button">Edit</button>
             <button id="add-custom-chat-button-modal">Add new</button>
           </div>
           <section>
@@ -37,7 +37,7 @@
           <mat-icon>share</mat-icon>
           Share
         </button>
-        <button id="settings-button" aria-label="Open Settings">
+        <button id="settings-button" class="icon-button" aria-label="Open Settings">
           <mat-icon>settings</mat-icon>
         </button>
       </header>
@@ -47,6 +47,10 @@
           <h1 id="display-channel-name" style="word-break: break-all;">[customChat.channelLabel ?? 'General']</h1>
           <div id="chat-container">
             <div>[chat(customChat)]</div>
+            <button>Text</button>
+            <button class="outlined">Text</button>
+            <button class="filled">Text</button>
+            <button class="elevated">Text</button>
           </div>
         </main>
       </div>
