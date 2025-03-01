@@ -158,7 +158,7 @@ class OverlayElement extends HTMLElement {
     this.trap = trap;
     const wrapper = document.createElement('div');
     const surface = document.createElement('div');
-    const closeButton = document.createElement('c-button');
+    const closeButton = document.createElement('button');
     this.closeButton = closeButton;
     const handler = document.getElementById(this.getAttribute('for'));
 

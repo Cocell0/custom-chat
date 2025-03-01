@@ -184,6 +184,8 @@ textarea {
   border: none;
   outline: none;
   background: none;
+  border-radius: 9999px;
+  padding: 8px;
 }
 
 textarea {
@@ -249,7 +251,6 @@ button {
   padding: var(--space-S);
   align-items: center;
   justify-content: center;
-  border-radius: 9999px;
   border: 1px solid transparent;
   background: transparent;
   cursor: pointer;
@@ -355,14 +356,6 @@ button {
   }
 }
 
-input {
-  border: none;
-}
-
-input[type=radio]:focus-visible {
-  outline: 2px solid var(--primary-opaque);
-}
-
 /* --- */
 
 /* Components */
@@ -391,7 +384,8 @@ button::before {
   scale: 1.1;
 }
 
-button:focus-visible {
+button:focus-visible,
+input:focus-visible {
   outline: solid var(--primary-opaque);
   animation: var(--outline);
 }
@@ -1174,7 +1168,7 @@ main>* {
   }
 
   50% {
-    outline-width: 6px;
+    outline-width: 8px;
   }
 
   100% {
