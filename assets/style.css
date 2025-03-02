@@ -32,7 +32,6 @@
 
   .main-button {
     border-radius: 18px;
-    border: 1px solid hsl(0, 0%, 18%);
 
     .name {
       font-weight: 600;

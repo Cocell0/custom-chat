@@ -101,10 +101,10 @@ const app = {
   --pressed: hsl(16 18% 22%);
 
   --tonal: hsl(16 18% 26%);
-  --tonal-hovered: hsl(16, 18%, 32%);
-  --tonal-pressed: hsl(16, 20%, 38%);
-  --tonal-ripple: hsl(16, 76%, 68%);
-  --tonal-shadow: hsl(16, 50%, 30%, 80%);
+  --tonal-hovered: hsl(16 18% 32%);
+  --tonal-pressed: hsl(16 20% 38%);
+  --tonal-ripple: hsl(16 76% 68%);
+  --tonal-shadow: hsl(16 50% 30% 80%);
   --tonal-outline: hsl(22 100% 74%);
 
   --elevated: hsl(16 16% 16%);
@@ -113,7 +113,7 @@ const app = {
   --elevated-shadow-front: hsl(16, 40%, 14%, 80%);
   --elevated-shadow-back: hsl(16, 20%, 20%, 30%);
 
-  --accent: hsl(16, 80%, 70%);
+  --accent: hsl(16 80% 70%);
 
   --background: hsl(22 12% 5%);
   --surface: hsl(16 10% 7%);
@@ -121,13 +121,13 @@ const app = {
   --on-surface: hsl(24 12% 7%);
 
   --text: hsl(22 100% 92%);
-  --text-primary: hsl(16, 10%, 85%);
+  --text-primary: hsl(16 10% 85%);
   --text-tonal: hsl(22 100% 84%);
   --button-text: hsl(22 100% 84%);
 
-  --filled: hsl(32 72% 75% / 1);
+  --filled: hsl(32 72% 82% / 1);
   --filled-color: hsl(22 44% 14%);
-  --filled-hovered: hsl(32 66% 68% / 1);
+  --filled-hovered: hsl(32 66% 70% / 1);
   --filled-pressed: hsl(32 62% 62% / 1);
   --filled-ripple: hsl(32 36% 14% / 1);
   --filled-shadow: hsl(32 16% 24% / 1);
