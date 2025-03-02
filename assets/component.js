@@ -2,39 +2,31 @@
 class ModalElement extends HTMLDialogElement {
   static name = 'c-modal';
 
-  static get observedAttributes() {
-    return ['data-title'];
-  }
+  constructor() {
+    super();
 
-  connectedCallback() {
-    const trap = focusTrap.createFocusTrap(this);
-    const head = document.createElement('div');
-    const title = document.createElement('h3');
-    const closeButton = document.createElement('c-button');
-
+    const trap = focusTrap.createFocusTrap(this, {
+      clickOutsideDeactivates: false,
+      escapeDeactivates: false,
+    });
     this.trap = trap;
     this.addEventListener('close', () => this.trap.pause());
-    closeButton.addEventListener('click', () => this.close());
-
-    head.classList.add('head');
-    title.classList.add('title');
-    closeButton.classList.add('close-button');
-    closeButton.setAttribute('icon', 'close');
-    closeButton.setAttribute('variant', 'icon');
-
-    if (this.hasAttribute('data-title')) {
-      title.innerText = this.getAttribute('data-title');
-      head.prepend(title);
-    }
-
-    head.appendChild(closeButton);
-
-    this.prepend(head);
   }
 
-  open() {
+  openModal() {
     this.showModal();
-    this.trap.activate();
+    this.addEventListener('animationend', () => {
+      if (this.trap.paused) {
+        this.trap.unpause()
+      } else {
+        this.trap.activate();
+      }
+    })
+  }
+
+  closeModal() {
+    this.close();
+    this.trap.pause();
   }
 
   static {
@@ -159,11 +151,14 @@ class OverlayElement extends HTMLElement {
     const wrapper = document.createElement('div');
     const surface = document.createElement('div');
     const closeButton = document.createElement('button');
+    const closeButtonIcon = document.createElement('mat-icon');
     this.closeButton = closeButton;
     const handler = document.getElementById(this.getAttribute('for'));
 
     closeButton.classList.add('overlay-close-button');
-    closeButton.setAttribute('icon', 'close');
+    closeButton.classList.add('icon-button');
+    closeButtonIcon.innerText = 'close';
+    closeButton.appendChild(closeButtonIcon);
 
     wrapper.classList.add('wrapper');
     surface.classList.add('surface');
@@ -175,7 +170,7 @@ class OverlayElement extends HTMLElement {
 
     this.appendChild(wrapper);
 
-    handler.addEventListener('click', (event) => {
+    handler.addEventListener('click', () => {
       this.toggle();
     }, { passive: true });
     closeButton.addEventListener('click', () => {
@@ -184,7 +179,6 @@ class OverlayElement extends HTMLElement {
         this.classList.remove('fade-open');
         this.classList.add('fade-close');
         handler.focus();
-        handler.querySelector('button').focus();
       }
     }, { passive: true });
 
@@ -207,9 +201,9 @@ class OverlayElement extends HTMLElement {
     } else {
       this.classList.remove('fade-close');
       this.classList.add('fade-open');
-      this.closeButton.querySelector('button').focus();
+      this.closeButton.focus();
       this.addEventListener('animationend', () => {
-        this.closeButton.querySelector('button').focus();
+        this.closeButton.focus();
         if (this.trap.paused) {
           this.trap.unpause();
         } else {

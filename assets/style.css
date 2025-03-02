@@ -147,9 +147,3 @@
   cursor: grabbing;
   padding: 8px;
 }
-
-@media (pointer: coarse) {
-  * {
-    cursor: default !important;
-  }
-}

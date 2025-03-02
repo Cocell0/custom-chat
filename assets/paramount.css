@@ -3,10 +3,19 @@
 @media (pointer: coarse) {
   * {
     cursor: default !important;
-    /* When developing, I noticed that mobile devices adds a blue overlay on any element with the  */
+    /* 
+      When developing, I noticed that mobile devices adds a blue overlay when
+      clicking on any element with the cursor set to pointer.
+      It was only DURING development, but I still setup a global style to prevent it.
+      */
   }
 }
 
 *[hidden] {
   display: none !important;
+  /* 
+    Man- IT IS ABSURDDDD. This rule is self-explanatory, I had thought this will be
+    handled by the system but no! So, I had to come up with a rule that specifically
+    prevented this style from being overwritten.
+    */
 }

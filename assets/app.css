@@ -246,18 +246,6 @@ legend {
   font-weight: bold;
 }
 
-button {
-  box-sizing: border-box;
-  padding: var(--space-S);
-  align-items: center;
-  justify-content: center;
-  border: 1px solid transparent;
-  background: transparent;
-  cursor: pointer;
-  overflow: hidden;
-  display: inline-flex;
-}
-
 .pane {
   border-radius: var(--space-M);
   padding: var(--space-S);
@@ -453,15 +441,15 @@ button.elevated {
     background: var(--button-hovered);
   }
 
-  button.tonal.hovered {
+  button.tonal:hover {
     box-shadow: 0 2px 3px var(--tonal-shadow, gray);
   }
 
-  button.filled.hovered {
+  button.filled:hover {
     box-shadow: 0 2px 4px var(--filled-shadow, gray);
   }
 
-  button.elevated.hovered {
+  button.elevated:hover {
     box-shadow: 0 3px 8px var(--elevated-shadow-front), 0 4px 4px var(--elevated-shadow-back);
   }
 }
@@ -568,8 +556,9 @@ dialog {
   border-radius: 26px;
   padding: var(--space-B);
   background: var(--surface);
-  height: clamp(140px, 240px, 62%);
-  width: clamp(240px, 380px, 86%);
+  height: clamp(140px, 320px, 980px);
+  width: clamp(240px, 424px, 760px);
+  animation: fade-close 0.225s ease-out;
 
   .head {
     display: flex;
@@ -586,6 +575,19 @@ dialog {
       height: 44px;
     }
   }
+}
+
+@media only screen and (max-width: 576px) {
+  dialog {
+    inset: unset;
+    left: 50%;
+    translate: -50%;
+    bottom: 2rem;
+  }
+}
+
+dialog:open {
+  animation: fade-open 0.225s ease-out;
 }
 
 dialog::backdrop {
@@ -733,11 +735,9 @@ label:has(input[is=c-tab]:checked) {
 }
 
 main {
-  display: flex;
   padding: var(--space-S);
   flex: 1;
   width: 100%;
-  gap: 0.5rem;
   overflow-y: auto;
 }
 

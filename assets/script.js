@@ -24,8 +24,8 @@ const system = {
 const chats = [
   {
     type: 'system',
-    name: 'General',
-    channel: 'general'
+    name: 'Home',
+    channel: 'home'
   },
   {
     type: 'system',
@@ -231,15 +231,21 @@ customChatName.oninput = () => {
 
 addCustomChatButtonModal.addEventListener('click', () => {
   if (!addCustomChatModal.hasAttribute('open')) {
-    addCustomChatModal.open();
+    addCustomChatModal.openModal();
   }
 })
+
+addCustomChatModal.addEventListener('click', (event) => {
+  if (event.target === addCustomChatModal) {
+    addCustomChatModal.closeModal();
+  }
+});
 
 addCustomChatButton.addEventListener('click', () => {
 
   const customChatObject = {
     version: 1,
-    /* This is the type, I defined a type to distinguish
+    /* This is the type. I defined a type to distinguish
      this from the system chats that are predefined. */
     type: 'custom',
     /* This is the name of the channel, it serves no
@@ -263,7 +269,7 @@ addCustomChatButton.addEventListener('click', () => {
   customChats.push(customChatObject);
   localStorage.setItem('saved-custom-chats', JSON.stringify(customChats));
 
-  addCustomChatModal.close();
+  addCustomChatModal.closeModal();
   createChat(customChatObject);
 });
 
