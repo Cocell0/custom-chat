@@ -10,7 +10,12 @@ class ModalElement extends HTMLDialogElement {
       escapeDeactivates: false,
     });
     this.trap = trap;
-    this.addEventListener('close', () => this.trap.pause());
+    this.addEventListener('close', () => {
+      this.trap.pause();
+      if (!this.classList.contains(close)) {
+        this.classList.add('close');
+      }
+    });
   }
 
   openModal() {
@@ -21,16 +26,18 @@ class ModalElement extends HTMLDialogElement {
       } else {
         this.trap.activate();
       }
+      if (this.classList.contains(close)) {
+        this.classList.remove('close');
+      }
     })
   }
 
   closeModal() {
     this.close();
     this.trap.pause();
-  }
-
-  static {
-    customElements.define(this.name, this, { extends: 'dialog' });
+    if (!this.classList.contains(close)) {
+      this.classList.add('close');
+    }
   }
 }
 class RippleElement extends HTMLElement {
@@ -134,7 +141,7 @@ class RippleElement extends HTMLElement {
     customElements.define(this.name, this);
   }
 }
-class OverlayElement extends HTMLElement {
+class OverlayElement extends HTMLDialogElement {
   static elementName = 'c-overlay';
   constructor() {
     super();
@@ -307,6 +314,7 @@ class MatIcon extends HTMLElement {
   }
 }
 
-customElements.define(MatIcon.name, MatIcon)
-customElements.define(TabsElement.elementName, TabsElement, { extends: 'input' })
-customElements.define(OverlayElement.elementName, OverlayElement)
+customElements.define(MatIcon.name, MatIcon);
+customElements.define(TabsElement.elementName, TabsElement, { extends: 'input' });
+customElements.define(ModalElement.name, ModalElement, { extends: 'dialog' });
+customElements.define(OverlayElement.elementName, OverlayElement, { extends: 'dialog' });

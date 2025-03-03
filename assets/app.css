@@ -362,7 +362,6 @@ button {
   padding: 6px 18px;
   gap: 8px;
   outline: none;
-  flex: 1;
 }
 
 button::before {
@@ -372,8 +371,7 @@ button::before {
   scale: 1.1;
 }
 
-button:focus-visible,
-input:focus-visible {
+button:focus-visible {
   outline: solid var(--primary-opaque);
   animation: var(--outline);
 }
@@ -554,11 +552,10 @@ dialog {
   overflow: hidden;
   border: none;
   border-radius: 26px;
-  padding: var(--space-B);
+  padding: var(--space-L);
   background: var(--surface);
-  height: clamp(140px, 320px, 980px);
+  height: clamp(140px, 362px, 980px);
   width: clamp(240px, 424px, 760px);
-  animation: fade-close 0.225s ease-out;
 
   .head {
     display: flex;
@@ -590,6 +587,10 @@ dialog:open {
   animation: fade-open 0.225s ease-out;
 }
 
+dialog.close {
+  animation: fade-close 0.225s ease-out;
+}
+
 dialog::backdrop {
   background: hsl(0 0% 0% / 80%);
   backdrop-filter: blur(8px);
@@ -597,19 +598,22 @@ dialog::backdrop {
 
 dialog[variant=content-action][open] {
   display: flex;
-  flex-direction: column;
+
+  >* {
+    flex: 1;
+  }
 }
 
 dialog[variant=content-action] {
   padding: 0;
 
   .content {
-    padding: var(--space-B);
+    padding: var(--space-M) var(--space-L);
     flex: 1;
   }
 
   .action {
-    padding: var(--space-S);
+    padding: var(--space-M);
     gap: var(--space-S);
 
     c-button button {
@@ -836,20 +840,12 @@ main>* {
   gap: 4px;
 }
 
-#theme-selection button:not(.hovered):not(.pressed) {
-  background: var(--background);
-}
-
 #theme-selection button {
   --radii: 1.6rem;
 }
 
 #theme-selection button {
   min-height: 54px;
-}
-
-#theme-selection button {
-  outline-offset: 0;
 }
 
 #theme-selection button:not(:first-child):not(:last-child) {

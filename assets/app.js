@@ -163,17 +163,18 @@ app.themes.forEach((theme) => {
 
 themeSelection.innerHTML = '';
 
+
 app.themes.forEach((theme) => {
-  let themeButton = document.createElement('button');
+  const themeButton = document.createElement('button');
   themeButton.innerHTML = theme.name;
 
-  themeSelection.appendChild(themeButton);
+  themeSelection.append(themeButton);
 
   themeButton.addEventListener('click', () => {
     document.documentElement.setAttribute('data-theme', theme.name);
     localStorage.setItem('lastTheme', theme.name);
   });
-})
+});
 
 function toggleFullscreen() {
   if (!document.fullscreenElement) {
@@ -371,3 +372,20 @@ document.addEventListener('DOMContentLoaded', () => {
     injectIcon();
   }, 1000);
 })
+
+
+let startTime = 0;
+
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) {
+    console.log("User is in a different tab or minimized the window.");
+  } else {
+    console.log("User is engaging with the app.");
+  }
+});
+
+
+setInterval(() => {
+  startTime++;
+  console.log(`${startTime} seconds passed.`);
+}, 1000);

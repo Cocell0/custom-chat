@@ -58,23 +58,25 @@
   </div>
   <div id="backdrop" role="presentation" aria-hidden="true"></div>
 
-  <c-overlay id="settings" variant="context-menu" for="settings-button" priority="primary" role="dialog" aria-labelledby="settings-button" aria-modal="true">
+  <dialog is="c-overlay" id="settings" variant="context-menu" for="settings-button" priority="primary" role="dialog" aria-labelledby="settings-button" aria-modal="true">
     <div class="flex-column" id="theme-selection">Please wait, the themes are loading.</div>
-  </c-overlay>
+  </dialog>
   <dialog is="c-modal" aria-labelledby="add-new-chat" id="add-custom-chat-modal" variant="content-action">
-    <div class="content">
-      <h3 id="add-new-chat">Add new chat</h3>
-      <div style="margin-bottom: 0.6rem;">
-        <label for="custom-chat-name">Name:</label>
-        <input id="custom-chat-name" name="custom-chat-name" placeholder="Channel name" autofocus>
+    <div class="overflow-auto flex-column">
+      <div class="content">
+        <h3 id="add-new-chat" class="text-center" style="margin-bottom: 1.6rem;">Add new chat</h3>
+        <div style="margin-bottom: 0.6rem;" class="flex-column">
+          <label for="custom-chat-name">Name:</label>
+          <input id="custom-chat-name" name="custom-chat-name" placeholder="Channel name" autofocus style="padding-inline: 0;">
+        </div>
+        <div class="flex-column">
+          <label for="custom-chat-channel">Channel:</label>
+          <input id="custom-chat-channel" name="custom-chat-channel" placeholder="Channel" style="padding-inline: 0;">
+        </div>
       </div>
-      <div>
-        <label for="custom-chat-channel">Channel:</label>
-        <input id="custom-chat-channel" name="custom-chat-channel" placeholder="Channel">
+      <div class="flex-row flex-*1 action">
+        <button id="add-custom-chat-button" class="filled">Add</button>
       </div>
-    </div>
-    <div class="flex-row flex-*1 action">
-      <button id="add-custom-chat-button" class="filled">Add</button>
     </div>
   </dialog>
 

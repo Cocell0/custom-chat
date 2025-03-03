@@ -126,14 +126,8 @@
   gap: 4px;
 }
 
-#chat-creator {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  margin-bottom: 4px;
-  padding: 0.6rem;
-  border-radius: 0.4rem;
-  border: 1px solid rgb(61, 61, 61);
+#add-custom-chat-modal input {
+  border-radius: 0;
 }
 
 #drawer {
