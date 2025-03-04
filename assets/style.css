@@ -7,7 +7,6 @@
   height: clamp(300px, 80%, 90vh);
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 }
 
@@ -26,12 +25,13 @@
 .card {
   flex: 1;
   min-width: 140px;
-  min-height: 63px;
   border: 1px solid transparent;
   position: relative;
+  font-size: 0.8rem;
 
   .main-button {
-    border-radius: 18px;
+    gap: 0;
+    min-height: 54px;
 
     .name {
       font-weight: 600;
@@ -46,8 +46,8 @@
 
   .edit-button {
     position: absolute;
-    top: 9.5px;
-    right: 9.5px;
+    top: 5px;
+    right: 5px;
     display: flex;
   }
 }
@@ -64,7 +64,7 @@
 }
 
 .card button {
-  padding: 0.4rem;
+  padding: 0.25rem;
 }
 
 .card button {
@@ -79,9 +79,6 @@
     grid-row: 1 / span 2;
     height: 44px;
     width: 44px;
-    background: var(--tonal);
-    border-radius: 8px;
-    margin-right: 10px;
   }
 }
 
@@ -115,15 +112,6 @@
 .card input {
   padding: 0;
   width: 100%;
-}
-
-.card .token .icon {
-  font-size: inherit;
-}
-
-.card .token {
-  display: flex;
-  gap: 4px;
 }
 
 #add-custom-chat-modal input {

@@ -82,60 +82,60 @@ const app = {
   color-scheme: dark;
 
   /* palette */
-  --primary: hsl(18 24% 20% / 1);
-  --primary-100: hsl(16 18% 18%);
-  --primary-200: hsl(16 18% 22%);
-  --primary-300: hsl(16 18% 28%);
-  --primary-shadow: hsl(16, 20%, 30%, 32%);
-  --primary-opaque: hsl(22 26% 64% / 0.8);
+  --primary: hsl(18 24% 16% / 1);
+  --primary-100: hsl(16 14% 18%);
+  --primary-200: hsl(16 14% 22%);
+  --primary-300: hsl(16 14% 28%);
+  --primary-shadow: hsl(16, 18%, 30%, 32%);
+  --primary-opaque: hsl(22 22% 64% / 0.8);
 
-  --disabled: hsl(24 12% 4%);
-
-  --secondary: hsl(32 72% 75% / 1);
-  --secondary-100: hsl(32 66% 68% / 1);
-  --secondary-200: hsl(32 62% 62% / 1);
-  --secondary-300: hsl(32 44% 76% / 1);
-  --secondary-shadow: hsl(32 34% 70% / 72%);
+  --secondary: hsl(32 68% 75% / 1);
+  --secondary-100: hsl(32 64% 68% / 1);
+  --secondary-200: hsl(32 60% 62% / 1);
+  --secondary-300: hsl(32 42% 76% / 1);
+  --secondary-shadow: hsl(32 32% 70% / 72%);
 
   --hovered: hsl(16 18% 18%);
   --pressed: hsl(16 18% 22%);
 
-  --tonal: hsl(16 18% 26%);
-  --tonal-hovered: hsl(16 18% 32%);
-  --tonal-pressed: hsl(16 20% 38%);
-  --tonal-ripple: hsl(16 76% 68%);
-  --tonal-shadow: hsl(16 50% 30% 80%);
+  --tonal: hsl(16 16% 26%);
+  --tonal-hovered: hsl(16 16% 32%);
+  --tonal-pressed: hsl(16 18% 38%);
+  --tonal-ripple: hsl(16 74% 68%);
+  --tonal-shadow: hsl(16 48% 30% 80%);
   --tonal-outline: hsl(22 100% 74%);
 
-  --elevated: hsl(16 16% 16%);
-  --elevated-hovered: hsl(16 10% 20%);
-  --elevated-pressed: hsl(16 12% 24%);
-  --elevated-shadow-front: hsl(16, 40%, 14%, 80%);
-  --elevated-shadow-back: hsl(16, 20%, 20%, 30%);
+  --elevated: hsl(16 14% 16%);
+  --elevated-hovered: hsl(16 8% 20%);
+  --elevated-pressed: hsl(16 10% 24%);
+  --elevated-shadow-front: hsl(16, 38%, 14%, 80%);
+  --elevated-shadow-back: hsl(16, 18%, 20%, 30%);
 
   --accent: hsl(16 80% 70%);
 
-  --background: hsl(22 12% 5%);
-  --surface: hsl(16 10% 7%);
+  --background: hsl(22 10% 5%);
+  --surface: hsl(16 8% 7%);
   --overlay-shadow: transparent;
-  --on-surface: hsl(24 12% 7%);
+  --on-surface: hsl(24 10% 7%);
 
-  --text: hsl(22 100% 92%);
-  --text-primary: hsl(16 10% 85%);
-  --text-tonal: hsl(22 100% 84%);
-  --button-text: hsl(22 100% 84%);
+  --text: hsl(22 94% 92%);
+  --text-primary: hsl(16 8% 85%);
+  --text-tonal: hsl(22 94% 84%);
+  --button-text: hsl(22 94% 84%);
 
-  --filled: hsl(32 72% 82% / 1);
-  --filled-color: hsl(22 44% 14%);
-  --filled-hovered: hsl(32 66% 70% / 1);
-  --filled-pressed: hsl(32 62% 62% / 1);
-  --filled-ripple: hsl(32 36% 14% / 1);
-  --filled-shadow: hsl(32 16% 24% / 1);
+  --filled: hsl(32 70% 82% / 1);
+  --filled-color: hsl(22 42% 14%);
+  --filled-hovered: hsl(32 64% 70% / 1);
+  --filled-pressed: hsl(32 60% 62% / 1);
+  --filled-ripple: hsl(32 34% 14% / 1);
+  --filled-shadow: hsl(32 14% 24% / 1);
 
-  --ripple: hsl(32 34% 66% / 1);
-  --button-hover: hsl(32 18% 16% / 1);
+  --ripple: hsl(32 32% 66% / 1);
+  --button-hover: hsl(32 16% 16% / 1);
 
-  --disabled: hsl(16 8% 16% / 0.6);
+  --outline: hsl(14 36% 54%);
+
+  --disabled: hsl(16 6% 16% / 0.6);
   --disabled-text: hsl(22 20% 60% / 0.4);
   --disabled-outline: hsl(22 10% 40% / 0.25);
   `
@@ -371,21 +371,4 @@ document.addEventListener('DOMContentLoaded', () => {
   setInterval(() => {
     injectIcon();
   }, 1000);
-})
-
-
-let startTime = 0;
-
-document.addEventListener("visibilitychange", () => {
-  if (document.hidden) {
-    console.log("User is in a different tab or minimized the window.");
-  } else {
-    console.log("User is engaging with the app.");
-  }
 });
-
-
-setInterval(() => {
-  startTime++;
-  console.log(`${startTime} seconds passed.`);
-}, 1000);

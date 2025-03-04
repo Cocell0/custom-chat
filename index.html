@@ -47,10 +47,6 @@
           <h1 id="display-channel-name" style="word-break: break-all;">[customChat.channelLabel ?? 'General']</h1>
           <div id="chat-container">
             <div>[chat(customChat)]</div>
-            <button>Text</button>
-            <button class="outlined">Text</button>
-            <button class="filled">Text</button>
-            <button class="elevated">Text</button>
           </div>
         </main>
       </div>
@@ -67,38 +63,40 @@
         <h3 id="add-new-chat" class="text-center" style="margin-bottom: 1.6rem;">Add new chat</h3>
         <div style="margin-bottom: 0.6rem;" class="flex-column">
           <label for="custom-chat-name">Name:</label>
-          <input id="custom-chat-name" name="custom-chat-name" placeholder="Channel name" autofocus style="padding-inline: 0;">
+          <input type="text" id="custom-chat-name" name="custom-chat-name" placeholder="Channel name" autofocus style="padding-inline: 0;">
         </div>
         <div class="flex-column">
           <label for="custom-chat-channel">Channel:</label>
-          <input id="custom-chat-channel" name="custom-chat-channel" placeholder="Channel" style="padding-inline: 0;">
+          <input type="text" id="custom-chat-channel" name="custom-chat-channel" placeholder="Channel" style="padding-inline: 0;">
         </div>
       </div>
       <div class="flex-row flex-*1 action">
+        <button id="add-custom-chat-button" class="outlined" onclick="this.closeModal()">Cancel</button>
         <button id="add-custom-chat-button" class="filled">Add</button>
       </div>
     </div>
   </dialog>
 
   <!-- scripts -->
-  <script src="https://unpkg.com/tabbable/dist/index.umd.js"></script>
-  <script src="https://unpkg.com/focus-trap/dist/focus-trap.umd.js"></script>
+  <script src="assets/lib/tabbable.js"></script>
+  <script src="assets/lib/focus-trap.js"></script>
   <script src="./assets/app.js"></script>
   <script src="./assets/script.js"></script>
   <script src="./assets/component.js"></script>
   <!-- styles -->
   <style>
     /* Files inlined by Filo during GitHub workflow */
-    /*${filo:./assets/app.css}*/
-    /* Filo placeholders to inject CSS during production */
-    /*${filo:./assets/style.css}*/
-    /*${filo:./assets/paramount.css}*/
+    /* ${filo:./assets/app.css}*/
+    /* ${filo:./assets/style.css}*/
+    /* ${filo:./assets/paramount.css}*/
   </style>
   <script>
     // Files inlined by Filo during GitHub workflow
-    //${filo:./assets/component.js} Filo placeholders to inject JavaScript during production
-    //${filo:./assets/app.js}
+    // ${filo:./assets/lib/tabbable.js}
+    // ${filo:./assets/lib/focus-trap.js}
+    // ${filo:./assets/app.js}
     // ${filo:./assets/script.js}
+    // ${filo:./assets/component.js}
   </script>
   <link rel="stylesheet" href="./assets/paramount.css">
 </body>
