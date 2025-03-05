@@ -423,3 +423,13 @@ comments.forEach((comment) => {
   commentElement.appendChild(commentMessage);
   container.appendChild(commentElement);
 }, { passvie: true })
+
+appNavigation.addEventListener('focusin', () => {
+  SpatialNavigation.add('chat-picker', {
+    selector: '#chat-picker button'
+  });
+});
+
+appNavigation.addEventListener('focusout', () => {
+  SpatialNavigation.remove('chat-picker');
+});

@@ -277,6 +277,8 @@ function getTime(time, timeConfig = {}) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  SpatialNavigation.init();
+
   const hamburgerMenu = document.querySelector('#menu-button .icon');
   if (Math.random() <= 0.01) {
     hamburgerMenu.innerText = '🍔';
