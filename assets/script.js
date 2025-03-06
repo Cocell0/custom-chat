@@ -58,8 +58,6 @@ customChatChannel.addEventListener('input', () => {
   const caretPosition = input.selectionStart;
   input.value = slugify(input.value);
   input.setSelectionRange(caretPosition, caretPosition);
-
-  searchForDuplicate(input.value);
 });
 
 
@@ -192,24 +190,6 @@ function updateChatInterface() {
   }
   customChats.forEach((item) => createChat(item));
 }
-function searchForDuplicate(channel) {
-  const userAlert = document.querySelector('#user-alert');
-  const isDuplicate = customChats.some(chat => chat.channel === channel);
-
-  if (isDuplicate) {
-    userAlert.hidden = false;
-    userAlert.innerHTML = `You can't create multiple chats with the same channel. The chat with the channel '${channel}' is already defined.`;
-  } else {
-    userAlert.hidden = true;
-  }
-}
-
-
-
-
-
-
-
 
 updateChatInterface();
 
@@ -428,18 +408,18 @@ comments.forEach((comment) => {
   container.appendChild(commentElement);
 }, { passvie: true })
 
-chatPicker.addEventListener('focusin', () => {
-  SpatialNavigation.add('chat-picker', {
-    selector: '#chat-picker button'
-  });
+// chatPicker.addEventListener('focusin', () => {
+//   SpatialNavigation.add('chat-picker', {
+//     selector: '#chat-picker button'
+//   });
 
-  chatPicker.addEventListener('keydown', (event) => {
-    if (event.key = 'Tab' && !event.shiftKey) {
-      document.querySelector("#app-interface > header > button:nth-child(1)").focus()
-    }
-  }, { once: true })
-});
+//   chatPicker.addEventListener('keydown', (event) => {
+//     if (event.key = 'Tab' && !event.shiftKey) {
+//       document.querySelector("#app-interface > header > button:nth-child(1)").focus()
+//     }
+//   }, { once: true })
+// });
 
-chatPicker.addEventListener('focusout', () => {
-  SpatialNavigation.remove('chat-picker');
-});
+// chatPicker.addEventListener('focusout', () => {
+//   SpatialNavigation.remove('chat-picker');
+// });
