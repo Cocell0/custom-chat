@@ -49,17 +49,18 @@
     top: 5px;
     right: 5px;
     display: flex;
+    opacity: 1;
   }
 }
 
 @media (hover: hover) {
   .card .edit-button {
-    display: none;
+    opacity: 0;
   }
 
   .card:hover .edit-button,
   .card:focus-within .edit-button {
-    display: flex;
+    opacity: 1;
   }
 }
 

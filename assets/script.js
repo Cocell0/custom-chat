@@ -241,6 +241,10 @@ addCustomChatModal.addEventListener('click', (event) => {
   }
 });
 
+addCustomChatModal.querySelector('button.cancel-button').addEventListener('click', () => {
+  addCustomChatModal.closeModal();
+})
+
 addCustomChatButton.addEventListener('click', () => {
 
   const customChatObject = {
@@ -412,7 +416,7 @@ const comments = [
 comments.forEach((comment) => {
   const container = document.querySelector("#chat-container > div");
   const commentElement = document.createElement('div');
-  const commentUsername = document.createElement('div');
+  const commentUsername = document.createElement('button');
   const commentMessage = document.createElement('p');
 
   commentUsername.innerText = comment.user.nickname || comment.user.visualId.toUpperCase();
@@ -424,12 +428,18 @@ comments.forEach((comment) => {
   container.appendChild(commentElement);
 }, { passvie: true })
 
-appNavigation.addEventListener('focusin', () => {
+chatPicker.addEventListener('focusin', () => {
   SpatialNavigation.add('chat-picker', {
     selector: '#chat-picker button'
   });
+
+  chatPicker.addEventListener('keydown', (event) => {
+    if (event.key = 'Tab' && !event.shiftKey) {
+      document.querySelector("#app-interface > header > button:nth-child(1)").focus()
+    }
+  }, { once: true })
 });
 
-appNavigation.addEventListener('focusout', () => {
+chatPicker.addEventListener('focusout', () => {
   SpatialNavigation.remove('chat-picker');
 });

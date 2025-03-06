@@ -149,7 +149,7 @@ const lastTheme = localStorage.getItem('lastTheme');
 if (lastTheme) {
   document.documentElement.setAttribute('data-theme', lastTheme);
 } else {
-  const prefersDarkmode = window.matchMedia('prefers-color-scheme: dark').matches;
+  const prefersDarkmode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
   document.documentElement.setAttribute('data-theme', (prefersDarkmode ? 'Warm Dark' : 'Warm Light'));
 }
