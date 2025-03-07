@@ -155,69 +155,22 @@ class OverlayElement extends HTMLDialogElement {
   connectedCallback() {
     const trap = focusTrap.createFocusTrap(this);
     this.trap = trap;
-    const wrapper = document.createElement('div');
-    const surface = document.createElement('div');
-    const closeButton = document.createElement('button');
-    const closeButtonIcon = document.createElement('mat-icon');
-    this.closeButton = closeButton;
     const handler = document.getElementById(this.getAttribute('for'));
 
-    closeButton.classList.add('overlay-close-button');
-    closeButton.classList.add('icon-button');
-    closeButtonIcon.innerText = 'close';
-    closeButton.appendChild(closeButtonIcon);
-
-    wrapper.classList.add('wrapper');
-    surface.classList.add('surface');
-
-    wrapper.appendChild(closeButton);
-    wrapper.appendChild(surface);
-    surface.innerHTML = this.innerHTML;
-    this.innerHTML = '';
-
-    this.appendChild(wrapper);
-
     handler.addEventListener('click', () => {
-      this.toggle();
+      this.showModal();
     }, { passive: true });
-    closeButton.addEventListener('click', () => {
-      if (this.classList.contains('fade-open')) {
-        trap.pause();
-        this.classList.remove('fade-open');
-        this.classList.add('fade-close');
-        handler.focus();
-      }
-    }, { passive: true });
-
+    
     window.addEventListener('pointerdown', (event) => {
       if (!this.contains(event.target) && event.target !== handler && !handler.contains(event.target)) {
-        if (this.classList.contains('fade-open')) {
-          trap.pause();
-          this.classList.remove('fade-open');
-          this.classList.add('fade-close');
-        }
+        trap.pause();
+        this.close();
       }
     });
-
-  }
-
-  toggle() {
-    if (this.classList.contains('fade-open')) {
-      this.classList.remove('fade-open');
-      this.classList.add('fade-close');
-    } else {
-      this.classList.remove('fade-close');
-      this.classList.add('fade-open');
-      this.closeButton.focus();
-      this.addEventListener('animationend', () => {
-        this.closeButton.focus();
-        if (this.trap.paused) {
-          this.trap.unpause();
-        } else {
-          this.trap.activate({ allowOutsideClick: true });
-        }
-      }, { once: true });
-    }
+    
+    this.querySelector('button.close-button').addEventListener('click', () => {
+      this.close();
+    })
   }
 }
 class AccordianElement extends HTMLElement {

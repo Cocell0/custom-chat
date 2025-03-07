@@ -482,16 +482,12 @@ button.outlined[disabled]::before {
   border-color: var(--disabled-outline);
 }
 
-c-overlay {
+dialog[is=c-overlay] {
   position: fixed;
   height: 100%;
   width: 100%;
   overflow: hidden;
   z-index: var(--z-overlay);
-  opacity: 0;
-  visibility: hidden;
-  display: flex;
-  flex-direction: column;
   background-color: hsl(0 0 0 / 0.25);
   max-width: var(--width-ample);
   max-height: 64vh;
@@ -502,7 +498,7 @@ c-overlay {
   background-color: var(--on-surface);
 }
 
-c-overlay .wrapper {
+dialog[is=c-overlay] .wrapper {
   flex: 1;
   position: absolute;
   overflow: hidden;
@@ -510,14 +506,14 @@ c-overlay .wrapper {
   height: 100%;
 }
 
-c-overlay .overlay-close-button {
+dialog[is=c-overlay] .overlay-close-button {
   position: absolute;
   z-index: 1;
   top: 8px;
   right: 8px;
 }
 
-c-overlay .wrapper .surface {
+dialog[is=c-overlay] .wrapper .surface {
   padding: 8px;
   padding-top: 52px;
   max-width: 100%;
@@ -526,7 +522,7 @@ c-overlay .wrapper .surface {
 }
 
 @media only screen and (max-width: 768px) {
-  c-overlay[priority=primary] {
+  dialog[is=c-overlay][priority=primary] {
     max-height: unset;
     min-height: unset;
     height: 100%;

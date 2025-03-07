@@ -221,7 +221,7 @@ addCustomChatModal.addEventListener('click', (event) => {
   }
 });
 
-addCustomChatModal.querySelector('button.cancel-button').addEventListener('click', () => {
+addCustomChatModal.querySelector('button.close-button').addEventListener('click', () => {
   addCustomChatModal.closeModal();
 })
 

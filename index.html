@@ -55,6 +55,9 @@
   <div id="backdrop" role="presentation" aria-hidden="true"></div>
 
   <dialog is="c-overlay" id="settings" variant="context-menu" for="settings-button" priority="primary" role="dialog" aria-labelledby="settings-button" aria-modal="true">
+    <button class="icon-button close-button">
+      <mat-icon>close</mat-icon>
+    </button>
     <div class="flex-column" id="theme-selection">Please wait, the themes are loading.</div>
   </dialog>
   <dialog is="c-modal" aria-labelledby="add-new-chat" id="add-custom-chat-modal" variant="content-action">
@@ -71,7 +74,7 @@
         </div>
       </div>
       <div class="flex-row flex-*1 action">
-        <button id="add-custom-chat-button" class="outlined cancel-button">Cancel</button>
+        <button id="add-custom-chat-button" class="outlined close-button">Cancel</button>
         <button id="add-custom-chat-button" class="filled">Add</button>
       </div>
     </div>
