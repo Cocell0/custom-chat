@@ -28,7 +28,7 @@ jobs:
         run: npm install -g @cocell/filo puppeteer
 
       - name: Process index.html
-        run: filo index.html
+        run: npx filo index.html
 
       - name: Run Puppeteer script
         env:
