@@ -82,7 +82,7 @@ const app = {
   color-scheme: dark;
 
   /* palette */
-  --primary: hsl(18 24% 16% / 1);
+  --primary: hsl(18 24% 16%);
   --primary-100: hsl(16 14% 18%);
   --primary-200: hsl(16 14% 22%);
   --primary-300: hsl(16 14% 28%);
@@ -130,6 +130,10 @@ const app = {
   --filled-ripple: hsl(32 34% 14% / 1);
   --filled-shadow: hsl(32 14% 24% / 1);
 
+  --fab: var(--primary);
+  --fab-hovered: hsl(16 28% 18%);
+  --fab-pressed: hsl(16 32% 20%);
+
   --ripple: hsl(32 32% 66% / 1);
   --button-hover: hsl(32 16% 16% / 1);
 
@@ -167,6 +171,7 @@ themeSelection.innerHTML = '';
 app.themes.forEach((theme) => {
   const themeButton = document.createElement('button');
   themeButton.innerHTML = theme.name;
+  themeButton.ariaLabel = 'Choose Theme ' + theme.name;
 
   themeSelection.append(themeButton);
 

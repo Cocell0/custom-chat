@@ -6,7 +6,6 @@ const customChatChannel = document.querySelector('#custom-chat-channel');
 const addCustomChatButtonModal = document.querySelector('#add-custom-chat-button-modal');
 const addCustomChatModal = document.querySelector('#add-custom-chat-modal');
 const addCustomChatButton = document.querySelector('#add-custom-chat-button');
-const editButton = document.querySelector('#edit-button');
 
 // Events
 
@@ -46,13 +45,6 @@ let savedCustomChats = JSON.parse(localStorage.getItem('saved-custom-chats'));
 if (savedCustomChats) {
   customChats = savedCustomChats;
 }
-editButton.addEventListener('click', () => {
-  if (system.mode !== 'editing') {
-    system.setMode('editing');
-  } else {
-    system.setMode('normal');
-  }
-});
 customChatChannel.addEventListener('input', () => {
   const input = customChatChannel;
   const caretPosition = input.selectionStart;

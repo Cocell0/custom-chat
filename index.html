@@ -16,14 +16,13 @@
         <mat-icon>menu</mat-icon>
       </button>
     </div>
-    <div id="app-navigation-wrapper" class="app-menu-wrapper" role="navigation" aria-label="Primary Navigation" aria-labelledby="menu-button">
+    <div id="app-navigation-wrapper" class="app-menu-wrapper">
       <div class="app-menu">
-        <nav id="app-navigation">
+        <nav id="app-navigation" aria-label="Primary Navigation">
           <h3>App Navigation</h3>
           <hr>
           <div class="flex-row flex-*1 flex-gap-space-S mb-1">
-            <button id="edit-button">Edit</button>
-            <button id="add-custom-chat-button-modal">Add new</button>
+            <button id="add-custom-chat-button-modal" class="fab">Add new</button>
           </div>
           <section>
             <div id="chat-picker"></div>
@@ -32,18 +31,18 @@
       </div>
     </div>
     <div id="app-interface">
-      <header class="app-bar" role="banner" aria-label="Application Bar">
-        <button aria-label="Share">
+      <div role="toolbar" class="app-bar" role="banner" aria-label="Application Bar">
+        <button aria-label="Share Current Chat">
           <mat-icon>share</mat-icon>
           Share
         </button>
-        <button id="settings-button" class="icon-button" aria-label="Open Settings">
+        <button id="settings-button" class="icon-button" aria-label="Open Global Settings">
           <mat-icon>settings</mat-icon>
         </button>
-      </header>
+      </div>
 
       <div class="main-wrapper">
-        <main aria-labelledby="main-content">
+        <main aria-label="Chat">
           <h1 id="display-channel-name" style="word-break: break-all;">[customChat.channelLabel ?? 'General']</h1>
           <div id="chat-container">
             <div>[chat(customChat)]</div>
@@ -54,10 +53,13 @@
   </div>
   <div id="backdrop" role="presentation" aria-hidden="true"></div>
 
-  <dialog is="c-overlay" id="settings" variant="context-menu" for="settings-button" priority="primary" role="dialog" aria-labelledby="settings-button" aria-modal="true">
-    <button class="icon-button close-button">
-      <mat-icon>close</mat-icon>
-    </button>
+  <dialog is="c-overlay" id="settings" for="settings-button" priority="primary" aria-label="Global Settings" aria-modal="true">
+    <div class="header">
+      <h3 aria-hidden="true">Settings</h3>
+      <button class="icon-button close-button" aria-label="Exit Global Settings">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
     <div class="flex-column" id="theme-selection">Please wait, the themes are loading.</div>
   </dialog>
   <dialog is="c-modal" aria-labelledby="add-new-chat" id="add-custom-chat-modal" variant="content-action">
