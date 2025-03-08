@@ -25,7 +25,7 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: npm -g install @cocell/filo puppeteer
+        run: npm install -g @cocell/filo puppeteer
 
       - name: Process index.html
         run: filo index.html
