@@ -551,7 +551,7 @@ dialog {
   padding: var(--space-L);
   background: var(--surface);
   height: clamp(140px, 362px, 980px);
-  width: clamp(240px, 424px, 760px);
+  width: clamp(240px, 524px, 760px);
 
   .head {
     display: flex;
@@ -579,13 +579,13 @@ dialog {
   }
 }
 
-dialog:open {
+dialo/* g:open {
   animation: fade-open 0.225s ease-out;
 }
 
 dialog.close {
   animation: fade-close 0.225s ease-out;
-}
+} */
 
 dialog::backdrop {
   background: hsl(0 0% 0% / 80%);

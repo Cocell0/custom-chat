@@ -108,10 +108,12 @@ function createChat(item) {
   card.classList.add('card');
   buttonContainer.classList.add('main-button-container');
   button.classList.add('main-button');
+  button.ariaLabel = 'Open chat ' + item.name;
   name.classList.add('name');
   channel.classList.add('channel');
   editButton.classList.add('edit-button');
   editButton.classList.add('icon-button');
+  editButton.ariaLabel = 'Edit';
 
   name.innerText = item.name;
   icon.classList.add('card-icon');
