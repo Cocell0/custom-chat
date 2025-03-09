@@ -400,7 +400,7 @@ comments.forEach((comment) => {
   commentElement.appendChild(commentUsername);
   commentElement.appendChild(commentMessage);
   container.appendChild(commentElement);
-}, { passvie: true })
+})
 
 // chatPicker.addEventListener('focusin', () => {
 //   SpatialNavigation.add('chat-picker', {

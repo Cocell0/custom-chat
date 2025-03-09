@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Custom Chat</title>
   <link rel="stylesheet" href="./assets/app.css">
+  <link rel="stylesheet" href="./assets/main.css">
   <link rel="stylesheet" href="./assets/style.css">
 </head>
 
@@ -19,10 +20,11 @@
     <div id="app-navigation-wrapper" class="app-menu-wrapper">
       <div class="app-menu">
         <nav id="app-navigation" aria-label="Primary Navigation">
-          <h3>App Navigation</h3>
-          <hr>
-          <div class="flex-row flex-*1 flex-gap-space-S mb-1">
-            <button id="add-custom-chat-button-modal" class="fab">Add new</button>
+          <div class="mb-2">
+            <button id="add-custom-chat-button-modal" class="fab">
+              <mat-icon>add</mat-icon>
+              Add new
+            </button>
           </div>
           <section>
             <div id="chat-picker"></div>
@@ -54,8 +56,8 @@
   <div id="backdrop" role="presentation" aria-hidden="true"></div>
 
   <dialog is="c-overlay" id="settings" for="settings-button" priority="primary" aria-label="Global Settings" aria-modal="true">
-    <div class="header">
-      <h3 aria-hidden="true">Settings</h3>
+    <div class="header flex-row mb-2">
+      <h3 aria-hidden="true" style="flex: 1; text-align: center; margin: 0;">Settings</h3>
       <button class="icon-button close-button" aria-label="Exit Global Settings">
         <mat-icon>close</mat-icon>
       </button>
@@ -93,6 +95,7 @@
   <style>
     /* Files inlined by Filo during GitHub workflow */
     /* ${filo:./assets/app.css}*/
+    /* ${filo:./assets/main.css}*/
     /* ${filo:./assets/style.css}*/
     /* ${filo:./assets/paramount.css}*/
   </style>

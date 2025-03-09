@@ -20,16 +20,14 @@ class ModalElement extends HTMLDialogElement {
 
   openModal() {
     this.showModal();
-    this.addEventListener('animationend', () => {
-      if (this.trap.paused) {
-        this.trap.unpause()
-      } else {
-        this.trap.activate();
-      }
-      if (this.classList.contains(close)) {
-        this.classList.remove('close');
-      }
-    })
+    if (this.trap.paused) {
+      this.trap.unpause()
+    } else {
+      this.trap.activate();
+    }
+    if (this.classList.contains(close)) {
+      this.classList.remove('close');
+    }
   }
 
   closeModal() {
@@ -141,7 +139,7 @@ class RippleElement extends HTMLElement {
     customElements.define(this.name, this);
   }
 }
-class OverlayElement extends HTMLDialogElement {
+class OverlayElement extends ModalElement {
   static elementName = 'c-overlay';
   constructor() {
     super();
@@ -153,23 +151,14 @@ class OverlayElement extends HTMLDialogElement {
   }
 
   connectedCallback() {
-    const trap = focusTrap.createFocusTrap(this);
-    this.trap = trap;
     const handler = document.getElementById(this.getAttribute('for'));
 
     handler.addEventListener('click', () => {
-      this.showModal();
+      this.openModal();
     }, { passive: true });
-    
-    window.addEventListener('pointerdown', (event) => {
-      if (!this.contains(event.target) && event.target !== handler && !handler.contains(event.target)) {
-        trap.pause();
-        this.close();
-      }
-    });
-    
+
     this.querySelector('button.close-button').addEventListener('click', () => {
-      this.close();
+      this.closeModal();
     })
   }
 }
