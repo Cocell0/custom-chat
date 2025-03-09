@@ -567,7 +567,7 @@ dialog {
 }
 
 @media only screen and (max-width: 768px) {
-  dialog:not([is]) {
+  dialog:not([is=c-overlay]) {
     inset: unset;
     left: 50%;
     translate: -50%;

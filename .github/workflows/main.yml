@@ -12,7 +12,7 @@ on:
       - published
 
 jobs:
-  run-puppeteer:
+  deploy:
     runs-on: windows-latest
 
     steps:
@@ -25,7 +25,7 @@ jobs:
           node-version: 22
 
       - name: Install dependencies
-        run: npm install -g @cocell/filo puppeteer
+        run: npm install
 
       - name: Process index.html
         run: npx filo index.html
