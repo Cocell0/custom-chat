@@ -12,8 +12,8 @@
 
 <body>
   <div id="app" role="application" aria-label="Custom Chat Application">
-    <div id="app-drawer" aria-labelledby="menu-button">
-      <button id="menu-button" class="icon-button" aria-label="Open Menu">
+    <div role="toolbar" id="app-drawer" aria-labelledby="menu-button">
+      <button id="menu-button" class="icon-button" aria-label="Open Menu" accesskey="m">
         <mat-icon>menu</mat-icon>
       </button>
     </div>
@@ -21,7 +21,7 @@
       <div class="app-menu">
         <nav id="app-navigation" aria-label="Primary Navigation">
           <div class="mb-2">
-            <button id="add-custom-chat-button-modal" class="fab" accesskey="m">
+            <button id="add-custom-chat-button-modal" class="fab" aria-label="Add New Custom Chat">
               <mat-icon>add</mat-icon>
               Add new
             </button>
@@ -37,6 +37,9 @@
         <button aria-label="Share Current Chat">
           <mat-icon>share</mat-icon>
           Share
+        </button>
+        <button class="icon-button" aria-label="Add New Custom Chat">
+          <mat-icon>add</mat-icon>
         </button>
         <button id="settings-button" class="icon-button" aria-label="Open Global Settings" accesskey="s">
           <mat-icon>settings</mat-icon>
@@ -58,7 +61,7 @@
   <dialog is="c-overlay" id="settings" for="settings-button" priority="primary" aria-label="Global Settings" aria-modal="true">
     <div class="header flex-row mb-2">
       <h3 aria-hidden="true" style="flex: 1; text-align: center; margin: 0;">Settings</h3>
-      <button class="icon-button close-button" aria-label="Exit Global Settings">
+      <button class="icon-button close-button" aria-label="Exit Global Settings" autofocus>
         <mat-icon>close</mat-icon>
       </button>
     </div>

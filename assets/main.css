@@ -22,6 +22,7 @@
   transition: width 300ms cubic-bezier(.4, .8, 0, 1);
   flex-shrink: 0;
   display: flex;
+  background: var(--background);
 }
 
 .app-menu-wrapper .app-menu {
@@ -86,36 +87,8 @@ main>* {
     right: var(--space-S);
   }
 
-  @keyframes app-navigation-close {
-    from {
-      display: block;
-      width: var(--width-small);
-    }
-
-    to {
-      width: 0;
-      display: flex;
-    }
-  }
-
-  @keyframes app-navigation-open {
-    from {
-      display: none;
-      width: 0;
-    }
-
-    to {
-      display: flex;
-      width: var(--width-small);
-    }
-  }
-
-  #app.close-app-navigation #app-navigation-wrapper {
-    animation: app-navigation-close 200ms cubic-bezier(.4, .8, 0, 1) forwards;
-  }
-
-  #app.open-app-navigation #app-navigation-wrapper {
-    animation: app-navigation-open 200ms cubic-bezier(.4, .8, 0, 1) forwards;
+  #app.app-navigation-toggle #app-navigation-wrapper {
+    width: 0;
   }
 }
 
@@ -124,42 +97,19 @@ main>* {
     top: 0;
   }
 
-  @keyframes app-navigation-show {
-    from {
-      opacity: 0;
-      transform: translateX(-100%);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes app-navigation-close {
-    from {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    to {
-      opacity: 0;
-      transform: translateX(-100%);
-    }
-  }
-
   #app #app-navigation-wrapper {
     height: 100%;
+    width: var(--width-small);
     position: fixed;
     top: 0;
     left: 0;
-    transform: translateX(-100%);
-    transition: opacity 280ms, transform 280ms;
+    transform: translateX(0);
+    transition: opacity 280ms, transform 280ms cubic-bezier(.4, .8, 0, 1);
     z-index: 1999;
   }
 
-  #app.close-app-navigation #app-navigation-wrapper {
-    animation: app-navigation-close 280ms cubic-bezier(.4, .8, 0, 1) forwards;
+  #app.app-navigation-toggle #app-navigation-wrapper {
+    transform: translateX(-100%);
   }
 
   #app.open-app-navigation #app-navigation-wrapper {

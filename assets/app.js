@@ -295,6 +295,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 function displayBackdrop(display) {
+
+
   if (display) {
     if (backdrop.classList.contains('close') || !backdrop.classList.contains('show')) {
       backdrop.classList.add('show');
@@ -307,71 +309,74 @@ function displayBackdrop(display) {
 }
 
 
+
 function toggleMenu() {
-  const close = 'close-app-navigation';
-  const open = 'open-app-navigation';
+  const toggle = 'app-navigation-toggle';
 
-  if (window.innerWidth >= mediaPhone) {
-    if (appBody.classList.contains(close)) {
-      appBody.classList.remove(close);
-      appBody.classList.add(open);
-      appNavigationWrapper.removeAttribute('inert', '');
+  if (appBody.classList.contains(toggle)) {
+    appBody.classList.remove(toggle);
+    appNavigationWrapper.removeAttribute('inert', '');
+    appNavigationWrapper.ariaHidden = false;
 
-      displayBackdrop(false);
-    } else {
-      appBody.classList.add(close);
-      appBody.classList.remove(open);
-      appNavigationWrapper.setAttribute('inert', '');
-
-      displayBackdrop(false);
-    }
-  } else {
-    if (appBody.classList.contains(open)) {
-      appBody.classList.remove(open);
-      appBody.classList.add(close)
-      appNavigationWrapper.setAttribute('inert', '');
-
-      displayBackdrop(false);
-    } else {
-      appBody.classList.remove(close);
-      appBody.classList.add(open);
-      appNavigationWrapper.removeAttribute('inert', '');
-
+    app.menuToggle = true;
+    if (window.innerWidth <= mediaPhone) {
       displayBackdrop(true);
     }
+  } else {
+    appBody.classList.add(toggle);
+    appNavigationWrapper.setAttribute('inert', '');
+    appNavigationWrapper.ariaHidden = true;
+
+    displayBackdrop(false);
+    app.menuToggle = false;
   }
 }
 
-menuButton.addEventListener('click', () => {
-  toggleMenu();
-}, { passive: true });
+(() => {
+  menuButton.addEventListener('click', () => {
+    toggleMenu();
+  }, { passive: true });
 
-backdrop.addEventListener('click', () => {
-  if (appBody.classList.contains('open-app-navigation')) {
-    appBody.classList.remove('open-app-navigation');
-    appBody.classList.add('close-app-navigation')
-    appNavigationWrapper.setAttribute('inert', '');
+  backdrop.addEventListener('click', () => {
+    toggleMenu();
+  }, { passive: true });
 
-    displayBackdrop(false);
-  }
-}, { passive: true });
+  document.addEventListener('resize', () => {
+    const toggle = 'app-navigation-toggle';
 
-document.addEventListener('resize', () => {
-  const close = 'close-app-navigation';
-  const open = 'open-app-navigation';
+    if (window.innerWidth <= mediaPhone) {
+      if (appBody.classList.contains(toggle)) {
+        appBody.classList.remove(toggle);
+        appNavigationWrapper.removeAttribute('inert', '');
+        appNavigationWrapper.ariaHidden = false;
+        displayBackdrop(true);
+      } else {
+        appBody.classList.add(toggle);
+        appNavigationWrapper.setAttribute('inert', '');
+        appNavigationWrapper.ariaHidden = true;
+      }
+    }
+
+    if (window.innerWidth >= mediaPhone) {
+      displayBackdrop(true);
+    }
+  }, { passive: true });
+
+
+  const toggle = 'app-navigation-toggle';
 
   if (window.innerWidth <= mediaPhone) {
-    if (appBody.classList.contains(close)) {
-      appBody.classList.remove(close);
-      appBody.classList.add(open);
+    if (appBody.classList.contains(toggle)) {
+      appBody.classList.remove(toggle);
       appNavigationWrapper.removeAttribute('inert', '');
+      appNavigationWrapper.ariaHidden = false;
     } else {
-      appBody.classList.add(close);
-      appBody.classList.remove(open);
+      appBody.classList.add(toggle);
       appNavigationWrapper.setAttribute('inert', '');
+      appNavigationWrapper.ariaHidden = true;
     }
   }
-}, { passive: true })
+})();
 
 document.addEventListener('DOMContentLoaded', () => {
   injectIcon();

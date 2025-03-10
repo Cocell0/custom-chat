@@ -387,20 +387,20 @@ const comments = [
   }
 ];
 
-comments.forEach((comment) => {
-  const container = document.querySelector("#chat-container > div");
-  const commentElement = document.createElement('div');
-  const commentUsername = document.createElement('button');
-  const commentMessage = document.createElement('p');
+// comments.forEach((comment) => {
+//   const container = document.querySelector("#chat-container > div");
+//   const commentElement = document.createElement('div');
+//   const commentUsername = document.createElement('button');
+//   const commentMessage = document.createElement('p');
 
-  commentUsername.innerText = comment.user.nickname || comment.user.visualId.toUpperCase();
-  commentMessage.innerText = comment.message;
-  commentElement.style.textAlign = 'justify';
+//   commentUsername.innerText = comment.user.nickname || comment.user.visualId.toUpperCase();
+//   commentMessage.innerText = comment.message;
+//   commentElement.style.textAlign = 'justify';
 
-  commentElement.appendChild(commentUsername);
-  commentElement.appendChild(commentMessage);
-  container.appendChild(commentElement);
-})
+//   commentElement.appendChild(commentUsername);
+//   commentElement.appendChild(commentMessage);
+//   container.appendChild(commentElement);
+// })
 
 // chatPicker.addEventListener('focusin', () => {
 //   SpatialNavigation.add('chat-picker', {
