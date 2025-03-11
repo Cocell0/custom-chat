@@ -96,6 +96,9 @@ function createChat(item) {
 
   const nameInput = document.createElement('input');
   const channelInput = document.createElement('input');
+  
+  const modal = document.createElement('dialog');
+  modal.setAttribute('is', 'c-modal');
 
   card.classList.add('card');
   buttonContainer.classList.add('main-button-container');
@@ -130,34 +133,17 @@ function createChat(item) {
 
   card.appendChild(buttonContainer);
   card.appendChild(editButton);
+  card.appendChild(modal);
+  
+  modal.appendChild(nameInput);
+  modal.appendChild(channelInput);
 
   const deleteButton = document.createElement('button');
   deleteButton.innerText = 'Delete';
 
-  function toggleEdit() {
-    if (card.classList.contains('editing')) {
-      card.classList.remove('editing');
-      card.edit = false;
-    } else {
-      card.classList.add('editing');
-      card.edit = true;
-    }
-
-    if (card.edit) {
-      buttonContainer.hidden = true;
-      card.appendChild(nameInput);
-      card.appendChild(channelInput);
-    } else {
-      buttonContainer.hidden = false;
-      nameInput.remove();
-      channelInput.remove();
-    }
-  }
-
   nameInput.addEventListener('input', () => {
     item.name = nameInput.value;
     name.innerText = nameInput.value;
-    console.log(name);
     localStorage.setItem('saved-custom-chats', JSON.stringify(customChats));
   });
   channelInput.addEventListener('input', () => {
@@ -171,7 +157,7 @@ function createChat(item) {
   });
   button.addEventListener('click', () => openChat(item));
   deleteButton.addEventListener('click', () => removeChat(card, item));
-  editButton.addEventListener('click', () => toggleEdit());
+  editButton.addEventListener('click', () => modal.showModal());
 
   chatPicker.appendChild(card);
 }

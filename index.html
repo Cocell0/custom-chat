@@ -20,10 +20,10 @@
     <div id="app-navigation-wrapper" class="app-menu-wrapper">
       <div class="app-menu">
         <nav id="app-navigation" aria-label="Primary Navigation">
-          <div class="mb-2">
+          <div id="add-custom-chat-button-container"  class="mb-2">
             <button id="add-custom-chat-button-modal" class="fab" aria-label="Add New Custom Chat">
               <mat-icon>add</mat-icon>
-              Add new
+              <span class="text">Add new</span>
             </button>
           </div>
           <section>
@@ -33,12 +33,12 @@
       </div>
     </div>
     <div id="app-interface">
-      <div role="toolbar" class="app-bar" role="banner" aria-label="Application Bar">
+      <div role="toolbar" id="app-toolbar" class="app-bar" role="banner" aria-label="Application Bar">
         <button aria-label="Share Current Chat">
           <mat-icon>share</mat-icon>
           Share
         </button>
-        <button class="icon-button" aria-label="Add New Custom Chat">
+        <button class="icon-button add-custom-chat-button-small" aria-label="Add New Custom Chat">
           <mat-icon>add</mat-icon>
         </button>
         <button id="settings-button" class="icon-button" aria-label="Open Global Settings" accesskey="s">
