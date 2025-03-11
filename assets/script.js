@@ -96,9 +96,8 @@ function createChat(item) {
 
   const nameInput = document.createElement('input');
   const channelInput = document.createElement('input');
-  
-  const modal = document.createElement('dialog');
-  modal.setAttribute('is', 'c-modal');
+
+  const modal = document.createElement('dialog', { is: 'c-modal' });
 
   card.classList.add('card');
   buttonContainer.classList.add('main-button-container');
@@ -134,7 +133,7 @@ function createChat(item) {
   card.appendChild(buttonContainer);
   card.appendChild(editButton);
   card.appendChild(modal);
-  
+
   modal.appendChild(nameInput);
   modal.appendChild(channelInput);
 
@@ -157,7 +156,7 @@ function createChat(item) {
   });
   button.addEventListener('click', () => openChat(item));
   deleteButton.addEventListener('click', () => removeChat(card, item));
-  editButton.addEventListener('click', () => modal.showModal());
+  editButton.addEventListener('click', () => modal.openModal());
 
   chatPicker.appendChild(card);
 }

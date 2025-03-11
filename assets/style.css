@@ -1,11 +1,11 @@
 /* style.css */
 
-#chat-toolbar .add-custom-chat-button-small {
+#app-toolbar>button.add-custom-chat-button-small {
   display: none;
 }
 
 @media screen and (max-width: 768px) {
-  #chat-toolbar .add-custom-chat-button-small {
+  #app-toolbar>button.add-custom-chat-button-small {
     display: unset;
   }
 }
