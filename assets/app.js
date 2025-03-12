@@ -8,7 +8,6 @@ const appBody = document.querySelector('#app');
 const menuButton = document.querySelector('#menu-button');
 const appNavigationWrapper = document.querySelector('#app-navigation-wrapper');
 const appNavigation = document.querySelector('#app-navigation');
-const backdrop = document.querySelector('#backdrop');
 const themeSelection = document.querySelector('#theme-selection');
 const openConfigDB = indexedDB.open("config");
 
@@ -16,133 +15,11 @@ const app = {
   themes: [
     {
       name: 'Warm Light',
-      description: 'A light theme with warm tones for a cozy and inviting design.',
-      value: `color-scheme: light;
-
-    --primary: hsl(34 40% 92%);
-    --primary-100: hsl(34 36% 96%);
-    --primary-200: hsl(34 32% 90%);
-    --primary-300: hsl(34 28% 84%);
-    --primary-shadow: hsl(34, 30%, 70%, 32%);
-    --primary-opaque: hsl(34 40% 64% / 0.8);
-
-    --secondary: hsl(22 80% 50%);
-    --secondary-100: hsl(22 76% 58%);
-    --secondary-200: hsl(22 72% 64%);
-    --secondary-300: hsl(22 60% 54%);
-    --secondary-shadow: hsl(22 40% 50% / 72%);
-
-    --hovered: hsl(34 36% 96%);
-    --pressed: hsl(34 32% 90%);
-
-    --tonal: hsl(34 28% 88%);
-    --tonal-hovered: hsl(34, 24%, 82%);
-    --tonal-pressed: hsl(34, 22%, 76%);
-    --tonal-ripple: hsl(22, 76%, 58%);
-    --tonal-shadow: hsl(22, 50%, 60%, 80%);
-    --tonal-outline: hsl(22 100% 54%);
-
-    --elevated: hsl(34 36% 98%);
-    --elevated-hovered: hsl(34 30% 94%);
-    --elevated-pressed: hsl(34 28% 90%);
-    --elevated-shadow-front: hsl(34, 40%, 80%, 80%);
-    --elevated-shadow-back: hsl(34, 20%, 70%, 30%);
-
-    --accent: hsl(22, 80%, 55%);
-
-    --background: hsl(40 30% 98%);
-    --surface: hsl(34 36% 96%);
-    --overlay-shadow: transparent;
-    --on-surface: hsl(40 20% 92%);
-
-    --text: hsl(22 100% 14%);
-    --text-primary: hsl(34, 40%, 20%);
-    --text-tonal: hsl(22 100% 24%);
-    --button-text: hsl(22 100% 24%);
-
-    --filled: hsl(22 80% 50%);
-    --filled-color: hsl(40 36% 96%);
-    --filled-hovered: hsl(22 76% 58%);
-    --filled-pressed: hsl(22 72% 64%);
-    --filled-ripple: hsl(22 36% 94% / 1);
-    --filled-shadow: hsl(22 16% 84% / 1);
-
-    --ripple: hsl(22 34% 40% / 1);
-    --button-hover: hsl(22 28% 88% / 1);
-
-    --disabled: hsl(34 10% 88% / 0.6);
-    --disabled-text: hsl(34 20% 40% / 0.4);
-    --disabled-outline: hsl(34 10% 60% / 0.25);
-      `
+      description: 'A light theme with warm tones for a cozy and inviting design.'
     },
     {
       name: 'Warm Dark',
-      description: 'A dark theme with warm tones for a soothing design; welcome to the dark side.',
-      value: `
-  color-scheme: dark;
-
-  /* palette */
-  --primary: hsl(18 24% 16%);
-  --primary-100: hsl(16 14% 18%);
-  --primary-200: hsl(16 14% 22%);
-  --primary-300: hsl(16 14% 28%);
-  --primary-shadow: hsl(16, 18%, 30%, 32%);
-  --primary-opaque: hsl(22 22% 64% / 0.8);
-
-  --secondary: hsl(32 68% 75% / 1);
-  --secondary-100: hsl(32 64% 68% / 1);
-  --secondary-200: hsl(32 60% 62% / 1);
-  --secondary-300: hsl(32 42% 76% / 1);
-  --secondary-shadow: hsl(32 32% 70% / 72%);
-
-  --hovered: hsl(16 18% 18%);
-  --pressed: hsl(16 18% 22%);
-
-  --tonal: hsl(16 16% 26%);
-  --tonal-hovered: hsl(16 16% 32%);
-  --tonal-pressed: hsl(16 18% 38%);
-  --tonal-ripple: hsl(16 74% 68%);
-  --tonal-shadow: hsl(16 48% 30% 80%);
-  --tonal-outline: hsl(22 100% 74%);
-
-  --elevated: hsl(16 14% 16%);
-  --elevated-hovered: hsl(16 8% 20%);
-  --elevated-pressed: hsl(16 10% 24%);
-  --elevated-shadow-front: hsl(16, 38%, 14%, 80%);
-  --elevated-shadow-back: hsl(16, 18%, 20%, 30%);
-
-  --accent: hsl(16 80% 70%);
-
-  --background: hsl(22 10% 5%);
-  --surface: hsl(16 8% 7%);
-  --overlay-shadow: transparent;
-  --on-surface: hsl(24 10% 7%);
-
-  --text: hsl(22 94% 92%);
-  --text-primary: hsl(16 8% 85%);
-  --text-tonal: hsl(22 94% 84%);
-  --button-text: hsl(22 94% 84%);
-
-  --filled: hsl(32 70% 82% / 1);
-  --filled-color: hsl(22 42% 14%);
-  --filled-hovered: hsl(32 64% 70% / 1);
-  --filled-pressed: hsl(32 60% 62% / 1);
-  --filled-ripple: hsl(32 34% 14% / 1);
-  --filled-shadow: hsl(32 14% 24% / 1);
-
-  --fab: var(--primary);
-  --fab-hovered: hsl(16 28% 18%);
-  --fab-pressed: hsl(16 32% 20%);
-
-  --ripple: hsl(32 32% 66% / 1);
-  --button-hover: hsl(32 16% 16% / 1);
-
-  --outline: hsl(14 36% 54%);
-
-  --disabled: hsl(16 6% 16% / 0.6);
-  --disabled-text: hsl(22 20% 60% / 0.4);
-  --disabled-outline: hsl(22 10% 40% / 0.25);
-  `
+      description: 'A dark theme with warm tones for a soothing design; welcome to the dark side.'
     }
   ],
   iconAxeConfig: ':opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200',
@@ -157,13 +34,6 @@ if (lastTheme) {
 
   document.documentElement.setAttribute('data-theme', (prefersDarkmode ? 'Warm Dark' : 'Warm Light'));
 }
-
-const themeStyle = document.createElement('style');
-document.documentElement.appendChild(themeStyle);
-
-app.themes.forEach((theme) => {
-  themeStyle.innerHTML += `[data-theme="${theme.name}"] { ${theme.value} }\n`;
-});
 
 themeSelection.innerHTML = '';
 
@@ -292,24 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 })
 
-
-
-function displayBackdrop(display) {
-
-
-  if (display) {
-    if (backdrop.classList.contains('close') || !backdrop.classList.contains('show')) {
-      backdrop.classList.add('show');
-      backdrop.classList.remove('close');
-    }
-  } else {
-    backdrop.classList.remove('show');
-    backdrop.classList.add('close');
-  }
-}
-
-
-
 function toggleMenu() {
   const toggle = 'app-navigation-toggle';
 
@@ -319,15 +171,11 @@ function toggleMenu() {
     appNavigationWrapper.ariaHidden = false;
 
     app.menuToggle = true;
-    if (window.innerWidth <= mediaPhone) {
-      displayBackdrop(true);
-    }
   } else {
     appBody.classList.add(toggle);
     appNavigationWrapper.setAttribute('inert', '');
     appNavigationWrapper.ariaHidden = true;
 
-    displayBackdrop(false);
     app.menuToggle = false;
   }
 }
@@ -337,8 +185,12 @@ function toggleMenu() {
     toggleMenu();
   }, { passive: true });
 
-  backdrop.addEventListener('click', () => {
-    toggleMenu();
+  appNavigationWrapper.querySelector('.backdrop').addEventListener('click', () => {
+    if (appBody.classList.contains(toggle)) {
+      appBody.classList.remove(toggle);
+      appNavigationWrapper.removeAttribute('inert', '');
+      appNavigationWrapper.ariaHidden = false;
+    }
   }, { passive: true });
 
   document.addEventListener('resize', () => {
@@ -349,16 +201,11 @@ function toggleMenu() {
         appBody.classList.remove(toggle);
         appNavigationWrapper.removeAttribute('inert', '');
         appNavigationWrapper.ariaHidden = false;
-        displayBackdrop(true);
       } else {
         appBody.classList.add(toggle);
         appNavigationWrapper.setAttribute('inert', '');
         appNavigationWrapper.ariaHidden = true;
       }
-    }
-
-    if (window.innerWidth >= mediaPhone) {
-      displayBackdrop(true);
     }
   }, { passive: true });
 

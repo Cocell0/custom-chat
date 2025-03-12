@@ -256,7 +256,7 @@ legend {
   box-shadow: 0 0 var(--space-S) var(--primary-shadow);
 }
 
-#backdrop {
+.backdrop {
   opacity: 0;
   visibility: hidden;
   z-index: var(--z-backdrop);
@@ -271,7 +271,7 @@ legend {
   transition-timing-function: cubic-bezier(.4, .8, 0.5, 1);
 }
 
-#backdrop.show {
+.backdrop.show {
   opacity: 1;
   visibility: visible;
 }

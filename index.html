@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Custom Chat</title>
+  <link rel="stylesheet" href="./assets/theme.css">
   <link rel="stylesheet" href="./assets/app.css">
   <link rel="stylesheet" href="./assets/main.css">
   <link rel="stylesheet" href="./assets/style.css">
@@ -19,16 +20,15 @@
     </div>
     <div id="app-navigation-wrapper" class="app-menu-wrapper">
       <div class="app-menu">
+        <div class="backdrop" aria-hidden="true"></div>
         <nav id="app-navigation" aria-label="Primary Navigation">
-          <div id="add-custom-chat-button-container"  class="mb-2">
+          <div id="add-custom-chat-button-container" class="mb-2">
             <button id="add-custom-chat-button-modal" class="fab" aria-label="Add New Custom Chat">
               <mat-icon>add</mat-icon>
               <span class="text">Add new</span>
             </button>
           </div>
-          <section>
-            <div id="chat-picker"></div>
-          </section>
+          <section id="chat-picker"></section>
         </nav>
       </div>
     </div>
@@ -56,8 +56,6 @@
       </div>
     </div>
   </div>
-  <div id="backdrop" role="presentation" aria-hidden="true"></div>
-
   <dialog is="c-overlay" id="settings" for="settings-button" priority="primary" aria-label="Global Settings" aria-modal="true">
     <div class="header flex-row mb-2">
       <h3 aria-hidden="true" style="flex: 1; text-align: center; margin: 0;">Settings</h3>
@@ -97,6 +95,7 @@
   <!-- styles -->
   <style>
     /* Files inlined by Filo during GitHub workflow */
+    /* ${filo:./assets/theme.css}*/
     /* ${filo:./assets/app.css}*/
     /* ${filo:./assets/main.css}*/
     /* ${filo:./assets/style.css}*/
