@@ -12,7 +12,7 @@
   --default-layout-transition: width 0.2s, height 0.2s, left 0.2s, right 0.2s, top 0.2s, bottom 0.2s;
 
   /* Variables */
-  --media-phone: 728px;
+  --media-phone: 768px;
 
   --z-backdrop: 500;
   --z-dropdown: 1000;
@@ -57,14 +57,14 @@ mat-icon {
 }
 
 
-@media only screen and (min-width: 728px) {
+@media only screen and (min-width: 768px) {
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
   }
 }
 
-@media only screen and (max-width: 728px) {
+@media only screen and (max-width: 768px) {
   ::-webkit-scrollbar {
     width: 0;
     height: 0;

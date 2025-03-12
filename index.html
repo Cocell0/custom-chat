@@ -12,15 +12,15 @@
 </head>
 
 <body>
-  <div id="app" role="application" aria-label="Custom Chat Application">
+  <div id="app" role="region" aria-label="Custom Chat Application">
     <div role="toolbar" id="app-drawer" aria-labelledby="menu-button">
       <button id="menu-button" class="icon-button" aria-label="Open Menu" accesskey="m">
         <mat-icon>menu</mat-icon>
       </button>
     </div>
+    <div id="app-navigation-backdrop" class="backdrop" aria-hidden="true"></div>
     <div id="app-navigation-wrapper" class="app-menu-wrapper">
       <div class="app-menu">
-        <div class="backdrop" aria-hidden="true"></div>
         <nav id="app-navigation" aria-label="Primary Navigation">
           <div id="add-custom-chat-button-container" class="mb-2">
             <button id="add-custom-chat-button-modal" class="fab" aria-label="Add New Custom Chat">

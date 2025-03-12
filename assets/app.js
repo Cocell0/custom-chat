@@ -185,7 +185,7 @@ function toggleMenu() {
     toggleMenu();
   }, { passive: true });
 
-  appNavigationWrapper.querySelector('.backdrop').addEventListener('click', () => {
+  document.querySelector('#app-navigation-backdrop').addEventListener('click', () => {
     if (appBody.classList.contains(toggle)) {
       appBody.classList.remove(toggle);
       appNavigationWrapper.removeAttribute('inert', '');
@@ -213,15 +213,8 @@ function toggleMenu() {
   const toggle = 'app-navigation-toggle';
 
   if (window.innerWidth <= mediaPhone) {
-    if (appBody.classList.contains(toggle)) {
-      appBody.classList.remove(toggle);
-      appNavigationWrapper.removeAttribute('inert', '');
-      appNavigationWrapper.ariaHidden = false;
-    } else {
-      appBody.classList.add(toggle);
-      appNavigationWrapper.setAttribute('inert', '');
-      appNavigationWrapper.ariaHidden = true;
-    }
+    appNavigationWrapper.setAttribute('inert', '');
+    appNavigationWrapper.ariaHidden = true;
   }
 })();
 
