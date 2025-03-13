@@ -32,7 +32,7 @@
   --shadow-subtle: 0 0 20px hsl(0, 0.00%, 0%, 0.07);
   --shadow-S: 0 0 8px;
   --cubic-bezier-subtle-flow: cubic-bezier(0.2, 0.9, 0.65, 0.65);
-  --width-small: 320px;
+  --width-small: 360px;
   --width-ample: 448px;
   --width-medium: 640px;
   --width-large: 960px;

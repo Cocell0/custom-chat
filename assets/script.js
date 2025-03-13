@@ -86,7 +86,6 @@ function removeChat(card, item) {
 }
 function createChat(item) {
   const card = document.createElement('div');
-  const buttonContainer = document.createElement('div'); // I NEED CONTAINERS JUST TO MANAGE MY OTHER CONTAINER BECAUSE ELEMENT.HIDDEN = TRUE WON'T WORK
   const button = document.createElement('button');
   const editButton = document.createElement('button');
   const icon = document.createElement('mat-icon');
@@ -100,7 +99,6 @@ function createChat(item) {
   const modal = document.createElement('dialog', { is: 'c-modal' });
 
   card.classList.add('card');
-  buttonContainer.classList.add('main-button-container');
   button.classList.add('main-button');
   button.ariaLabel = 'Open chat ' + item.name;
   name.classList.add('name');
@@ -124,13 +122,12 @@ function createChat(item) {
   channelInput.placeholder = 'Chat channel'
   channelInput.value = item.channel;
 
-  buttonContainer.appendChild(button);
   button.appendChild(icon);
   button.appendChild(name);
   button.appendChild(channel);
   editButton.appendChild(editIcon);
 
-  card.appendChild(buttonContainer);
+  card.appendChild(button);
   card.appendChild(editButton);
   card.appendChild(modal);
 

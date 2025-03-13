@@ -166,23 +166,33 @@ function toggleMenu() {
   const toggle = 'app-navigation-toggle';
 
   if (appBody.classList.contains(toggle)) {
-    appBody.classList.remove(toggle);
-    appNavigationWrapper.removeAttribute('inert', '');
-    appNavigationWrapper.ariaHidden = false;
+    if (window.innerWidth <= mediaPhone) {
+      appBody.classList.remove(toggle);
+      appNavigationWrapper.setAttribute('inert', '');
+      appNavigationWrapper.ariaHidden = true;
 
-    app.menuToggle = true;
-  } else if (window.innerWidth <= mediaPhone) {
-    appBody.classList.add(toggle);
-    appNavigationWrapper.removeAttribute('inert', '');
-    appNavigationWrapper.ariaHidden = false;
+      app.menuToggle = false;
+    } else {
+      appBody.classList.remove(toggle);
+      appNavigationWrapper.removeAttribute('inert', '');
+      appNavigationWrapper.ariaHidden = false;
 
-    app.menuToggle = false;
+      app.menuToggle = true;
+    }
   } else {
-    appBody.classList.add(toggle);
-    appNavigationWrapper.setAttribute('inert', '');
-    appNavigationWrapper.ariaHidden = true;
+    if (window.innerWidth <= mediaPhone) {
+      appBody.classList.add(toggle);
+      appNavigationWrapper.removeAttribute('inert', '');
+      appNavigationWrapper.ariaHidden = false;
 
-    app.menuToggle = false;
+      app.menuToggle = false;
+    } else {
+      appBody.classList.add(toggle);
+      appNavigationWrapper.setAttribute('inert', '');
+      appNavigationWrapper.ariaHidden = true;
+
+      app.menuToggle = false;
+    }
   }
 }
 
@@ -194,24 +204,22 @@ function toggleMenu() {
   document.querySelector('#app-navigation-backdrop').addEventListener('click', () => {
     if (appBody.classList.contains(toggle)) {
       appBody.classList.remove(toggle);
-      appNavigationWrapper.removeAttribute('inert', '');
-      appNavigationWrapper.ariaHidden = false;
+      appNavigationWrapper.setAttribute('inert', '');
+      appNavigationWrapper.ariaHidden = true;
     }
   }, { passive: true });
 
-  document.addEventListener('resize', () => {
+  window.addEventListener('resize', () => {
     const toggle = 'app-navigation-toggle';
 
     if (window.innerWidth <= mediaPhone) {
-      if (appBody.classList.contains(toggle)) {
-        appBody.classList.remove(toggle);
-        appNavigationWrapper.removeAttribute('inert', '');
-        appNavigationWrapper.ariaHidden = false;
-      } else {
-        appBody.classList.add(toggle);
-        appNavigationWrapper.setAttribute('inert', '');
-        appNavigationWrapper.ariaHidden = true;
-      }
+      // appBody.classList.remove(toggle);
+      appNavigationWrapper.removeAttribute('inert', '');
+      appNavigationWrapper.ariaHidden = false;
+    } else {
+      appBody.classList.add(toggle);
+      appNavigationWrapper.setAttribute('inert', '');
+      appNavigationWrapper.ariaHidden = true;
     }
   }, { passive: true });
 
