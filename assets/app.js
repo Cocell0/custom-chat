@@ -171,6 +171,12 @@ function toggleMenu() {
     appNavigationWrapper.ariaHidden = false;
 
     app.menuToggle = true;
+  } else if (window.innerWidth <= mediaPhone) {
+    appBody.classList.add(toggle);
+    appNavigationWrapper.removeAttribute('inert', '');
+    appNavigationWrapper.ariaHidden = false;
+
+    app.menuToggle = false;
   } else {
     appBody.classList.add(toggle);
     appNavigationWrapper.setAttribute('inert', '');
