@@ -38,12 +38,26 @@ const chats = [
   }
 ];
 // An empty array to populate it with custom chat objects later
-let customChats = [];
+let chatsStack = [];
+
+const chatDBOpenRequest = indexedDB.open('chatDB');
+let chatDB;
+
+chatDBOpenRequest.onerror = (event) => {
+  console.error(event);
+};
+
+chatDBOpenRequest.onsuccess = (event) => {
+  chatDB = chatDBOpenRequest.result;
+  console.log(chatDB);
+};
+
+
 
 let savedCustomChats = JSON.parse(localStorage.getItem('saved-custom-chats'));
 
 if (savedCustomChats) {
-  customChats = savedCustomChats;
+  chatsStack = savedCustomChats;
 }
 customChatChannel.addEventListener('input', () => {
   const input = customChatChannel;
@@ -76,12 +90,12 @@ function openChat(item) {
   }
 }
 function removeChat(card, item) {
-  const index = customChats.indexOf(item);
+  const index = chatsStack.indexOf(item);
 
   if (index !== -1) {
-    customChats.splice(index, 1);
+    chatsStack.splice(index, 1);
     card.remove();
-    localStorage.setItem('saved-custom-chats', JSON.stringify(customChats));
+    localStorage.setItem('saved-custom-chats', JSON.stringify(chatsStack));
   }
 }
 function createChat(item) {
@@ -100,12 +114,12 @@ function createChat(item) {
 
   card.classList.add('card');
   button.classList.add('main-button');
-  button.ariaLabel = 'Open chat ' + item.name;
+  button.ariaLabel = item.name || 'Unknown Chat';
   name.classList.add('name');
   channel.classList.add('channel');
   editButton.classList.add('edit-button');
   editButton.classList.add('icon-button');
-  editButton.ariaLabel = 'Edit';
+  editButton.ariaLabel = 'Edit ' + item.name;
 
   name.innerText = item.name;
   icon.classList.add('card-icon');
@@ -140,7 +154,7 @@ function createChat(item) {
   nameInput.addEventListener('input', () => {
     item.name = nameInput.value;
     name.innerText = nameInput.value;
-    localStorage.setItem('saved-custom-chats', JSON.stringify(customChats));
+    localStorage.setItem('saved-custom-chats', JSON.stringify(chatsStack));
   });
   channelInput.addEventListener('input', () => {
     channel.innerText = channelInput.value;
@@ -149,7 +163,7 @@ function createChat(item) {
     item.channel = slugify(channelInput.value);
     channelInput.value = slugify(channelInput.value);
     channelInput.setSelectionRange(caretPosition, caretPosition);
-    localStorage.setItem('saved-custom-chats', JSON.stringify(customChats));
+    localStorage.setItem('saved-custom-chats', JSON.stringify(chatsStack));
   });
   button.addEventListener('click', () => openChat(item));
   deleteButton.addEventListener('click', () => removeChat(card, item));
@@ -161,10 +175,8 @@ function createChat(item) {
 function updateChatInterface() {
   chatPicker.innerHTML = '';
 
-  if (system.mode !== 'editing') {
-    chats.forEach((item) => createChat(item));
-  }
-  customChats.forEach((item) => createChat(item));
+  chats.forEach((item) => createChat(item));
+  chatsStack.forEach((item) => createChat(item));
 }
 
 updateChatInterface();
@@ -226,8 +238,8 @@ addCustomChatButton.addEventListener('click', () => {
     records: []
   }
 
-  customChats.push(customChatObject);
-  localStorage.setItem('saved-custom-chats', JSON.stringify(customChats));
+  chatsStack.push(customChatObject);
+  localStorage.setItem('saved-custom-chats', JSON.stringify(chatsStack));
 
   addCustomChatModal.closeModal();
   createChat(customChatObject);

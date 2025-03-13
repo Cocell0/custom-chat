@@ -9,7 +9,6 @@ const menuButton = document.querySelector('#menu-button');
 const appNavigationWrapper = document.querySelector('#app-navigation-wrapper');
 const appNavigation = document.querySelector('#app-navigation');
 const themeSelection = document.querySelector('#theme-selection');
-const openConfigDB = indexedDB.open("config");
 
 const app = {
   themes: [
@@ -154,11 +153,10 @@ function getTime(time, timeConfig = {}) {
 document.addEventListener('DOMContentLoaded', () => {
   SpatialNavigation.init();
 
-  const hamburgerMenu = document.querySelector('#menu-button .icon');
+  const hamburgerMenu = document.querySelector('#menu-button mat-icon');
   if (Math.random() <= 0.01) {
     hamburgerMenu.innerText = '🍔';
     hamburgerMenu.classList.remove('icon');
-    hamburgerMenu.style.paddingBottom = '8px';
   }
 })
 
