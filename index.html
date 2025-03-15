@@ -56,18 +56,20 @@
       </div>
     </div>
   </div>
-  <dialog is="c-overlay" id="settings" for="settings-button" priority="primary" aria-label="Global Settings" aria-modal="true">
-    <div class="header flex-row mb-2">
-      <h3 aria-hidden="true" style="flex: 1; text-align: center; margin: 0;">Settings</h3>
-      <button class="icon-button close-button" aria-label="Exit Global Settings" autofocus>
+  <dialog is="c-overlay" id="settings" style="padding: 0;" for="settings-button" priority="primary" aria-label="Global Settings" aria-modal="true">
+    <div class="header mb-2 pos-rel" style="padding: var(--space-S);">
+      <h3 aria-hidden="true" style="flex: 1; text-align: center;">Settings</h3>
+      <button class="icon-button close-button pos-abs" style="top: var(--space-S); right: var(--space-S);" aria-label="Exit Global Settings" autofocus>
         <mat-icon>close</mat-icon>
       </button>
     </div>
-    <div class="flex-column" id="theme-selection">Please wait, the themes are loading.</div>
+    <div class="content overflow-auto" style="padding: var(--space-S);">
+      <div class="flex-column" id="theme-selection">Please wait, the themes are loading.</div>
+    </div>
   </dialog>
   <dialog is="c-modal" aria-labelledby="add-new-chat" id="add-custom-chat-modal" variant="content-action">
     <div class="overflow-auto flex-column">
-      <div class="content">
+      <div class="content" p>
         <h3 id="add-new-chat" class="text-center" style="margin-bottom: 1.6rem;">Add new chat</h3>
         <div style="margin-bottom: 0.6rem;" class="flex-column">
           <label for="custom-chat-name">Name:</label>
