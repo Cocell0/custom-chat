@@ -40,7 +40,7 @@ const chats = [
 // An empty array to populate it with custom chat objects later
 let chatsStack = [];
 
-let chatDB;
+const chatDB = {};
 const chatDBOpenRequest = indexedDB.open('chatDB');
 
 chatDBOpenRequest.onerror = (event) => {
@@ -48,8 +48,7 @@ chatDBOpenRequest.onerror = (event) => {
 };
 
 chatDBOpenRequest.onsuccess = (event) => {
-  chatDB = chatDBOpenRequest.result;
-  console.log(chatDB);
+  chatDB.db = chatDBOpenRequest.result;
 };
 
 chatDBOpenRequest.onupgradeneeded = (event) => {
@@ -60,6 +59,7 @@ chatDBOpenRequest.onupgradeneeded = (event) => {
   }
 };
 
+console.log(chatDB);
 
 let savedCustomChats = JSON.parse(localStorage.getItem('saved-custom-chats'));
 
