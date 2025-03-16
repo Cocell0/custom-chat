@@ -40,8 +40,8 @@ const chats = [
 // An empty array to populate it with custom chat objects later
 let chatsStack = [];
 
-const chatDBOpenRequest = indexedDB.open('chatDB');
 let chatDB;
+const chatDBOpenRequest = indexedDB.open('chatDB');
 
 chatDBOpenRequest.onerror = (event) => {
   console.error(event);
@@ -52,6 +52,13 @@ chatDBOpenRequest.onsuccess = (event) => {
   console.log(chatDB);
 };
 
+chatDBOpenRequest.onupgradeneeded = (event) => {
+  chatDB = event.target.result;
+
+  if (!chatDB.objectStoreNames.contains('customChats')) {
+    chatDB.createObjectStore('customChats', { keyPath: 'id', autoIncrement: true });
+  }
+};
 
 
 let savedCustomChats = JSON.parse(localStorage.getItem('saved-custom-chats'));
@@ -215,7 +222,7 @@ addCustomChatModal.querySelector('button.close-button').addEventListener('click'
 
 addCustomChatButton.addEventListener('click', () => {
 
-  const customChatObject = {
+  const customChatTemplate = {
     version: 1,
     /* This is the type. I defined a type to distinguish
      this from the system chats that are predefined. */
@@ -238,11 +245,11 @@ addCustomChatButton.addEventListener('click', () => {
     records: []
   }
 
-  chatsStack.push(customChatObject);
+  chatsStack.push(customChatTemplate);
   localStorage.setItem('saved-custom-chats', JSON.stringify(chatsStack));
 
   addCustomChatModal.closeModal();
-  createChat(customChatObject);
+  createChat(customChatTemplate);
 });
 
 const comments = [
