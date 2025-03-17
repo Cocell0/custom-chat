@@ -40,26 +40,53 @@ const chats = [
 // An empty array to populate it with custom chat objects later
 let chatsStack = [];
 
-const chatDB = {};
-const chatDBOpenRequest = indexedDB.open('chatDB');
+class CustomChat {
+  constructor(name, channel) {
+    this.version = 'v1.0.0';
+    this.type = 'custom';
+    this.name = name || channel;
+    this.channel = channel;
+    this.token = crypto.randomUUID();
+    this.timestamp = Date.now();
+    this.modified = null;
+    this.records = [];
+  }
+}
 
-chatDBOpenRequest.onerror = (event) => {
-  console.error(event);
-};
 
-chatDBOpenRequest.onsuccess = (event) => {
-  chatDB.db = chatDBOpenRequest.result;
-};
+const chat = {
+  db: undefined,
+  add: (customChat) => {
+    const transaction = chat.db.transaction('customChats', 'readwrite');
+    const store = transaction.objectStore('customChats');
+    const request = store.add({ message: 'Hello, world!' });
 
-chatDBOpenRequest.onupgradeneeded = (event) => {
-  chatDB.db = event.target.result;
+    request.onsuccess = () => {
+      console.log('Data added successfully');
+    };
 
-  if (!chatDB.db.objectStoreNames.contains('customChats')) {
-    chatDB.db.createObjectStore('customChats', { keyPath: 'id', autoIncrement: true });
+    request.onerror = (event) => {
+      console.error('Error adding data:', event.target.error);
+    };
   }
 };
 
-console.log(chatDB);
+const chatDBOpenRequest = indexedDB.open('chatDB', 1);
+
+chatDBOpenRequest.onerror = (event) => {
+  console.error('Database error:', event);
+};
+
+chatDBOpenRequest.onsuccess = (event) => {
+  chat.db = event.target.result;
+};
+
+chatDBOpenRequest.onupgradeneeded = (event) => {
+  const db = event.target.result;
+  if (!db.objectStoreNames.contains('customChats')) {
+    db.createObjectStore('customChats', { keyPath: 'channel' });
+  }
+};
 
 let savedCustomChats = JSON.parse(localStorage.getItem('saved-custom-chats'));
 
