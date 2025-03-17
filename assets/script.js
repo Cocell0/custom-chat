@@ -52,7 +52,7 @@ chatDBOpenRequest.onsuccess = (event) => {
 };
 
 chatDBOpenRequest.onupgradeneeded = (event) => {
-  chatDB = event.target.result;
+  chatDB.db = event.target.result;
 
   if (!chatDB.db.objectStoreNames.contains('customChats')) {
     chatDB.db.createObjectStore('customChats', { keyPath: 'id', autoIncrement: true });
