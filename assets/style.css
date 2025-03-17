@@ -11,8 +11,6 @@
 }
 
 #chat-container {
-  padding: 10px;
-  margin-block: 2rem;
   text-align: center;
   /* height: clamp(300px, 80%, 90vh); */
   display: flex;

@@ -47,10 +47,10 @@
       </div>
 
       <div class="main-wrapper">
-        <main aria-label="Chat">
-          <h1 id="display-channel-name" style="word-break: break-all;">[customChat.channelLabel ?? 'General']</h1>
-          <div id="chat-container">
-            <div>[chat(customChat)]</div>
+        <main aria-label="Chat" class="flex-column">
+          <h1 id="display-channel-name" style="flex: 0; word-break: break-all;">[customChat.channelLabel ?? 'General']</h1>
+          <div id="chat-container" style="flex: 1;">
+            <div>[cp(customChat)]</div>
           </div>
         </main>
       </div>
