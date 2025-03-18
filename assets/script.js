@@ -42,6 +42,12 @@ let chatsStack = [];
 
 class CustomChat {
   constructor(name, channel) {
+    if (!name && !channel) {
+      throw new Error('Both name and channel cannot be empty');
+    } else if (!channel) {
+      throw new Error('Channel cannot be empty');
+    }
+
     this.version = 'v1.0.0';
     this.type = 'custom';
     this.name = name || channel;

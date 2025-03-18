@@ -1,6 +1,8 @@
 name: Deploy with Puppeteer
 
 on:
+  schedule:
+    - cron: "0 */8 * * *"
   workflow_dispatch:
   push:
     branches:
@@ -33,7 +35,10 @@ jobs:
       - name: Process index.html
         run: filo index.html
 
-      - name: Run Puppeteer script
+      - name: Format filo-index.html
+        run: npx prettier --write filo-index.html
+
+      - name: Deploy with Puppeteer
         env:
           APP_LOCATION: ${{ secrets.APP_LOCATION }}
         run: node puppeteer-deploy.js

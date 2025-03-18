@@ -15,5 +15,8 @@
     "fs": "^0.0.1-security",
     "puppeteer": "^24.1.1",
     "scss": "^0.2.4"
+  },
+  "devDependencies": {
+    "prettier": "^3.5.3"
   }
 }

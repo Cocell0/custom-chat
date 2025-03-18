@@ -253,6 +253,14 @@ class MatIcon extends HTMLElement {
     this.hasAttribute('translate') || (this.translate = false);
     this.hasAttribute('role') || (this.role = 'img');
     this.hasAttribute('aria-hidden') || (this.ariaHidden = true);
+
+    if (!window.matIcons) {
+      window.matIcons = [];
+    }
+
+    matIcons.push(this.innerText);
+    const cleaned = [...new Set(matIcons)];
+    window.matIcons = cleaned.sort();
   }
 }
 

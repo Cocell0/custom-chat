@@ -153,10 +153,16 @@ function getTime(time, timeConfig = {}) {
 document.addEventListener('DOMContentLoaded', () => {
   SpatialNavigation.init();
 
-  const hamburgerMenu = document.querySelector('#menu-button mat-icon');
-  if (Math.random() <= 0.01) {
-    hamburgerMenu.innerText = '🍔';
-    hamburgerMenu.classList.remove('icon');
+  const button = document.querySelector('#menu-button');
+  const icon = document.querySelector('#menu-button mat-icon');
+  const hamburger = document.createElement('span');
+  hamburger.innerText = '🍔';
+  hamburger.style.fontSize = '1.5rem';
+  hamburger.style.paddingBottom = '4px';
+
+  if (Math.random() <= 0.001) {
+    icon.remove()
+    button.appendChild(hamburger);
   }
 })
 
@@ -208,16 +214,15 @@ function toggleMenu() {
   }, { passive: true });
 
   window.addEventListener('resize', () => {
-    const toggle = 'app-navigation-toggle';
+    // const toggle = 'app-navigation-toggle';
 
     if (window.innerWidth <= mediaPhone) {
       // appBody.classList.remove(toggle);
-      appNavigationWrapper.removeAttribute('inert', '');
-      appNavigationWrapper.ariaHidden = false;
-    } else {
-      appBody.classList.add(toggle);
       appNavigationWrapper.setAttribute('inert', '');
       appNavigationWrapper.ariaHidden = true;
+    } else {
+      appNavigationWrapper.removeAttribute('inert', '');
+      appNavigationWrapper.ariaHidden = false;
     }
   }, { passive: true });
 
