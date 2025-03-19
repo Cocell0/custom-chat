@@ -45,18 +45,12 @@
       font-weight: 600;
       text-align: left;
     }
-
-    .channel {
-      font-size: 0.7rem;
-      text-align: left;
-    }
   }
 
   .edit-button {
     position: absolute;
     top: 5px;
     right: 5px;
-    display: flex;
     opacity: 1;
   }
 }
@@ -76,16 +70,13 @@
   padding: 0.25rem;
 }
 
-.card button {
+.card .main-button {
   flex: 1;
-  display: grid;
+  display: flex;
+  justify-content: start;
   user-select: none;
-  grid-template-columns: 1fr 6fr;
-  grid-template-rows: 1fr 1fr;
 
   .card-icon {
-    grid-column: 1;
-    grid-row: 1 / span 2;
     height: 44px;
     width: 44px;
   }

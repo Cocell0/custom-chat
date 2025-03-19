@@ -60,7 +60,8 @@
 :root[data-theme="Warm Dark"] {
   color-scheme: dark;
 
-  /* palette */
+  --error: hsl(7, 100%, 54%);
+  --success: hsl(133, 80%, 46%);
   --primary: hsl(18 24% 16%);
   --primary-100: hsl(16 14% 18%);
   --primary-200: hsl(16 14% 22%);

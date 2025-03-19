@@ -1,11 +1,8 @@
 // Elements
 const chatContainer = document.querySelector('#chat-container');
 const chatPicker = document.querySelector('#chat-picker');
-const customChatName = document.querySelector('#custom-chat-name');
-const customChatChannel = document.querySelector('#custom-chat-channel');
-const addCustomChatButtonModal = document.querySelector('#add-custom-chat-button-modal');
-const addCustomChatModal = document.querySelector('#add-custom-chat-modal');
-const addCustomChatButton = document.querySelector('#add-custom-chat-button');
+const customChatOpenModalButton = document.querySelector('#custom-chat-open-modal');
+const customChatModal = document.querySelector('#custom-chat-modal');
 
 // Events
 
@@ -41,18 +38,29 @@ const chats = [
 let chatsStack = [];
 
 class CustomChat {
-  constructor(name, channel) {
-    if (!name && !channel) {
-      throw new Error('Both name and channel cannot be empty');
-    } else if (!channel) {
-      throw new Error('Channel cannot be empty');
+  constructor(name) {
+    if (!name) {
+      throw 'Name cannot be empty.';
+    } else if (!name.trim()) {
+      throw 'Name cannot be empty.';
+    } else if (typeof name !== 'string') {
+      throw 'Name must be a string.';
     }
 
     this.version = 'v1.0.0';
+    /* This is the type. I defined a type to distinguish
+     this from the system chats that are predefined. */
     this.type = 'custom';
-    this.name = name || channel;
-    this.channel = channel;
-    this.token = crypto.randomUUID();
+    /* This is the name of the channel, it serves no
+    purpose other than customizeability. */
+    this.name = name;
+    /* This is the channel, and this is the real thing that
+    distinguishes one chat from another.
+    A channel here is a randomly generated unique ID, the reason
+    I had to use this is because every chat is public, and
+    the unique ID makes sure no one can just randomly
+    access a private chat. */
+    this.channel = crypto.randomUUID();
     this.timestamp = Date.now();
     this.modified = null;
     this.records = [];
@@ -99,12 +107,6 @@ let savedCustomChats = JSON.parse(localStorage.getItem('saved-custom-chats'));
 if (savedCustomChats) {
   chatsStack = savedCustomChats;
 }
-customChatChannel.addEventListener('input', () => {
-  const input = customChatChannel;
-  const caretPosition = input.selectionStart;
-  input.value = slugify(input.value);
-  input.setSelectionRange(caretPosition, caretPosition);
-});
 
 
 
@@ -145,7 +147,6 @@ function createChat(item) {
   const icon = document.createElement('mat-icon');
   const editIcon = document.createElement('mat-icon');
   const name = document.createElement('div');
-  const channel = document.createElement('div');
 
   const nameInput = document.createElement('input');
   const channelInput = document.createElement('input');
@@ -156,7 +157,6 @@ function createChat(item) {
   button.classList.add('main-button');
   button.ariaLabel = item.name || 'Unknown Chat';
   name.classList.add('name');
-  channel.classList.add('channel');
   editButton.classList.add('edit-button');
   editButton.classList.add('icon-button');
   editButton.ariaLabel = 'Edit ' + item.name;
@@ -170,15 +170,12 @@ function createChat(item) {
   nameInput.placeholder = 'Chat name'
   nameInput.value = item.name;
 
-  channel.innerText = '#' + item.channel;
-
   channelInput.name = 'chat-channel'
   channelInput.placeholder = 'Chat channel'
   channelInput.value = item.channel;
 
   button.appendChild(icon);
   button.appendChild(name);
-  button.appendChild(channel);
   editButton.appendChild(editIcon);
 
   card.appendChild(button);
@@ -197,7 +194,6 @@ function createChat(item) {
     localStorage.setItem('saved-custom-chats', JSON.stringify(chatsStack));
   });
   channelInput.addEventListener('input', () => {
-    channel.innerText = channelInput.value;
 
     const caretPosition = channelInput.selectionStart;
     item.channel = slugify(channelInput.value);
@@ -221,69 +217,50 @@ function updateChatInterface() {
 
 updateChatInterface();
 
-let __customChannelInternalCheck__;
-if (customChatChannel.value == '') {
-  __customChannelInternalCheck__ = true;
-}
-customChatChannel.addEventListener("input", () => {
-  __customChannelInternalCheck__ = false
-  if (customChatChannel.value == '') __customChannelInternalCheck__ = true;
-});
-
-
-customChatName.oninput = () => {
-  if (__customChannelInternalCheck__) {
-    customChatChannel.value = slugify(customChatName.value.trim());
+customChatOpenModalButton.addEventListener('click', () => {
+  if (!customChatModal.hasAttribute('open')) {
+    customChatModal.openModal();
   }
-}
 
-addCustomChatButtonModal.addEventListener('click', () => {
-  if (!addCustomChatModal.hasAttribute('open')) {
-    addCustomChatModal.openModal();
-  }
+  const addButton = customChatModal.querySelector('.add');
+  const chatNameInput = customChatModal.querySelector('#custom-chat-name');
+  const highlight = customChatModal.querySelector('p.highlight');
+  let customChat;
+
+  chatNameInput.addEventListener(('input'), () => {
+    try {
+      customChat = new CustomChat(chatNameInput.value);
+      highlight.innerText = `Channel:\n${customChat.channel}`;
+      highlight.style.color = '';
+      highlight.style.fontFamily = 'var(--font-mono)';
+    } catch (error) {
+      highlight.innerText = error;
+      highlight.style.color = 'var(--error)';
+      highlight.style.fontFamily = '';
+    }
+  })
+
+  addButton.addEventListener('click', () => {
+    chatsStack.push(customChat);
+    localStorage.setItem('saved-custom-chats', JSON.stringify(chatsStack));
+
+    customChatModal.closeModal();
+    chatNameInput.value = '';
+    chatNameInput.dispatchEvent(new Event('input'));
+
+    createChat(customChat);
+  }, { once: true });
 })
 
-addCustomChatModal.addEventListener('click', (event) => {
-  if (event.target === addCustomChatModal) {
-    addCustomChatModal.closeModal();
+customChatModal.addEventListener('click', (event) => {
+  if (event.target === customChatModal) {
+    customChatModal.closeModal();
   }
 });
 
-addCustomChatModal.querySelector('button.close-button').addEventListener('click', () => {
-  addCustomChatModal.closeModal();
+customChatModal.querySelector('button.close-button').addEventListener('click', () => {
+  customChatModal.closeModal();
 })
-
-addCustomChatButton.addEventListener('click', () => {
-
-  const customChatTemplate = {
-    version: 1,
-    /* This is the type. I defined a type to distinguish
-     this from the system chats that are predefined. */
-    type: 'custom',
-    /* This is the name of the channel, it serves no
-    purpose other than customizeability. */
-    name: customChatName.value || customChatChannel.value,
-    // This is the channel name, this should be self-explanatory.
-    channel: customChatChannel.value,
-    /* This is the token, and this is the real thing that
-    distinguishes one chat from another.
-    A token is a randomly generated unique ID, the reason
-    I had to use this is because every chat is public, and
-    the unique ID makes sure no one can just randomly
-    access a private chat. */
-    token: crypto.randomUUID(),
-    // The rest are for sorting and organizing
-    timestamp: new Date().getTime(),
-    modified: null,
-    records: []
-  }
-
-  chatsStack.push(customChatTemplate);
-  localStorage.setItem('saved-custom-chats', JSON.stringify(chatsStack));
-
-  addCustomChatModal.closeModal();
-  createChat(customChatTemplate);
-});
 
 const comments = [
   {

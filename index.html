@@ -23,7 +23,7 @@
       <div class="app-menu">
         <nav id="app-navigation" aria-label="Primary Navigation">
           <div id="add-custom-chat-button-container" class="mb-2">
-            <button id="add-custom-chat-button-modal" class="fab" aria-label="Add New Custom Chat">
+            <button id="custom-chat-open-modal" class="fab" aria-label="Add New Custom Chat">
               <mat-icon>add</mat-icon>
               <span class="text">Add new</span>
             </button>
@@ -67,22 +67,20 @@
       <div class="flex-column" id="theme-selection">Please wait, the themes are loading.</div>
     </div>
   </dialog>
-  <dialog is="c-modal" aria-labelledby="add-new-chat" id="add-custom-chat-modal" variant="content-action">
+
+  <dialog is="c-modal" aria-labelledby="add-new-chat" id="custom-chat-modal" variant="content-action">
     <div class="overflow-auto flex-column">
       <div class="content">
         <h3 id="add-new-chat" class="text-center" style="margin-bottom: 1.6rem;">Add new chat</h3>
         <div style="margin-bottom: 0.6rem;" class="flex-column">
           <label for="custom-chat-name">Name:</label>
           <input type="text" id="custom-chat-name" name="custom-chat-name" placeholder="Channel name" autofocus style="padding-inline: 0;">
-        </div>
-        <div class="flex-column">
-          <label for="custom-chat-channel">Channel:</label>
-          <input type="text" id="custom-chat-channel" name="custom-chat-channel" placeholder="Channel" style="padding-inline: 0;">
+          <p class="highlight"></p>
         </div>
       </div>
       <div class="flex-row flex-*1 action">
-        <button id="add-custom-chat-button" class="outlined close-button">Cancel</button>
-        <button id="add-custom-chat-button" class="filled">Add</button>
+        <button class="outlined close-button">Cancel</button>
+        <button class="filled add">Add</button>
       </div>
     </div>
   </dialog>

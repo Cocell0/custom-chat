@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=PT+Mono&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 :root {
   user-select: none;
@@ -6,6 +6,8 @@
   font-size: 1.125rem;
   background: black;
   color: var(--text);
+
+  --font-mono: 'Roboto Mono';
 
   /* Global gransition variable */
   --outline-animation: outline 0.4s cubic-bezier(0.2, 0, 0, 1) 1 forwards;
@@ -266,6 +268,7 @@ legend {
   visibility: hidden;
   z-index: var(--z-backdrop);
   background: hsl(0 0% 0% / 70%);
+  backdrop-filter: blur(8px); 
   position: fixed;
   top: 0;
   left: 0;
