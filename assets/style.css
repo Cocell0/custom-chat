@@ -1,5 +1,9 @@
 /* style.css */
 
+:root {
+  --ptop: calc(14px + var(--space-S));
+}
+
 #app-toolbar>button.add-custom-chat-button-small {
   display: none;
 }

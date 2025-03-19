@@ -428,3 +428,5 @@ const comments = [
 // chatPicker.addEventListener('focusout', () => {
 //   SpatialNavigation.remove('chat-picker');
 // });
+
+document.documentElement.setAttribute('data-theme', 'Warm Dark');
