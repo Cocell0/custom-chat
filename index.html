@@ -5,6 +5,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Custom Chat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+    rel="stylesheet">
   <link rel="stylesheet" href="./assets/theme.css">
   <link rel="stylesheet" href="./assets/app.css">
   <link rel="stylesheet" href="./assets/main.css">
@@ -12,7 +17,7 @@
 </head>
 
 <body>
-  <h1 style="z-index: -1; position: relative; width: 0; height: 0; user-select: none; margin: 0; display: none;">[$meta.title]</h1>
+  <h1 style="position: fixed; z-index: -1; font-family: var(--font-mono); opacity: 0; user-select: none; width: 0; height: 0;" aria-hidden="true">[$meta.title]</h1>
   <section id="app" aria-label="Custom Chat">
     <div role="toolbar" id="app-drawer" aria-labelledby="menu-button">
       <button id="menu-button" class="icon-button" aria-label="Open Menu" accesskey="m">
@@ -49,7 +54,8 @@
 
       <div class="main-wrapper">
         <main aria-label="Chat" class="flex-column">
-          <h1 id="display-channel-name" style="flex: 0; word-break: break-all;">[customChat.channelLabel ?? 'General']</h1>
+          <h1 id="display-channel-name" style="flex: 0; word-break: break-all;">[customChat.channelLabel ?? 'General']
+          </h1>
           <div id="chat-container" style="flex: 1;">
             <div>[cp(customChat)]</div>
           </div>
@@ -57,10 +63,12 @@
       </div>
     </div>
   </section>
-  <dialog is="c-overlay" id="settings" style="padding: 0;" for="settings-button" priority="primary" aria-label="Global Settings" aria-modal="true">
+  <dialog is="c-overlay" id="settings" style="padding: 0;" for="settings-button" priority="primary"
+    aria-label="Global Settings" aria-modal="true">
     <div class="header pos-rel" style="padding: var(--space-S);">
       <h3 aria-hidden="true" style="flex: 1; text-align: center;">Settings</h3>
-      <button class="icon-button close-button pos-abs" style="top:  var(--ptop); right: var(--space-S);" aria-label="Exit Global Settings" autofocus>
+      <button class="icon-button close-button pos-abs" style="top:  var(--ptop); right: var(--space-S);"
+        aria-label="Exit Global Settings" autofocus>
         <mat-icon>close</mat-icon>
       </button>
     </div>
@@ -75,13 +83,14 @@
         <h3 id="add-new-chat" class="text-center" style="margin-bottom: 1.6rem;">Add new chat</h3>
         <div style="margin-bottom: 0.6rem;" class="flex-column">
           <label for="custom-chat-name">Name:</label>
-          <input type="text" id="custom-chat-name" name="custom-chat-name" placeholder="Channel name" autofocus style="padding-inline: 0;">
+          <input type="text" id="custom-chat-name" name="custom-chat-name" placeholder="Channel name" autofocus
+            style="padding-inline: 0;">
           <p class="highlight"></p>
         </div>
       </div>
       <div class="flex-row flex-*1 action">
-        <button class="outlined close-button">Cancel</button>
-        <button class="filled add">Add</button>
+        <button class="outlined close-button">Close</button>
+        <button class="filled add" disabled>Add</button>
       </div>
     </div>
   </dialog>

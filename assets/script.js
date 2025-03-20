@@ -1,13 +1,37 @@
 // Elements
+const elements = {
+  __customChatModal__: document.querySelector('#custom-chat-modal'),
+
+  get customChatModal() {
+    return this.__customChatModal__;
+  }
+};
+
+elements.customChatModal.nameInput = elements.customChatModal.querySelector('#custom-chat-name');
+elements.customChatModal.highlight = elements.customChatModal.querySelector('p.highlight');
+elements.customChatModal.addButton = elements.customChatModal.querySelector('.add');
+
 const chatContainer = document.querySelector('#chat-container');
 const chatPicker = document.querySelector('#chat-picker');
 const customChatOpenModalButton = document.querySelector('#custom-chat-open-modal');
-const customChatModal = document.querySelector('#custom-chat-modal');
+
 
 // Events
 
 const system = {
+  db: undefined,
   mode: 'normal',
+  add: (customChat) => {
+    return new Promise((resolve, reject) => {
+      const transaction = system.db.transaction('customChats', 'readwrite');
+      const store = transaction.objectStore('customChats');
+      const request = store.add(customChat);
+
+      request.onerror = (event) => reject(event.target.error);
+      transaction.onabort = (event) => reject(event.target.error);
+      transaction.oncomplete = () => resolve('Chat added successfully.');
+    });
+  },
   setMode: (mode) => {
     system.mode = mode;
     body.setAttribute('data-mode', mode);
@@ -42,7 +66,7 @@ class CustomChat {
     if (!name) {
       throw 'Name cannot be empty.';
     } else if (!name.trim()) {
-      throw 'Name cannot be empty.';
+      throw 'Name cannot be only whitespaces.';
     } else if (typeof name !== 'string') {
       throw 'Name must be a string.';
     }
@@ -67,51 +91,22 @@ class CustomChat {
   }
 }
 
+const systemDBOpenRequest = indexedDB.open('systemDB', 1);
 
-const chat = {
-  db: undefined,
-  add: (customChat) => {
-    const transaction = chat.db.transaction('customChats', 'readwrite');
-    const store = transaction.objectStore('customChats');
-    const request = store.add(customChat);
-
-    request.onsuccess = () => {
-      console.log('Data added successfully');
-    };
-
-    request.onerror = (event) => {
-      console.error('Error adding data:', event.target.error);
-    };
-  }
-};
-
-const chatDBOpenRequest = indexedDB.open('chatDB', 1);
-
-chatDBOpenRequest.onerror = (event) => {
+systemDBOpenRequest.onerror = (event) => {
   console.error('Database error:', event);
 };
 
-chatDBOpenRequest.onsuccess = (event) => {
-  chat.db = event.target.result;
+systemDBOpenRequest.onsuccess = (event) => {
+  system.db = event.target.result;
 };
 
-chatDBOpenRequest.onupgradeneeded = (event) => {
+systemDBOpenRequest.onupgradeneeded = (event) => {
   const db = event.target.result;
   if (!db.objectStoreNames.contains('customChats')) {
     db.createObjectStore('customChats', { keyPath: 'channel' });
   }
 };
-
-let savedCustomChats = JSON.parse(localStorage.getItem('saved-custom-chats'));
-
-if (savedCustomChats) {
-  chatsStack = savedCustomChats;
-}
-
-
-
-
-
 
 function slugify(source) {
   return source.toLowerCase().replace(/[^a-z0-9]/g, '-');
@@ -137,7 +132,6 @@ function removeChat(card, item) {
   if (index !== -1) {
     chatsStack.splice(index, 1);
     card.remove();
-    localStorage.setItem('saved-custom-chats', JSON.stringify(chatsStack));
   }
 }
 function createChat(item) {
@@ -191,15 +185,6 @@ function createChat(item) {
   nameInput.addEventListener('input', () => {
     item.name = nameInput.value;
     name.innerText = nameInput.value;
-    localStorage.setItem('saved-custom-chats', JSON.stringify(chatsStack));
-  });
-  channelInput.addEventListener('input', () => {
-
-    const caretPosition = channelInput.selectionStart;
-    item.channel = slugify(channelInput.value);
-    channelInput.value = slugify(channelInput.value);
-    channelInput.setSelectionRange(caretPosition, caretPosition);
-    localStorage.setItem('saved-custom-chats', JSON.stringify(chatsStack));
   });
   button.addEventListener('click', () => openChat(item));
   deleteButton.addEventListener('click', () => removeChat(card, item));
@@ -218,47 +203,59 @@ function updateChatInterface() {
 updateChatInterface();
 
 customChatOpenModalButton.addEventListener('click', () => {
-  if (!customChatModal.hasAttribute('open')) {
-    customChatModal.openModal();
+  if (!elements.customChatModal.hasAttribute('open')) {
+    elements.customChatModal.openModal();
   }
 })
 
-const addButton = customChatModal.querySelector('.add');
-const chatNameInput = customChatModal.querySelector('#custom-chat-name');
-const highlight = customChatModal.querySelector('p.highlight');
 let customChat;
 
-chatNameInput.addEventListener(('input'), () => {
+elements.customChatModal.nameInput.addEventListener(('input'), () => {
+  if (elements.customChatModal.nameInput.value.trim() !== '') {
+    elements.customChatModal.addButton.disabled = false;
+  } else {
+    elements.customChatModal.addButton.disabled = true;
+  }
   try {
-    customChat = new CustomChat(chatNameInput.value);
-    highlight.innerText = `Channel:\n${customChat.channel}`;
-    highlight.style.color = '';
-    highlight.style.fontFamily = 'var(--font-mono)';
+    customChat = new CustomChat(elements.customChatModal.nameInput.value);
+    elements.customChatModal.highlight.innerText = `Channel:\n${customChat.channel}`;
+    elements.customChatModal.highlight.style.color = '';
+    elements.customChatModal.highlight.style.fontFamily = 'var(--font-mono)';
   } catch (error) {
-    highlight.innerText = error;
-    highlight.style.color = 'var(--error)';
-    highlight.style.fontFamily = '';
+    elements.customChatModal.highlight.innerText = error;
+    elements.customChatModal.highlight.style.color = 'var(--error)';
+    elements.customChatModal.highlight.style.fontFamily = '';
   }
 })
 
-addButton.addEventListener('click', () => {
-  chat.add(customChat);
+elements.customChatModal.addButton.addEventListener('click', () => {
+  system.add(customChat)
+    .then(() => {
+      elements.customChatModal.closeModal();
+      elements.customChatModal.nameInput.value = '';
+      elements.customChatModal.nameInput.dispatchEvent(new Event('input'));
+      elements.customChatModal.highlight.innerText = '';
+      elements.customChatModal.highlight.style.color = '';
+      elements.customChatModal.highlight.style.fontFamily = '';
 
-  customChatModal.closeModal();
-  chatNameInput.value = '';
-  chatNameInput.dispatchEvent(new Event('input'));
-
-  createChat(customChat);
+      createChat(customChat);
+    })
+    .catch(error => {
+      elements.customChatModal.highlight.innerText = `Error adding chat:\n${error}`;
+      elements.customChatModal.highlight.style.color = 'var(--error)';
+      elements.customChatModal.highlight.style.fontFamily = '';
+      console.error('Error adding chat:', error);
+    });
 });
 
-customChatModal.addEventListener('click', (event) => {
-  if (event.target === customChatModal) {
-    customChatModal.closeModal();
+elements.customChatModal.addEventListener('click', (event) => {
+  if (event.target === elements.customChatModal) {
+    elements.customChatModal.closeModal();
   }
 });
 
-customChatModal.querySelector('button.close-button').addEventListener('click', () => {
-  customChatModal.closeModal();
+elements.customChatModal.querySelector('button.close-button').addEventListener('click', () => {
+  elements.customChatModal.closeModal();
 })
 
 const comments = [
