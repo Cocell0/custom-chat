@@ -73,7 +73,7 @@ const chat = {
   add: (customChat) => {
     const transaction = chat.db.transaction('customChats', 'readwrite');
     const store = transaction.objectStore('customChats');
-    const request = store.add({ message: 'Hello, world!' });
+    const request = store.add(customChat);
 
     request.onsuccess = () => {
       console.log('Data added successfully');
@@ -221,36 +221,35 @@ customChatOpenModalButton.addEventListener('click', () => {
   if (!customChatModal.hasAttribute('open')) {
     customChatModal.openModal();
   }
-
-  const addButton = customChatModal.querySelector('.add');
-  const chatNameInput = customChatModal.querySelector('#custom-chat-name');
-  const highlight = customChatModal.querySelector('p.highlight');
-  let customChat;
-
-  chatNameInput.addEventListener(('input'), () => {
-    try {
-      customChat = new CustomChat(chatNameInput.value);
-      highlight.innerText = `Channel:\n${customChat.channel}`;
-      highlight.style.color = '';
-      highlight.style.fontFamily = 'var(--font-mono)';
-    } catch (error) {
-      highlight.innerText = error;
-      highlight.style.color = 'var(--error)';
-      highlight.style.fontFamily = '';
-    }
-  })
-
-  addButton.addEventListener('click', () => {
-    chatsStack.push(customChat);
-    localStorage.setItem('saved-custom-chats', JSON.stringify(chatsStack));
-
-    customChatModal.closeModal();
-    chatNameInput.value = '';
-    chatNameInput.dispatchEvent(new Event('input'));
-
-    createChat(customChat);
-  }, { once: true });
 })
+
+const addButton = customChatModal.querySelector('.add');
+const chatNameInput = customChatModal.querySelector('#custom-chat-name');
+const highlight = customChatModal.querySelector('p.highlight');
+let customChat;
+
+chatNameInput.addEventListener(('input'), () => {
+  try {
+    customChat = new CustomChat(chatNameInput.value);
+    highlight.innerText = `Channel:\n${customChat.channel}`;
+    highlight.style.color = '';
+    highlight.style.fontFamily = 'var(--font-mono)';
+  } catch (error) {
+    highlight.innerText = error;
+    highlight.style.color = 'var(--error)';
+    highlight.style.fontFamily = '';
+  }
+})
+
+addButton.addEventListener('click', () => {
+  chat.add(customChat);
+
+  customChatModal.closeModal();
+  chatNameInput.value = '';
+  chatNameInput.dispatchEvent(new Event('input'));
+
+  createChat(customChat);
+});
 
 customChatModal.addEventListener('click', (event) => {
   if (event.target === customChatModal) {

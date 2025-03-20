@@ -618,7 +618,7 @@ dialog[variant=content-action] {
   padding: 0;
 
   .content {
-    padding: var(--space-M) var(--space-L);
+    padding: var(--space-M) var(--space-M);
     flex: 1;
   }
 
