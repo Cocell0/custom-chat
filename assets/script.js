@@ -15,9 +15,6 @@ const chatContainer = document.querySelector('#chat-container');
 const chatPicker = document.querySelector('#chat-picker');
 const customChatOpenModalButton = document.querySelector('#custom-chat-open-modal');
 
-
-// Events
-
 // The array of global chats to be available by default
 const chats = [
   {
@@ -41,6 +38,7 @@ let chatsStack = [];
 
 const system = {
   db: undefined,
+  channel: new BroadcastChannel('system'),
   add: (customChat) => {
     return new Promise((resolve, reject) => {
       const transaction = system.db.transaction('customChats', 'readwrite');
@@ -70,6 +68,12 @@ const system = {
         reject(event.target.error);
       };
     });
+  },
+  delete: (channel) => {
+    const transaction = system.db.transaction('customChats', 'readwrite');
+    const store = transaction.objectStore('customChats');
+    
+    store.delete(channel);
   }
 }
 
@@ -116,7 +120,9 @@ systemDBOpenRequest.onsuccess = (event) => {
         chatsStack = chats;
       } else {
         for (const chat of chats) {
-          chatsStack.push(chat);
+          if (!chatsStack.some(existingChat => existingChat.channel === chat.channel)) {
+            chatsStack.push(chat);
+          }
         }
       }
       renderInterface();
