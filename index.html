@@ -17,7 +17,9 @@
 </head>
 
 <body>
-  <h1 style="position: fixed; z-index: -1; font-family: var(--font-mono); opacity: 0; user-select: none; width: 0; height: 0;" aria-hidden="true">[$meta.title]</h1>
+  <h1
+    style="position: fixed; z-index: -1; font-family: var(--font-mono); opacity: 0; user-select: none; width: 0; height: 0;"
+    aria-hidden="true">[$meta.title]</h1>
   <div id="app">
     <div id="app-drawer">
       <button type="button" id="menu-button" class="icon-button" aria-label="Toggle Side Menu" accesskey="m">
@@ -54,11 +56,17 @@
 
       <div class="main-wrapper">
         <main aria-label="Chat" class="flex-column">
-          <h1 id="display-channel-name" style="flex: 0; word-break: break-all;">[customChat.channelLabel ?? 'General']
-          </h1>
-          <div id="chat-container" style="flex: 1;">
-            <div>[cp(customChat)]</div>
-          </div>
+          <section>
+            <h2 style="flex: 0; word-break: break">
+              <button type="button" class="icon-button" style="user-select: none;" aria-label="Close Chat">
+                <mat-icon>arrow_back</mat-icon>
+              </button>
+              <span id="display-channel-name"></span>
+            </h2>
+            <div id="chat-container" style="flex: 1;">
+              <div>[cp(customChat)]</div>
+            </div>
+          </section>
         </main>
       </div>
     </div>

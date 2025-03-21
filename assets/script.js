@@ -1,5 +1,8 @@
 // Elements
 const elements = {
+  chat: {
+    heading: document.getElementById('display-channel-name')
+  },
   __customChatModal__: document.querySelector('#custom-chat-modal'),
 
   get customChatModal() {
@@ -72,7 +75,7 @@ const system = {
   delete: (channel) => {
     const transaction = system.db.transaction('customChats', 'readwrite');
     const store = transaction.objectStore('customChats');
-    
+
     store.delete(channel);
   }
 }
@@ -142,20 +145,17 @@ systemDBOpenRequest.onupgradeneeded = (event) => {
 function slugify(source) {
   return source.toLowerCase().replace(/[^a-z0-9]/g, '-');
 }
-function openChat(item) {
+function openChat(chat) {
   if (window.location.href.includes('perchance.org/custom-chat')) {
-    if (item.type == 'custom') {
-      customChat.channel = `${item.channel}-${item.token}`;
-      customChat.channelLabel = item.name;
-      update();
-    } else {
-      customChat.channel = item.channel;
-      customChat.channelLabel = item.name;
-      update();
+    if (customChannel !== chat.channel) {
+      customChannel = chat.channel;
+      customLabel = chat.name;
+      chatContainer.innerHTML = cp(custom);
     }
   } else {
-    console.log(`\n\n$ Open chat\nName: ${item.name}\nChannel: ${item.channel}\n\n`)
+    console.log(`\n\n$ Open chat\nName: ${chat.name}\nChannel: ${chat.channel}\n\n`)
   }
+  elements.chat.heading.innerText = chat.name;
 }
 
 function renderChat(chat) {
@@ -168,6 +168,10 @@ function renderChat(chat) {
 
   const nameInput = document.createElement('input');
   const channelInput = document.createElement('input');
+
+  const modalElements = {
+    deleteButton: document.createElement('button')
+  }
 
   const modal = document.createElement('dialog', { is: 'c-modal' });
 
@@ -209,12 +213,20 @@ function renderChat(chat) {
   const deleteButton = document.createElement('button');
   deleteButton.innerText = 'Delete';
 
+  if (chat.type !== 'system') {
+    modal.appendChild(deleteButton);
+  }
+
   nameInput.addEventListener('input', () => {
     chat.name = nameInput.value;
     name.innerText = nameInput.value;
   });
   button.addEventListener('click', () => openChat(chat));
-  deleteButton.addEventListener('click', () => removeChat(card, chat));
+  deleteButton.addEventListener('click', () => {
+    modal.closeModal();
+    card.remove();
+    system.delete(chat.channel);
+  });
   editButton.addEventListener('click', () => modal.openModal());
 
   chatPicker.appendChild(card);
