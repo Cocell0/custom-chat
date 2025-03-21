@@ -20,24 +20,6 @@ const customChatOpenModalButton = document.querySelector('#custom-chat-open-moda
 
 const system = {
   db: undefined,
-  mode: 'normal',
-  add: (customChat) => {
-    return new Promise((resolve, reject) => {
-      const transaction = system.db.transaction('customChats', 'readwrite');
-      const store = transaction.objectStore('customChats');
-      const request = store.add(customChat);
-
-      request.onerror = (event) => reject(event.target.error);
-      transaction.onabort = (event) => reject(event.target.error);
-      transaction.oncomplete = () => resolve('Chat added successfully.');
-    });
-  },
-  setMode: (mode) => {
-    system.mode = mode;
-    body.setAttribute('data-mode', mode);
-
-    updateChatInterface();
-  }
 }
 
 // The array of global chats to be available by default
@@ -96,16 +78,53 @@ const systemDBOpenRequest = indexedDB.open('systemDB', 1);
 systemDBOpenRequest.onerror = (event) => {
   console.error('Database error:', event);
 };
-
 systemDBOpenRequest.onsuccess = (event) => {
   system.db = event.target.result;
+  
+  const cEvent = new Event('db-loaded');
+  window.dispatchEvent(cEvent);
 };
-
 systemDBOpenRequest.onupgradeneeded = (event) => {
   const db = event.target.result;
+  
+  const cEvent = new Event('db-loaded');
+  window.dispatchEvent(cEvent);
+  
   if (!db.objectStoreNames.contains('customChats')) {
     db.createObjectStore('customChats', { keyPath: 'channel' });
   }
+};
+
+
+system.add = (customChat) => {
+  return new Promise((resolve, reject) => {
+    const transaction = system.db.transaction('customChats', 'readwrite');
+    const store = transaction.objectStore('customChats');
+    const request = store.add(customChat);
+
+    request.onerror = (event) => reject(event.target.error);
+    transaction.onabort = (event) => reject(event.target.error);
+    transaction.oncomplete = () => resolve('Chat added successfully.');
+  });
+};
+system.load = () => {
+  return new Promise((resolve, reject) => {
+    const transaction = system.db.transaction('customChats', 'readonly');
+    const store = transaction.objectStore('customChats');
+    const request = store.getAll();  // This gets all items from the object store
+
+    request.onerror = (event) => {
+      reject('Error in loading chats: ' + event.target.error);
+    };
+
+    request.onsuccess = () => {
+      resolve(request.result);
+    };
+
+    transaction.onabort = (event) => {
+      reject(event.target.error);
+    };
+  });
 };
 
 function slugify(source) {
@@ -134,7 +153,7 @@ function removeChat(card, item) {
     card.remove();
   }
 }
-function createChat(item) {
+function renderChat(item) {
   const card = document.createElement('div');
   const button = document.createElement('button');
   const editButton = document.createElement('button');
@@ -196,10 +215,9 @@ function createChat(item) {
 function updateChatInterface() {
   chatPicker.innerHTML = '';
 
-  chats.forEach((item) => createChat(item));
-  chatsStack.forEach((item) => createChat(item));
+  chats.forEach((item) => renderChat(item));
+  chatsStack.forEach((item) => renderChat(item));
 }
-
 updateChatInterface();
 
 customChatOpenModalButton.addEventListener('click', () => {
@@ -207,7 +225,6 @@ customChatOpenModalButton.addEventListener('click', () => {
     elements.customChatModal.openModal();
   }
 })
-
 let customChat;
 
 elements.customChatModal.nameInput.addEventListener(('input'), () => {
@@ -227,7 +244,6 @@ elements.customChatModal.nameInput.addEventListener(('input'), () => {
     elements.customChatModal.highlight.style.fontFamily = '';
   }
 })
-
 elements.customChatModal.addButton.addEventListener('click', () => {
   system.add(customChat)
     .then(() => {
@@ -238,7 +254,7 @@ elements.customChatModal.addButton.addEventListener('click', () => {
       elements.customChatModal.highlight.style.color = '';
       elements.customChatModal.highlight.style.fontFamily = '';
 
-      createChat(customChat);
+      renderChat(customChat);
     })
     .catch(error => {
       elements.customChatModal.highlight.innerText = `Error adding chat:\n${error}`;
@@ -247,13 +263,11 @@ elements.customChatModal.addButton.addEventListener('click', () => {
       console.error('Error adding chat:', error);
     });
 });
-
 elements.customChatModal.addEventListener('click', (event) => {
   if (event.target === elements.customChatModal) {
     elements.customChatModal.closeModal();
   }
 });
-
 elements.customChatModal.querySelector('button.close-button').addEventListener('click', () => {
   elements.customChatModal.closeModal();
 })
@@ -408,7 +422,6 @@ const comments = [
 //   commentElement.appendChild(commentMessage);
 //   container.appendChild(commentElement);
 // })
-
 // chatPicker.addEventListener('focusin', () => {
 //   SpatialNavigation.add('chat-picker', {
 //     selector: '#chat-picker button'
@@ -420,9 +433,21 @@ const comments = [
 //     }
 //   }, { once: true })
 // });
-
 // chatPicker.addEventListener('focusout', () => {
 //   SpatialNavigation.remove('chat-picker');
 // });
+
+document.addEventListener('db-loaded', () => {
+    console.log(1);
+  system.load()
+    .then(chats => {
+      chatStacks = chats;
+    })
+    .catch(error => {
+      console.error('Error loading chats:', error);
+    });
+
+})
+
 
 document.documentElement.setAttribute('data-theme', 'Warm Dark');
