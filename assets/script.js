@@ -172,9 +172,12 @@ function renderChat(chat) {
   const modal = document.createElement('dialog', { is: 'c-modal' });
 
   card.classList.add('card');
+  button.type = 'button';
   button.classList.add('main-button');
   button.ariaLabel = chat.name || 'Unknown Chat';
   name.classList.add('name');
+
+  editButton.type = 'button';
   editButton.classList.add('edit-button');
   editButton.classList.add('icon-button');
   editButton.ariaLabel = 'Edit ' + chat.name;

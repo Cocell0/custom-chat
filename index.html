@@ -18,36 +18,36 @@
 
 <body>
   <h1 style="position: fixed; z-index: -1; font-family: var(--font-mono); opacity: 0; user-select: none; width: 0; height: 0;" aria-hidden="true">[$meta.title]</h1>
-  <section id="app" aria-label="Custom Chat">
-    <div role="toolbar" id="app-drawer" aria-labelledby="menu-button">
-      <button id="menu-button" class="icon-button" aria-label="Open Menu" accesskey="m">
+  <div id="app">
+    <div id="app-drawer">
+      <button type="button" id="menu-button" class="icon-button" aria-label="Toggle Side Menu" accesskey="m">
         <mat-icon>menu</mat-icon>
       </button>
     </div>
     <div id="app-navigation-backdrop" class="backdrop" aria-hidden="true"></div>
     <div id="app-navigation-wrapper" class="app-menu-wrapper" role="none">
       <div class="app-menu">
-        <nav id="app-navigation" aria-label="Primary Navigation">
+        <div id="app-navigation">
           <div id="add-custom-chat-button-container" class="mb-2">
-            <button id="custom-chat-open-modal" class="fab" aria-label="Add New Custom Chat">
+            <button type="button" id="custom-chat-open-modal" class="fab" aria-label="Add New Custom Chat">
               <mat-icon>add</mat-icon>
               <span class="text">Add new</span>
             </button>
           </div>
-          <div role="presentation" id="chat-picker"></div>
-        </nav>
+          <nav role="presentation" id="chat-picker" aria-label="All Chats"></nav>
+        </div>
       </div>
     </div>
     <div id="app-interface">
       <div role="toolbar" id="app-toolbar" class="app-bar" role="banner" aria-label="Application Bar">
-        <button aria-label="Share Current Chat">
+        <button type="button" aria-label="Share Current Chat">
           <mat-icon>share</mat-icon>
           <span aria-hidden="true">Share</span>
         </button>
-        <button class="icon-button add-custom-chat-button-small" aria-label="Add New Custom Chat">
+        <button type="button" class="icon-button add-custom-chat-button-small" aria-label="Add New Custom Chat">
           <mat-icon>add</mat-icon>
         </button>
-        <button id="settings-button" class="icon-button" aria-label="Open Global Settings" accesskey="s">
+        <button type="button" id="settings-button" class="icon-button" aria-label="Open Global Settings" accesskey="s">
           <mat-icon>settings</mat-icon>
         </button>
       </div>
@@ -62,12 +62,12 @@
         </main>
       </div>
     </div>
-  </section>
+  </div>
   <dialog is="c-overlay" id="settings" style="padding: 0;" for="settings-button" priority="primary"
     aria-label="Global Settings" aria-modal="true">
     <div class="header pos-rel" style="padding: var(--space-S);">
       <h3 aria-hidden="true" style="flex: 1; text-align: center;">Settings</h3>
-      <button class="icon-button close-button pos-abs" style="top:  var(--ptop); right: var(--space-S);"
+      <button type="button" class="icon-button close-button pos-abs" style="top:  var(--ptop); right: var(--space-S);"
         aria-label="Exit Global Settings" autofocus>
         <mat-icon>close</mat-icon>
       </button>
@@ -89,8 +89,8 @@
         </div>
       </div>
       <div class="flex-row flex-*1 action">
-        <button class="outlined close-button">Close</button>
-        <button class="filled add" disabled>Add</button>
+        <button type="button" class="outlined close-button">Close</button>
+        <button type="button" class="filled add" disabled>Add</button>
       </div>
     </div>
   </dialog>

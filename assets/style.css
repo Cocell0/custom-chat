@@ -61,7 +61,7 @@
   }
 
   .card:hover .edit-button,
-  .card:focus-within .edit-button {
+  .edit-button:focus-visible {
     opacity: 1;
   }
 }
