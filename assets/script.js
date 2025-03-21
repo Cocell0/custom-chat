@@ -18,10 +18,6 @@ const customChatOpenModalButton = document.querySelector('#custom-chat-open-moda
 
 // Events
 
-const system = {
-  db: undefined,
-}
-
 // The array of global chats to be available by default
 const chats = [
   {
@@ -42,6 +38,40 @@ const chats = [
 ];
 // An empty array to populate it with custom chat objects later
 let chatsStack = [];
+
+const system = {
+  db: undefined,
+  add: (customChat) => {
+    return new Promise((resolve, reject) => {
+      const transaction = system.db.transaction('customChats', 'readwrite');
+      const store = transaction.objectStore('customChats');
+      const request = store.add(customChat);
+
+      request.onerror = (event) => reject(event.target.error);
+      transaction.onabort = (event) => reject(event.target.error);
+      transaction.oncomplete = () => resolve('Chat added successfully.');
+    });
+  },
+  load: () => {
+    return new Promise((resolve, reject) => {
+      const transaction = system.db.transaction('customChats', 'readonly');
+      const store = transaction.objectStore('customChats');
+      const request = store.getAll();
+
+      request.onerror = (event) => {
+        reject('Error in loading chats: ' + event.target.error);
+      };
+
+      request.onsuccess = () => {
+        resolve(request.result);
+      };
+
+      transaction.onabort = (event) => {
+        reject(event.target.error);
+      };
+    });
+  }
+}
 
 class CustomChat {
   constructor(name) {
@@ -80,51 +110,27 @@ systemDBOpenRequest.onerror = (event) => {
 };
 systemDBOpenRequest.onsuccess = (event) => {
   system.db = event.target.result;
-  
-  const cEvent = new Event('db-loaded');
-  window.dispatchEvent(cEvent);
+  system.load()
+    .then(chats => {
+      if (chatsStack.length == 0) {
+        chatsStack = chats;
+      } else {
+        for (const chat of chats) {
+          chatsStack.push(chat);
+        }
+      }
+      renderInterface();
+    })
+    .catch(error => {
+      console.error('Error loading chats:', error);
+    });
 };
 systemDBOpenRequest.onupgradeneeded = (event) => {
   const db = event.target.result;
-  
-  const cEvent = new Event('db-loaded');
-  window.dispatchEvent(cEvent);
-  
+
   if (!db.objectStoreNames.contains('customChats')) {
     db.createObjectStore('customChats', { keyPath: 'channel' });
   }
-};
-
-
-system.add = (customChat) => {
-  return new Promise((resolve, reject) => {
-    const transaction = system.db.transaction('customChats', 'readwrite');
-    const store = transaction.objectStore('customChats');
-    const request = store.add(customChat);
-
-    request.onerror = (event) => reject(event.target.error);
-    transaction.onabort = (event) => reject(event.target.error);
-    transaction.oncomplete = () => resolve('Chat added successfully.');
-  });
-};
-system.load = () => {
-  return new Promise((resolve, reject) => {
-    const transaction = system.db.transaction('customChats', 'readonly');
-    const store = transaction.objectStore('customChats');
-    const request = store.getAll();  // This gets all items from the object store
-
-    request.onerror = (event) => {
-      reject('Error in loading chats: ' + event.target.error);
-    };
-
-    request.onsuccess = () => {
-      resolve(request.result);
-    };
-
-    transaction.onabort = (event) => {
-      reject(event.target.error);
-    };
-  });
 };
 
 function slugify(source) {
@@ -145,15 +151,8 @@ function openChat(item) {
     console.log(`\n\n$ Open chat\nName: ${item.name}\nChannel: ${item.channel}\n\n`)
   }
 }
-function removeChat(card, item) {
-  const index = chatsStack.indexOf(item);
 
-  if (index !== -1) {
-    chatsStack.splice(index, 1);
-    card.remove();
-  }
-}
-function renderChat(item) {
+function renderChat(chat) {
   const card = document.createElement('div');
   const button = document.createElement('button');
   const editButton = document.createElement('button');
@@ -168,24 +167,24 @@ function renderChat(item) {
 
   card.classList.add('card');
   button.classList.add('main-button');
-  button.ariaLabel = item.name || 'Unknown Chat';
+  button.ariaLabel = chat.name || 'Unknown Chat';
   name.classList.add('name');
   editButton.classList.add('edit-button');
   editButton.classList.add('icon-button');
-  editButton.ariaLabel = 'Edit ' + item.name;
+  editButton.ariaLabel = 'Edit ' + chat.name;
 
-  name.innerText = item.name;
+  name.innerText = chat.name;
   icon.classList.add('card-icon');
   icon.innerText = 'forum';
   editIcon.innerText = 'tune';
 
   nameInput.name = 'chat-name'
   nameInput.placeholder = 'Chat name'
-  nameInput.value = item.name;
+  nameInput.value = chat.name;
 
   channelInput.name = 'chat-channel'
   channelInput.placeholder = 'Chat channel'
-  channelInput.value = item.channel;
+  channelInput.value = chat.channel;
 
   button.appendChild(icon);
   button.appendChild(name);
@@ -202,23 +201,22 @@ function renderChat(item) {
   deleteButton.innerText = 'Delete';
 
   nameInput.addEventListener('input', () => {
-    item.name = nameInput.value;
+    chat.name = nameInput.value;
     name.innerText = nameInput.value;
   });
-  button.addEventListener('click', () => openChat(item));
-  deleteButton.addEventListener('click', () => removeChat(card, item));
+  button.addEventListener('click', () => openChat(chat));
+  deleteButton.addEventListener('click', () => removeChat(card, chat));
   editButton.addEventListener('click', () => modal.openModal());
 
   chatPicker.appendChild(card);
 }
 
-function updateChatInterface() {
+function renderInterface() {
   chatPicker.innerHTML = '';
 
-  chats.forEach((item) => renderChat(item));
-  chatsStack.forEach((item) => renderChat(item));
+  chats.forEach((chat) => renderChat(chat));
+  chatsStack.forEach((chat) => renderChat(chat));
 }
-updateChatInterface();
 
 customChatOpenModalButton.addEventListener('click', () => {
   if (!elements.customChatModal.hasAttribute('open')) {
@@ -436,18 +434,5 @@ const comments = [
 // chatPicker.addEventListener('focusout', () => {
 //   SpatialNavigation.remove('chat-picker');
 // });
-
-document.addEventListener('db-loaded', () => {
-    console.log(1);
-  system.load()
-    .then(chats => {
-      chatStacks = chats;
-    })
-    .catch(error => {
-      console.error('Error loading chats:', error);
-    });
-
-})
-
 
 document.documentElement.setAttribute('data-theme', 'Warm Dark');
