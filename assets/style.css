@@ -10,6 +10,11 @@
   }
 }
 
+#app #app-navigation {
+  padding: 0;
+  overflow: hidden;
+}
+
 #chat-container {
   text-align: center;
   /* height: clamp(300px, 80%, 90vh); */
@@ -77,6 +82,7 @@
   user-select: none;
 
   .card-icon {
+    padding-top: 4px;
     height: 44px;
     width: 44px;
   }

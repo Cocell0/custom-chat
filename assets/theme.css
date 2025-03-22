@@ -62,6 +62,8 @@
 
   --error: hsl(7, 100%, 54%);
   --success: hsl(133, 80%, 46%);
+  --selection-background: var(--primary);
+
   --primary: hsl(18 24% 16%);
   --primary-100: hsl(16 14% 18%);
   --primary-200: hsl(16 14% 22%);
@@ -75,8 +77,8 @@
   --secondary-300: hsl(32 42% 76%);
   --secondary-shadow: hsl(32 32% 70% / 72%);
 
-  --hovered: hsl(16 18% 18%);
-  --pressed: hsl(16 18% 22%);
+  --hovered: hsl(16 18% 14%);
+  --pressed: hsl(16 18% 18%);
 
   --tonal: hsl(16 16% 26%);
   --tonal-hovered: hsl(16 16% 32%);
@@ -93,10 +95,10 @@
 
   --accent: hsl(16 80% 70%);
 
-  --background: hsl(22 10% 5%);
-  --surface: hsl(16 8% 7%);
+  --background: hsl(22 10% 4%);
+  --surface: hsl(16 8% 6%);
   --overlay-shadow: transparent;
-  --on-surface: hsl(24 10% 7%);
+  --on-surface: hsla(24, 10%, 5%, 0.6);
 
   --text: hsl(22 94% 92%);
   --text-primary: hsl(16 8% 85%);
@@ -111,15 +113,37 @@
   --filled-shadow: hsl(32 14% 24%);
 
   --fab: var(--primary);
-  --fab-hovered: hsl(16 28% 18%);
-  --fab-pressed: hsl(16 32% 20%);
+  --fab-hovered: hsl(16 28% 14%);
+  --fab-pressed: hsl(16 32% 18%);
 
   --ripple: hsl(32 32% 66%);
   --button-hover: hsl(32 16% 16%);
 
   --outline: hsl(14 36% 54%);
 
-  --disabled: hsl(16 6% 16% / 0.6);
+  --disabled: hsl(16 6% 12%);
   --disabled-text: hsl(22 20% 60% / 0.4);
   --disabled-outline: hsl(22 10% 40% / 0.25);
+}
+
+:root[data-theme="Nightly Garden"] {
+  color-scheme: dark;
+
+  --error: hsl(7, 100%, 54%);
+  --success: hsl(133, 80%, 46%);
+  --selection-background: var(--primary);
+
+  --text: hsl(343, 58%, 92%);
+  --background: hsl(346, 24%, 4%);
+  --surface: hsl(346, 59%, 6%);
+  --on-surface: hsla(0, 10%, 6%, 0.6);
+  --overlay-shadow: transparent;
+
+  --primary: hsl(345, 15%, 18%);
+  --primary-100: hsl(341, 64%, 81%);
+  --primary-200: hsl(341, 72%, 84%);
+  --primary-300: hsl(341, 76%, 89%);
+
+  --secondary: hsl(67, 59%, 33%);
+  --accent: hsl(89, 59%, 55%);
 }

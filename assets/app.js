@@ -19,6 +19,10 @@ const app = {
     {
       name: 'Warm Dark',
       description: 'A dark theme with warm tones for a soothing design; welcome to the dark side.'
+    },
+    {
+      name: 'Nightly Garden',
+      description: 'A dark theme with warm and soft toned colors.'
     }
   ],
   iconAxeConfig: ':opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200',
@@ -213,17 +217,22 @@ function toggleMenu() {
     }
   }, { passive: true });
 
+  let previousWidth = window.innerWidth;
   window.addEventListener('resize', () => {
-    // const toggle = 'app-navigation-toggle';
+    const currentWidth = window.innerWidth;
+    const toggle = 'app-navigation-toggle';
 
-    if (window.innerWidth <= mediaPhone) {
-      // appBody.classList.remove(toggle);
-      appNavigationWrapper.setAttribute('inert', '');
-      appNavigationWrapper.ariaHidden = true;
-    } else {
-      appNavigationWrapper.removeAttribute('inert', '');
-      appNavigationWrapper.ariaHidden = false;
+    if (currentWidth !== previousWidth) {
+      if (window.innerWidth <= mediaPhone) {
+        appBody.classList.remove(toggle);
+        appNavigationWrapper.setAttribute('inert', '');
+        appNavigationWrapper.ariaHidden = true;
+      } else {
+        appNavigationWrapper.removeAttribute('inert', '');
+        appNavigationWrapper.ariaHidden = false;
+      }
     }
+
   }, { passive: true });
 
 

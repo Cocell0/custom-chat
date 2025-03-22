@@ -1,7 +1,9 @@
 // Elements
 const elements = {
+  navigation: document.querySelector('#app-navigation'),
   chat: {
-    heading: document.getElementById('display-channel-name')
+    add: document.querySelector('#custom-chat-open-modal'),
+    heading: document.getElementById('display-channel-name'),
   },
   __customChatModal__: document.querySelector('#custom-chat-modal'),
 
@@ -16,7 +18,6 @@ elements.customChatModal.addButton = elements.customChatModal.querySelector('.ad
 
 const chatContainer = document.querySelector('#chat-container');
 const chatPicker = document.querySelector('#chat-picker');
-const customChatOpenModalButton = document.querySelector('#custom-chat-open-modal');
 
 // The array of global chats to be available by default
 const chats = [
@@ -78,6 +79,26 @@ const system = {
 
     store.delete(channel);
   }
+}
+
+chatPicker.parentElement.addEventListener('scroll', () => {
+  if (chatPicker.parentElement.scrollTop >= 100) {
+    elements.chat.add.classList.add('hide-text');
+  } else {
+    elements.chat.add.classList.remove('hide-text');
+  }
+}, { passive: true })
+
+function numericUUID() {
+  const uuid = crypto.randomUUID();
+  const pattern = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+
+  return uuid.split('').map(characters => {
+    if (/[A-Za-z]/.test(characters)) {
+      return pattern.indexOf(characters.toUpperCase()) + 1;
+    }
+    return characters;
+  }).join('');
 }
 
 class CustomChat {
@@ -159,6 +180,39 @@ function openChat(chat) {
 }
 
 function renderChat(chat) {
+  const modal = document.createElement('dialog', { is: 'c-modal' });
+  const modalElements = {
+    controls: {
+      delete: document.createElement('button'),
+      close: document.createElement('button'),
+      name: document.createElement('input'),
+    },
+    contentWrapper: document.createElement('div'),
+    content: document.createElement('div'),
+    action: document.createElement('div'),
+    channel: document.createElement('p'),
+  }
+
+  modal.ariaLabel = 'Edit ' + chat.name + ' Chat'
+  modal.setAttribute('variant', 'content-action');
+  modal.append(modalElements.contentWrapper);
+
+  modalElements.contentWrapper.append(modalElements.content);
+  modalElements.contentWrapper.append(modalElements.action);
+
+  modalElements.contentWrapper.classList.add('overflow-auto');
+  modalElements.contentWrapper.classList.add('flex-column');
+  modalElements.action.classList.add('flex-row');
+  modalElements.action.classList.add('flex-*1');
+  modalElements.action.classList.add('action');
+
+  modalElements.content.classList.add('content');
+
+  modalElements.content.appendChild(modalElements.controls.name);
+  modalElements.content.appendChild(modalElements.channel);
+  modalElements.action.appendChild(modalElements.controls.close);
+
+
   const card = document.createElement('div');
   const button = document.createElement('button');
   const editButton = document.createElement('button');
@@ -168,15 +222,6 @@ function renderChat(chat) {
 
   const nameInput = document.createElement('input');
   const channelInput = document.createElement('input');
-
-  const modalElements = {
-    buttons: {
-      delete: document.createElement('button'),
-      close: document.createElement('button')
-    }
-  }
-
-  const modal = document.createElement('dialog', { is: 'c-modal' });
 
   card.classList.add('card');
   button.type = 'button';
@@ -205,22 +250,17 @@ function renderChat(chat) {
   button.appendChild(icon);
   button.appendChild(name);
   editButton.appendChild(editIcon);
-  
-  modalElements.buttons.close.innerText = 'Close';
+
+  modalElements.controls.close.innerText = 'Close';
 
   card.appendChild(button);
   card.appendChild(editButton);
   card.appendChild(modal);
 
-  modal.appendChild(nameInput);
-  modal.appendChild(channelInput);
-  modal.appendChild(modalElements.buttons.close);
-
-  const deleteButton = document.createElement('button');
-  deleteButton.innerText = 'Delete';
+  modalElements.controls.delete.innerText = 'Delete';
 
   if (chat.type !== 'system') {
-    modal.appendChild(deleteButton);
+    modalElements.action.appendChild(modalElements.controls.delete);
   }
 
   nameInput.addEventListener('input', () => {
@@ -228,11 +268,13 @@ function renderChat(chat) {
     name.innerText = nameInput.value;
   });
   button.addEventListener('click', () => openChat(chat));
-  modalElements.buttons.close.addEventListener('click', () => modal.closeModal())
-  deleteButton.addEventListener('click', () => {
-    modal.closeModal();
-    card.remove();
-    system.delete(chat.channel);
+  modalElements.controls.close.addEventListener('click', () => modal.closeModal())
+  modalElements.controls.delete.addEventListener('click', () => {
+    if (confirm(`Are you sure you want to delete "${chat.name}" chat?`)) {
+      modal.closeModal();
+      card.remove();
+      system.delete(chat.channel);
+    }
   });
   editButton.addEventListener('click', () => modal.openModal());
 
@@ -246,7 +288,7 @@ function renderInterface() {
   chatsStack.forEach((chat) => renderChat(chat));
 }
 
-customChatOpenModalButton.addEventListener('click', () => {
+elements.chat.add.addEventListener('click', () => {
   if (!elements.customChatModal.hasAttribute('open')) {
     elements.customChatModal.openModal();
   }

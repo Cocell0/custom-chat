@@ -21,24 +21,16 @@ const appLocation = process.env.APP_LOCATION;
 
   await new Promise(resolve => setTimeout(resolve, 200));
 
-  await page.click('#mainOutputTemplateEditorCtn');
+  await page.click('#mainOutputTemplateEditorCtn *[role="textbox"]');
 
-  await page.keyboard.down('Control');
-  await page.keyboard.press('A');
-  await page.keyboard.up('Control');
-  await page.keyboard.press('Backspace');
-
-  await page.keyboard.sendCharacter('Setting contents...')
+  await page.evaluate(() => {
+    const element = document.querySelector(mainEditor);
+    if (element) {
+      element.innerText = 'Setting contents...';
+    }
+  });
 
   await new Promise(resolve => setTimeout(resolve, 200));
-
-  await page.keyboard.down('Control');
-  await page.keyboard.press('A');
-  await page.keyboard.up('Control');
-  await page.keyboard.press('Backspace');
-
-  await page.keyboard.sendCharacter(fs.readFileSync('filo-index.html', 'utf8'));
-
 
   await page.evaluate(() => {
     app.saveGenerator();
