@@ -170,7 +170,10 @@ function renderChat(chat) {
   const channelInput = document.createElement('input');
 
   const modalElements = {
-    deleteButton: document.createElement('button')
+    buttons: {
+      delete: document.createElement('button'),
+      close: document.createElement('button')
+    }
   }
 
   const modal = document.createElement('dialog', { is: 'c-modal' });
@@ -202,6 +205,8 @@ function renderChat(chat) {
   button.appendChild(icon);
   button.appendChild(name);
   editButton.appendChild(editIcon);
+  
+  modalElements.buttons.close.innerText = 'Close';
 
   card.appendChild(button);
   card.appendChild(editButton);
@@ -209,6 +214,7 @@ function renderChat(chat) {
 
   modal.appendChild(nameInput);
   modal.appendChild(channelInput);
+  modal.appendChild(modalElements.buttons.close);
 
   const deleteButton = document.createElement('button');
   deleteButton.innerText = 'Delete';
@@ -222,6 +228,7 @@ function renderChat(chat) {
     name.innerText = nameInput.value;
   });
   button.addEventListener('click', () => openChat(chat));
+  modalElements.buttons.close.addEventListener('click', () => modal.closeModal())
   deleteButton.addEventListener('click', () => {
     modal.closeModal();
     card.remove();
