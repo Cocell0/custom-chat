@@ -28,6 +28,11 @@ const chats = [
   },
   {
     type: 'system',
+    name: 'Living Room',
+    channel: 'living-room'
+  },
+  {
+    type: 'system',
     name: 'Share Chats',
     channel: 'share-chats'
   },

@@ -4,6 +4,7 @@
   font-size: 1.125rem;
   background: black;
   color: var(--text);
+  interpolate-size: allow-keywords;
 
   --ptop: calc(14px + var(--space-S));
   --font-mono: "Roboto Mono", monospace;
@@ -44,7 +45,7 @@ mat-icon {
   font-family: 'Material Symbols Rounded', 'Work Sans';
   font-weight: normal;
   font-style: normal;
-  font-size: 1.5rem;
+  font-size: 2rem;
   line-height: 1;
   letter-spacing: normal;
   text-transform: none;
@@ -502,6 +503,7 @@ button.fab {
   padding-block: 0.6rem;
   padding-inline: 0.6rem 0.8rem;
   background: var(--fab);
+  justify-content: flex-end;
 }
 
 @media (hover: hover) {
@@ -514,12 +516,20 @@ button.fab:active {
   background: var(--fab-pressed);
 }
 
+button.fab .text {
+  width: auto;
+  transition: width 0.15s ease-in-out, gap 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 button.fab.hide-text {
   padding: 0.6rem;
+  gap: 0;
 }
 
 button.fab.hide-text .text {
-  display: none;
+  width: 0;
 }
 
 dialog[is=c-overlay] {
