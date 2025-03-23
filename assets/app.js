@@ -3,6 +3,11 @@
 const mediaSmallPhone = 384;
 const mediaPhone = 768;
 
+const settings = {
+  $: document.getElementById('settings'),
+  fullscreen: document.getElementById('settings').querySelector('button.fullscreen')
+}
+
 const body = document.body;
 const appBody = document.querySelector('#app');
 const menuButton = document.querySelector('#menu-button');
@@ -72,7 +77,8 @@ function toggleFullscreen() {
 
     if (exitFullscreen) exitFullscreen.call(document);
   }
-}
+};
+settings.fullscreen.addEventListener('click', toggleFullscreen);
 
 function getUsedIcons() {
   const icons = document.querySelectorAll('mat-icon');

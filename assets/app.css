@@ -45,7 +45,7 @@ mat-icon {
   font-family: 'Material Symbols Rounded', 'Work Sans';
   font-weight: normal;
   font-style: normal;
-  font-size: 2rem;
+  font-size: 1.7rem;
   line-height: 1;
   letter-spacing: normal;
   text-transform: none;
@@ -503,7 +503,6 @@ button.fab {
   padding-block: 0.6rem;
   padding-inline: 0.6rem 0.8rem;
   background: var(--fab);
-  justify-content: flex-end;
 }
 
 @media (hover: hover) {
