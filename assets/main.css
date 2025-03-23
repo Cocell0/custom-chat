@@ -107,6 +107,7 @@ main>* {
     transform: translateX(-100%);
     transition: opacity 280ms, transform 280ms cubic-bezier(.4, .8, 0, 1);
     z-index: 1999;
+    background: var(--on-surface);
   }
 
   #app.app-navigation-toggle .backdrop {

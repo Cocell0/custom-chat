@@ -45,7 +45,7 @@ mat-icon {
   font-family: 'Material Symbols Rounded', 'Work Sans';
   font-weight: normal;
   font-style: normal;
-  font-size: 1.7rem;
+  font-size: 1.6rem;
   line-height: 1;
   letter-spacing: normal;
   text-transform: none;
@@ -517,7 +517,7 @@ button.fab:active {
 
 button.fab .text {
   width: auto;
-  transition: width 0.15s ease-in-out, gap 0.15s;
+  transition: width 0.05s ease-in-out, gap 0.05s;
   white-space: nowrap;
   overflow: hidden;
 }
