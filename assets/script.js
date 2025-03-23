@@ -78,6 +78,24 @@ const system = {
       };
     });
   },
+  get: (key) => {
+    return new Promise((resolve, reject) => {
+      const transaction = system.db.transaction('customChats', 'readonly');
+      const store = transaction.objectStore('customChats');
+      const request = store.get(key);
+
+      request.onerror = (event) => {
+        reject('Error in loading chat: ' + event.target.error);
+      };
+      transaction.onabort = (event) => {
+        reject(event.target.error);
+      };
+
+      request.onsuccess = () => {
+        resolve(request.result);
+      };
+    });
+  },
   delete: (channel) => {
     const transaction = system.db.transaction('customChats', 'readwrite');
     const store = transaction.objectStore('customChats');
@@ -116,6 +134,7 @@ class CustomChat {
       throw 'Name must be a string.';
     }
 
+    this.id = numericUUID();
     this.version = 'v1.0.0';
     /* This is the type. I defined a type to distinguish
      this from the system chats that are predefined. */
@@ -136,13 +155,22 @@ class CustomChat {
   }
 }
 
-const systemDBOpenRequest = indexedDB.open('systemDB', 1);
+const systemDBOpenRequest = indexedDB.open('systemDB', 2);
 
 systemDBOpenRequest.onerror = (event) => {
   console.error('Database error:', event);
 };
 systemDBOpenRequest.onsuccess = (event) => {
   system.db = event.target.result;
+
+  const chatKey = new URLSearchParams(location.search).get('chat');
+
+  if (chatKey) {
+    system.get(chatKey)
+      .then(chat => openChat(chat))
+      .catch(error => console.log(error))
+  }
+
   system.load()
     .then(chats => {
       if (chatsStack.length == 0) {
@@ -163,8 +191,11 @@ systemDBOpenRequest.onsuccess = (event) => {
 systemDBOpenRequest.onupgradeneeded = (event) => {
   const db = event.target.result;
 
-  if (!db.objectStoreNames.contains('customChats')) {
-    db.createObjectStore('customChats', { keyPath: 'channel' });
+  if (db.objectStoreNames.contains('customChats')) {
+    db.deleteObjectStore('customChats');
+    db.createObjectStore('customChats', { keyPath: 'id' });
+  } else {
+    db.createObjectStore('customChats', { keyPath: 'id' });
   }
 };
 
