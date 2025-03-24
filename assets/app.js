@@ -63,15 +63,15 @@ app.themes.forEach((theme) => {
   });
 });
 
-function toggleFullscreen() {
+function fullscreen(element) {
   if (!document.fullscreenElement) {
     const requestFullscreen =
-      document.documentElement.requestFullscreen ||
-      document.documentElement.mozRequestFullScreen ||
-      document.documentElement.webkitRequestFullscreen ||
-      document.documentElement.msRequestFullscreen;
+      element.requestFullscreen ||
+      element.mozRequestFullScreen ||
+      element.webkitRequestFullscreen ||
+      element.msRequestFullscreen;
 
-    if (requestFullscreen) requestFullscreen.call(document.documentElement);
+    if (requestFullscreen) requestFullscreen.call(element);
   } else {
     const exitFullscreen =
       document.exitFullscreen ||
@@ -82,7 +82,10 @@ function toggleFullscreen() {
     if (exitFullscreen) exitFullscreen.call(document);
   }
 };
-settings.fullscreen.addEventListener('click', toggleFullscreen);
+settings.fullscreen.addEventListener('click', () => {
+  settings.$.closeModal();
+  fullscreen(document.documentElement);
+});
 
 function getUsedIcons() {
   const icons = document.querySelectorAll('mat-icon');

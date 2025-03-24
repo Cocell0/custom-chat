@@ -1,17 +1,17 @@
 name: Deploy with Puppeteer
 
 on:
-  schedule:
-    - cron: "0 */8 * * *"
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    tags:
-      - "*"
-  release:
-    types:
-      - published
+  # schedule:
+  #   - cron: "0 */8 * * *"
+  # push:
+  #   branches:
+  #     - main
+  #   tags:
+  #     - "*"
+  # release:
+  #   types:
+  #     - published
 
 jobs:
   deploy:

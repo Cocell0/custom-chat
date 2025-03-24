@@ -207,7 +207,7 @@ function openChat(chat) {
     if (customChannel !== chat.channel) {
       customChannel = chat.channel;
       customLabel = chat.name;
-      chatContainer.innerHTML = cp(custom);
+      chatContainer.innerHTML = __c__(custom);
     }
   } else {
     console.log(`\n\n$ Open chat\nName: ${chat.name}\nChannel: ${chat.channel}\n\n`)
@@ -243,7 +243,7 @@ function renderChat(chat) {
   modalElements.action.classList.add('action');
 
   modalElements.content.classList.add('content');
-  
+
   modalElements.controls.name.value = chat.name;
 
   modalElements.content.appendChild(modalElements.controls.name);
@@ -252,7 +252,7 @@ function renderChat(chat) {
 
 
   const card = document.createElement('div');
-  const button = document.createElement('button');
+  const button = document.createElement('a');
   const editButton = document.createElement('button');
   const icon = document.createElement('mat-icon');
   const editIcon = document.createElement('mat-icon');
@@ -263,9 +263,15 @@ function renderChat(chat) {
 
   card.classList.add('card');
   button.type = 'button';
+  button.role = 'button';
   button.classList.add('main-button');
   button.ariaLabel = chat.name || 'Unknown Chat';
   name.classList.add('name');
+  if (chat.type == 'system') {
+    button.href = '';
+  } else {
+    button.href = '?chat=' + chat.id;
+  }
 
   editButton.type = 'button';
   editButton.classList.add('edit-button');
@@ -305,7 +311,18 @@ function renderChat(chat) {
     chat.name = nameInput.value;
     name.innerText = nameInput.value;
   });
-  button.addEventListener('click', () => openChat(chat));
+  button.addEventListener('keydown', (e) => {
+    if (e.key == ' ') {
+      e.preventDefault()
+      const event = new Event('click');
+      button.dispatchEvent(event)
+    }
+  });
+  button.addEventListener('click', (e) => {
+    e.preventDefault()
+
+    openChat(chat)
+  });
   modalElements.controls.close.addEventListener('click', () => modal.closeModal())
   modalElements.controls.delete.addEventListener('click', () => {
     if (confirm(`Are you sure you want to delete "${chat.name}" chat?`)) {
@@ -528,19 +545,24 @@ const comments = [
 //   commentElement.appendChild(commentMessage);
 //   container.appendChild(commentElement);
 // })
-// chatPicker.addEventListener('focusin', () => {
-//   SpatialNavigation.add('chat-picker', {
-//     selector: '#chat-picker button'
-//   });
+chatPicker.addEventListener('focusin', () => {
+  SpatialNavigation.add('chat-picker', {
+    selector: '#chat-picker a'
+  });
+});
+chatPicker.addEventListener('focusout', () => {
+  SpatialNavigation.remove('chat-picker');
+});
 
-//   chatPicker.addEventListener('keydown', (event) => {
-//     if (event.key = 'Tab' && !event.shiftKey) {
-//       document.querySelector("#app-interface > header > button:nth-child(1)").focus()
-//     }
-//   }, { once: true })
-// });
-// chatPicker.addEventListener('focusout', () => {
-//   SpatialNavigation.remove('chat-picker');
-// });
+chatPicker.addEventListener('keydown', (e) => {
+  let links = chatPicker.querySelectorAll('a');
+  if (!links.length) return;
+
+  if (document.activeElement === links[0] && e.key === 'ArrowUp') {
+    chatPicker.parentElement.scrollTop = 0;
+  } else if (document.activeElement === links[links.length - 1] && e.key === 'ArrowDown') {
+    chatPicker.parentElement.scrollTop = chatPicker.parentElement.scrollHeight;
+  }
+}, { passive: true });
 
 document.documentElement.setAttribute('data-theme', 'Warm Dark');

@@ -201,15 +201,18 @@ textarea {
   resize: vertical;
 }
 
-button {
+button,
+a {
   cursor: pointer;
 }
 
-button[disabled] {
+button:disabled,
+a:disabled {
   cursor: default;
 }
 
-button:not([disabled]) {
+button:not(:disabled),
+a[role=button]:not(:disabled) {
   color: var(--text-tonal);
 }
 
@@ -361,7 +364,8 @@ legend {
 /* --- */
 
 /* Components */
-button {
+button,
+a[role=button] {
   color: var(--button-text);
   display: inline-flex;
   min-width: 44px;
@@ -378,7 +382,12 @@ button {
   outline: none;
 }
 
-button::before {
+a[role=button] {
+  text-decoration: none;
+}
+
+button::before,
+a[role=button]::before {
   content: '';
   position: absolute;
   inset: 0;
@@ -390,7 +399,8 @@ a:focus-visible {
   animation: var(--outline-animation);
 }
 
-button mat-icon {
+button mat-icon,
+a[role=button] mat-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -399,7 +409,8 @@ button mat-icon {
   flex-shrink: 0;
 }
 
-button.icon-button {
+button.icon-button,
+a[role=button].icon-button {
   height: 44px;
   width: 44px;
   max-height: 44px;
@@ -407,7 +418,8 @@ button.icon-button {
   padding: 6px;
 }
 
-button.outlined::after {
+button.outlined::after,
+a[role=button].outlined::after {
   content: '';
   inset: 0;
   position: absolute;
@@ -417,31 +429,34 @@ button.outlined::after {
 }
 
 button,
-button.icon,
-button.outlined {
+button.icon-button,
+button.outlined,
+a[role=button],
+a[role=button].icon-button,
+a[role=button].outlined {
   --button-hovered: var(--hovered);
   --button-pressed: var(--pressed);
 }
 
-button.tonal {
+button.tonal,
+a[role=button].tonal {
   --button-hovered: var(--tonal-hovered);
   --button-pressed: var(--tonal-pressed);
   --ripple: var(--tonal-ripple);
   background: var(--tonal);
 }
 
-button.filled {
+button.filled,
+a[role=button].filled {
   --button-hovered: var(--filled-hovered);
   --button-pressed: var(--filled-pressed);
   --ripple: var(--filled-ripple);
   background: var(--filled);
-}
-
-button.filled {
   color: var(--filled-color);
 }
 
-button.elevated {
+button.elevated,
+a[role=button].elevated {
   --button-hovered: var(--elevated-hovered);
   --button-pressed: var(--elevated-pressed);
   background: var(--elevated);
@@ -449,54 +464,67 @@ button.elevated {
 }
 
 @media (hover: hover) {
-  button:hover {
+
+  button:hover,
+  a[role=button]:hover {
     background: var(--button-hovered);
   }
 
-  button.tonal:hover {
+  button.tonal:hover,
+  a[role=button].tonal:hover {
     box-shadow: 0 2px 3px var(--tonal-shadow, gray);
   }
 
-  button.filled:hover {
+  button.filled:hover,
+  a[role=button].filled:hover {
     box-shadow: 0 2px 4px var(--filled-shadow, gray);
   }
 
-  button.elevated:hover {
+  button.elevated:hover,
+  a[role=button].elevated:hover {
     box-shadow: 0 3px 8px var(--elevated-shadow-front), 0 4px 4px var(--elevated-shadow-back);
   }
 }
 
-button:active {
+button:active,
+a[role=button]:active {
   background: var(--button-pressed);
 }
 
-button.tonal:active {
+button.tonal:active,
+a[role=button].tonal:active {
   box-shadow: 0 0 transparent;
 }
 
-button.filled:active {
+button.filled:active,
+a[role=button].filled:active {
   box-shadow: 0 0 transparent;
 }
 
-button.elevated:active {
+button.elevated:active,
+a[role=button].elevated:active {
   box-shadow: 0 2px 6px var(--elevated-shadow-front);
 }
 
-button[disabled] {
+button:disabled,
+a[role=button]:disabled {
   background: transparent;
   box-shadow: none !important;
   color: var(--disabled-text) !important;
 }
 
-button[disabled]:not(.icon):not(.text):not(.outlined) {
+button:disabled:not(.icon-button):not(.outlined),
+a[role=button]:disabled:not(.icon-button):not(.outlined) {
   background: var(--disabled);
 }
 
-button.outlined[disabled]::before {
+button.outlined[disabled]::before,
+a[role=button].outlined[disabled]::before {
   border-color: var(--disabled-outline);
 }
 
-button.fab {
+button.fab,
+a[role=button].fab {
   min-height: 56px;
   min-width: 56px;
   border-radius: 1rem;
@@ -506,28 +534,33 @@ button.fab {
 }
 
 @media (hover: hover) {
-  button.fab:hover {
+  button.fab:hover,
+  a[role=button].fab:hover {
     background: var(--fab-hovered);
   }
 }
 
-button.fab:active {
+button.fab:active,
+a[role=button].fab:active {
   background: var(--fab-pressed);
 }
 
-button.fab .text {
+button.fab .text,
+a[role=button].fab .text {
   width: auto;
   transition: width 0.05s ease-in-out, gap 0.05s;
   white-space: nowrap;
   overflow: hidden;
 }
 
-button.fab.hide-text {
+button.fab.hide-text,
+a[role=button].fab.hide-text {
   padding: 0.6rem;
   gap: 0;
 }
 
-button.fab.hide-text .text {
+button.fab.hide-text .text,
+a[role=button].fab.hide-text {
   width: 0;
 }
 
