@@ -243,6 +243,8 @@ function renderChat(chat) {
   modalElements.action.classList.add('action');
 
   modalElements.content.classList.add('content');
+  
+  modalElements.controls.name.value = chat.name;
 
   modalElements.content.appendChild(modalElements.controls.name);
   modalElements.content.appendChild(modalElements.channel);

@@ -147,3 +147,42 @@
   --secondary: hsl(67, 59%, 33%);
   --accent: hsl(89, 59%, 55%);
 }
+
+:root[data-theme="Table Dark"] { 
+  /* Universal values: */
+  color-scheme: dark;
+  --error: hsl(7, 100%, 54%);  
+  --success: hsl(133, 80%, 46%);
+  --selection-background: var(--primary);
+
+  --fab: var(--primary);
+  --fab-hovered: hsl(244, 38%, 15%);
+  --fab-pressed: hsl(244, 38%, 20%);
+  
+  --filled: hsl(200, 100%, 64%);           /* Create button fill color */
+  --filled-color: hsl(22 42% 0%);         /* Create button text color */
+  --filled-hovered: hsl(234, 53%, 41%);   /* Create button fill color when hovered */
+  --filled-pressed: hsl(234, 53%, 25%);   /* Create button fill color when pressed */
+  --filled-ripple: hsl(32 34% 14%);       /* ??? */
+  --filled-shadow: hsl(234, 53%, 90%);   /* Outline of create button when pressed */
+  
+  --primary-100: hsl(227, 49%, 13%);      /* Scroll bars */
+  --primary-200: hsl(227, 49%, 23%);      /* Scroll bars when hovered */ 
+  
+  --button-hover: hsl(32 16% 16%);        /* Outlines of certain buttons when hovered */
+  --hovered: hsl(236, 35%, 15%);          /* Button color when hovered */
+  --pressed: hsl(236, 35%, 22%);          /* Button color when pressed */
+  
+  --text: hsl(231, 100%, 92%);            /* Color of most text */
+  --background: hsl(240, 20%, 4%);        /* Background color of most of the page */
+  --primary: hsl(244, 58%, 11%);
+  --secondary: hsl(245, 65%, 7%);
+  --accent: hsl(242, 45%, 34%);
+
+  --surface: hsl(240, 64%, 4%);           /* UI background */
+  --on-surface: hsla(0, 10%, 6%, 0.6);    /* Behind the UI background */
+  --overlay-shadow: transparent;          /* ??? */
+
+  /* Annotated as best as I know to assist further theme creation */
+  /* All comments within this theme are from me, Table. */
+}  

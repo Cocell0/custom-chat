@@ -28,6 +28,10 @@ const app = {
     {
       name: 'Nightly Garden',
       description: 'A dark theme with warm and soft toned colors.'
+    },
+    {
+      name: 'Table Dark',
+      description: "A dark theme with cool, blue and purple shades."
     }
   ],
   iconAxeConfig: ':opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200',
