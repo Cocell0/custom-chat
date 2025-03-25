@@ -244,6 +244,7 @@ function renderChat(chat) {
       delete: document.createElement('button'),
       close: document.createElement('button'),
       name: document.createElement('input'),
+      share: document.createElement('button'),
     },
     contentWrapper: document.createElement('div'),
     content: document.createElement('div'),
@@ -271,6 +272,7 @@ function renderChat(chat) {
   modalElements.content.appendChild(modalElements.controls.name);
   modalElements.content.appendChild(modalElements.channel);
   modalElements.action.appendChild(modalElements.controls.close);
+  modalElements.action.appendChild(modalElements.controls.share);
 
 
   const card = document.createElement('div');
@@ -314,6 +316,7 @@ function renderChat(chat) {
   editButton.appendChild(editIcon);
 
   modalElements.controls.close.innerText = 'Close';
+  modalElements.controls.share.innerText = 'Share';
 
   card.appendChild(button);
   card.appendChild(editButton);
@@ -349,6 +352,9 @@ function renderChat(chat) {
       system.delete(chat.channel);
     }
   });
+  modalElements.controls.share.addEventListener('click', () => {
+    console.log(`?share=${encodeURIComponent(JSON.stringify(chat))}`)
+  })
   editButton.addEventListener('click', () => modal.openModal());
 
   chatPicker.appendChild(card);
