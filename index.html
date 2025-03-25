@@ -81,12 +81,15 @@
         aria-label="Exit Global Settings">
         <mat-icon>close</mat-icon>
       </button>
-      <button type="button" class="fullscreen" aria-label="Toggle Fullscreen">
-        <mat-icon>fullscreen</mat-icon>
-        Fullscreen
-      </button>
     </div>
     <div class="content overflow-auto" style="padding: var(--space-S);">
+
+      <div class="flex-row flex-*1">
+        <button type="button" class="fullscreen" aria-label="Toggle Fullscreen">
+          <mat-icon>fullscreen</mat-icon>
+          Fullscreen
+        </button>
+      </div>
       <div class="flex-column" id="theme-selection">Please wait, the themes are loading.</div>
     </div>
   </dialog>
@@ -97,7 +100,8 @@
         <h3 class="text-center" style="margin-bottom: 1.6rem;">Add new chat</h3>
         <div style="margin-bottom: 0.6rem;" class="flex-column">
           <label for="custom-chat-name">Name:</label>
-          <input type="text" id="custom-chat-name" name="custom-chat-name" placeholder="Channel name" style="padding-inline: 0;" autocomplete="off">
+          <input type="text" id="custom-chat-name" name="custom-chat-name" placeholder="Channel name"
+            style="padding-inline: 0;" autocomplete="off">
           <p class="highlight"></p>
         </div>
       </div>
