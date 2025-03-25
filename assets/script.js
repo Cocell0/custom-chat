@@ -9,11 +9,16 @@ const elements = {
     heading: document.getElementById('display-channel-name'),
   },
   __customChatModal__: document.querySelector('#custom-chat-modal'),
-
   get customChatModal() {
     return this.__customChatModal__;
-  }
+  },
+  __toolbar__: document.querySelector('#app-toolbar'),
+  get toolbar() {
+    return this.__toolbar__;
+  },
 };
+
+elements.toolbar.add = elements.toolbar.querySelector('.add-custom-chat-button-small')
 
 elements.customChatModal.nameInput = elements.customChatModal.querySelector('#custom-chat-name');
 elements.customChatModal.highlight = elements.customChatModal.querySelector('p.highlight');
@@ -357,9 +362,10 @@ function renderInterface() {
 }
 
 elements.chat.add.addEventListener('click', () => {
-  if (!elements.customChatModal.hasAttribute('open')) {
-    elements.customChatModal.openModal();
-  }
+  elements.customChatModal.openModal();
+})
+elements.toolbar.add.addEventListener('click', () => {
+  elements.customChatModal.openModal();
 })
 let customChat;
 
@@ -560,7 +566,10 @@ const comments = [
 // })
 chatPicker.addEventListener('focusin', () => {
   SpatialNavigation.add('chat-picker', {
-    selector: '#chat-picker a, #chat-picker button'
+    selector: '#chat-picker a, #chat-picker button',
+    leaveFor: {
+      left: "#app-toolbar > button",
+    }
   });
 });
 chatPicker.addEventListener('focusout', () => {
