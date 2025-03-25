@@ -353,7 +353,11 @@ function renderChat(chat) {
     }
   });
   modalElements.controls.share.addEventListener('click', () => {
-    console.log(`?share=${encodeURIComponent(JSON.stringify(chat))}`)
+    const a = document.createElement('a');
+
+    a.href = `?import=${encodeURIComponent(JSON.stringify(chat))}`;
+    a.innerText = chat.name;
+    modalElements.content.appendChild(a);
   })
   editButton.addEventListener('click', () => modal.openModal());
 
@@ -603,3 +607,12 @@ chatPicker.addEventListener('keydown', (e) => {
 }, { passive: true });
 
 document.documentElement.setAttribute('data-theme', 'Warm Dark');
+
+const importChat = new URLSearchParams(location.search).get('import');
+
+if (importChat) {
+  system.add(decodeURIComponent(JSON.parse(importChat)));
+  renderChat(decodeURIComponent(JSON.parse(importChat)));
+
+  openChat(decodeURIComponent(JSON.parse(importChat)));
+}
