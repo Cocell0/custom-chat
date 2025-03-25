@@ -871,7 +871,7 @@ label:has(input[is=c-tab]:checked) {
   flex-direction: column;
 }
 
-.flex-\*1 * {
+.flex-\*1>* {
   flex: 1;
 }
 
