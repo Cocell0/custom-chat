@@ -1,4 +1,7 @@
-// Elements
+if (window.location.href.includes('perchance.org/custom-chat')) {
+  document.baseURI += 'custom-chat';
+}
+
 const elements = {
   navigation: document.querySelector('#app-navigation'),
   chat: {
@@ -163,12 +166,24 @@ systemDBOpenRequest.onerror = (event) => {
 systemDBOpenRequest.onsuccess = (event) => {
   system.db = event.target.result;
 
-  const chatKey = new URLSearchParams(location.search).get('chat');
+  const chatKey = new URLSearchParams(location.search).get('c');
 
   if (chatKey) {
-    system.get(chatKey)
-      .then(chat => openChat(chat))
-      .catch(error => console.log(error))
+    const isUUID = /^[0-9]{8}-[0-9]{4}-4[0-9]{3}-[0-9]{4}-[0-9]{12}$/.test(chatKey);
+
+    if (isUUID) {
+      system.get(chatKey)
+        .then(chat => openChat(chat))
+        .catch(error => console.log(error));
+    } else {
+      const chat = chats.find(chat => chat.channel === chatKey);
+
+      if (chat) {
+        openChat(chat);
+      } else {
+        alert(`Chat "${chatKey}" not found.`);
+      }
+    }
   }
 
   system.load()
@@ -213,6 +228,8 @@ function openChat(chat) {
     console.log(`\n\n$ Open chat\nName: ${chat.name}\nChannel: ${chat.channel}\n\n`)
   }
   elements.chat.heading.innerText = chat.name;
+  document.querySelector("body > h1").innerText = chat.name;
+  document.title = chat.name;
 }
 
 function renderChat(chat) {
@@ -267,11 +284,7 @@ function renderChat(chat) {
   button.classList.add('main-button');
   button.ariaLabel = chat.name || 'Unknown Chat';
   name.classList.add('name');
-  if (chat.type == 'system') {
-    button.href = '';
-  } else {
-    button.href = '?chat=' + chat.id;
-  }
+  button.href = '?c=' + (chat.id ?? chat.channel);
 
   editButton.type = 'button';
   editButton.classList.add('edit-button');
@@ -313,15 +326,15 @@ function renderChat(chat) {
   });
   button.addEventListener('keydown', (e) => {
     if (e.key == ' ') {
-      e.preventDefault()
-      const event = new Event('click');
-      button.dispatchEvent(event)
+      e.preventDefault();
+      openChat(chat);
     }
   });
   button.addEventListener('click', (e) => {
-    e.preventDefault()
-
-    openChat(chat)
+    if (!e.ctrlKey) {
+      e.preventDefault();
+      openChat(chat);
+    }
   });
   modalElements.controls.close.addEventListener('click', () => modal.closeModal())
   modalElements.controls.delete.addEventListener('click', () => {
@@ -547,12 +560,21 @@ const comments = [
 // })
 chatPicker.addEventListener('focusin', () => {
   SpatialNavigation.add('chat-picker', {
-    selector: '#chat-picker a'
+    selector: '#chat-picker a, #chat-picker button'
   });
 });
 chatPicker.addEventListener('focusout', () => {
   SpatialNavigation.remove('chat-picker');
 });
+
+// settings.$.addEventListener('focusin', () => {
+//   SpatialNavigation.add('settings', {
+//     selectors: 'button'
+//   });
+// });
+// settings.$.addEventListener('focusout', () => {
+//   SpatialNavigation.remove('settings');
+// });
 
 chatPicker.addEventListener('keydown', (e) => {
   let links = chatPicker.querySelectorAll('a');
