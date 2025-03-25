@@ -1,0 +1,3 @@
+#!/bin/bash
+filo index.html
+prettier --write --parser html --ignore-path .prettierignore "filo-index.html"
