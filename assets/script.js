@@ -174,9 +174,9 @@ systemDBOpenRequest.onsuccess = (event) => {
   const chatKey = new URLSearchParams(location.search).get('c');
 
   if (chatKey) {
-    const isUUID = /^[0-9]{8}-[0-9]{4}-4[0-9]{3}-[0-9]{4}-[0-9]{12}$/.test(chatKey);
+    const isID = /^(?=(?:[^-]*-){4,})[0-9-]{32,}$/.test(chatKey);
 
-    if (isUUID) {
+    if (isID) {
       system.get(chatKey)
         .then(chat => openChat(chat))
         .catch(error => console.log(error));
