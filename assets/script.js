@@ -1,5 +1,5 @@
 if (window.location.href.includes('perchance.org/custom-chat')) {
-  document.baseURI += 'custom-chat';
+  document.querySelector('base').href += 'custom-chat';
 }
 
 const elements = {
@@ -18,7 +18,8 @@ const elements = {
   },
 };
 
-elements.toolbar.add = elements.toolbar.querySelector('.add-custom-chat-button-small')
+elements.toolbar.add = elements.toolbar.querySelector('.add-custom-chat-button-small');
+elements.toolbar.share = elements.toolbar.querySelector('#share')
 
 elements.customChatModal.nameInput = elements.customChatModal.querySelector('#custom-chat-name');
 elements.customChatModal.highlight = elements.customChatModal.querySelector('p.highlight');
@@ -54,6 +55,7 @@ const chats = [
 let chatsStack = [];
 
 const system = {
+  currentChat: undefined,
   db: undefined,
   channel: new BroadcastChannel('system'),
   add: (customChat) => {
@@ -163,66 +165,16 @@ class CustomChat {
   }
 }
 
-const systemDBOpenRequest = indexedDB.open('systemDB', 2);
-
-systemDBOpenRequest.onerror = (event) => {
-  console.error('Database error:', event);
-};
-systemDBOpenRequest.onsuccess = (event) => {
-  system.db = event.target.result;
-
-  const chatKey = new URLSearchParams(location.search).get('c');
-
-  if (chatKey) {
-    const isID = /^(?=(?:[^-]*-){4,})[0-9-]{32,}$/.test(chatKey);
-
-    if (isID) {
-      system.get(chatKey)
-        .then(chat => openChat(chat))
-        .catch(error => console.log(error));
-    } else {
-      const chat = chats.find(chat => chat.channel === chatKey);
-
-      if (chat) {
-        openChat(chat);
-      } else {
-        alert(`Chat "${chatKey}" not found.`);
-      }
-    }
-  }
-
-  system.load()
-    .then(chats => {
-      if (chatsStack.length == 0) {
-        chatsStack = chats;
-      } else {
-        for (const chat of chats) {
-          if (!chatsStack.some(existingChat => existingChat.channel === chat.channel)) {
-            chatsStack.push(chat);
-          }
-        }
-      }
-      renderInterface();
-    })
-    .catch(error => {
-      console.error('Error loading chats:', error);
-    });
-};
-systemDBOpenRequest.onupgradeneeded = (event) => {
-  const db = event.target.result;
-
-  if (db.objectStoreNames.contains('customChats')) {
-    db.deleteObjectStore('customChats');
-    db.createObjectStore('customChats', { keyPath: 'id' });
-  } else {
-    db.createObjectStore('customChats', { keyPath: 'id' });
-  }
-};
-
 function slugify(source) {
   return source.toLowerCase().replace(/[^a-z0-9]/g, '-');
 }
 function openChat(chat) {
+  const event = new Event('open-chat');
+  event.channel = chat.channel;
+  system.currentChat = chat;
+
+  window.dispatchEvent(event);
+
   if (window.location.href.includes('perchance.org/custom-chat')) {
     if (customChannel !== chat.channel) {
       customChannel = chat.channel;
@@ -236,7 +188,6 @@ function openChat(chat) {
   document.querySelector("body > h1").innerText = chat.name;
   document.title = chat.name;
 }
-
 function renderChat(chat) {
   const modal = document.createElement('dialog', { is: 'c-modal' });
   const modalElements = {
@@ -272,8 +223,10 @@ function renderChat(chat) {
   modalElements.content.appendChild(modalElements.controls.name);
   modalElements.content.appendChild(modalElements.channel);
   modalElements.action.appendChild(modalElements.controls.close);
-  modalElements.action.appendChild(modalElements.controls.share);
 
+  if (chat.type !== 'system') {
+    modalElements.action.appendChild(modalElements.controls.share);
+  }
 
   const card = document.createElement('div');
   const button = document.createElement('a');
@@ -289,9 +242,14 @@ function renderChat(chat) {
   button.type = 'button';
   button.role = 'button';
   button.classList.add('main-button');
+
+  if (system.currentChat === chat) {
+    button.classList.add('active');
+  }
+
   button.ariaLabel = chat.name || 'Unknown Chat';
   name.classList.add('name');
-  button.href = '?c=' + (chat.id ?? chat.channel);
+  button.href = '?open=' + (chat.id ?? chat.channel);
 
   editButton.type = 'button';
   editButton.classList.add('edit-button');
@@ -328,6 +286,15 @@ function renderChat(chat) {
     modalElements.action.appendChild(modalElements.controls.delete);
   }
 
+  window.addEventListener('open-chat', (e) => {
+    if (button.classList.contains('active')) {
+      button.classList.remove('active');
+    }
+
+    if (e.channel === chat.channel) {
+      button.classList.add('active');
+    }
+  })
   nameInput.addEventListener('input', () => {
     chat.name = nameInput.value;
     name.innerText = nameInput.value;
@@ -363,13 +330,67 @@ function renderChat(chat) {
 
   chatPicker.appendChild(card);
 }
-
 function renderInterface() {
   chatPicker.innerHTML = '';
 
   chats.forEach((chat) => renderChat(chat));
   chatsStack.forEach((chat) => renderChat(chat));
 }
+
+const systemDBOpenRequest = indexedDB.open('systemDB', 2);
+
+systemDBOpenRequest.onerror = (event) => {
+  console.error('Database error:', event);
+};
+systemDBOpenRequest.onsuccess = (event) => {
+  system.db = event.target.result;
+
+  const openKey = new URLSearchParams(location.search).get('open');
+
+  if (openKey) {
+    const isID = /^(?=(?:[^-]*-){4,})[0-9-]{32,}$/.test(openKey);
+
+    if (isID) {
+      system.get(openKey)
+        .then(chat => openChat(chat))
+        .catch(error => alert(`Chat not found, make sure you have the proper access URL, and that the chat already exists in your device.`));
+    } else {
+      const chat = chats.find(chat => chat.channel === openKey);
+      try {
+        openChat(chat);
+      } catch {
+        alert(`Chat not found, make sure you have the proper access URL, and that the chat already exists in your device.`)
+      }
+    }
+  }
+
+  system.load()
+    .then(chats => {
+      if (chatsStack.length == 0) {
+        chatsStack = chats;
+      } else {
+        for (const chat of chats) {
+          if (!chatsStack.some(existingChat => existingChat.channel === chat.channel)) {
+            chatsStack.push(chat);
+          }
+        }
+      }
+      renderInterface();
+    })
+    .catch(error => {
+      console.error('Error loading chats:', error);
+    });
+};
+systemDBOpenRequest.onupgradeneeded = (event) => {
+  const db = event.target.result;
+
+  if (db.objectStoreNames.contains('customChats')) {
+    db.deleteObjectStore('customChats');
+    db.createObjectStore('customChats', { keyPath: 'id' });
+  } else {
+    db.createObjectStore('customChats', { keyPath: 'id' });
+  }
+};
 
 elements.chat.add.addEventListener('click', () => {
   elements.customChatModal.openModal();
@@ -387,7 +408,7 @@ elements.customChatModal.nameInput.addEventListener(('input'), () => {
   }
   try {
     customChat = new CustomChat(elements.customChatModal.nameInput.value);
-    elements.customChatModal.highlight.innerText = `Channel:\n${customChat.channel}`;
+    elements.customChatModal.highlight.innerText = `Channel:\n${customChat.channel}\nLocal ID:\n${customChat.id}`;
     elements.customChatModal.highlight.style.color = '';
     elements.customChatModal.highlight.style.fontFamily = 'var(--font-mono)';
   } catch (error) {
@@ -611,8 +632,8 @@ document.documentElement.setAttribute('data-theme', 'Warm Dark');
 const importChat = new URLSearchParams(location.search).get('import');
 
 if (importChat) {
-  system.add(decodeURIComponent(JSON.parse(importChat)));
-  renderChat(decodeURIComponent(JSON.parse(importChat)));
-
-  openChat(decodeURIComponent(JSON.parse(importChat)));
+  const chat = JSON.parse(importChat);
+  // system.add(chat);
+  // renderChat(chat);
+  // openChat(chat);
 }
