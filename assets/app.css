@@ -620,7 +620,7 @@ dialog {
   border-radius: 26px;
   padding: var(--space-L);
   background: var(--surface);
-  height: clamp(140px, 362px, 980px);
+  height: clamp(140px, 446px, 980px);
   width: clamp(240px, 524px, 760px);
 
   .head {
