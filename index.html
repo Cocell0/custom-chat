@@ -46,7 +46,7 @@
     </div>
     <div id="app-interface">
       <div role="toolbar" id="app-toolbar" class="app-bar" role="banner" aria-label="Application Bar">
-        <button type="button" aria-label="Share Current Chat">
+        <button type="button" id="share" aria-label="Share Current Chat">
           <mat-icon>share</mat-icon>
           <span aria-hidden="true">Share</span>
         </button>
@@ -93,7 +93,6 @@
       <div class="flex-column" id="theme-selection">Please wait, the themes are loading.</div>
     </div>
   </dialog>
-
   <dialog is="c-modal" aria-label="Add New Chat" id="custom-chat-modal" variant="content-action">
     <div class="overflow-auto flex-column">
       <div class="content">
@@ -108,6 +107,19 @@
       <div class="flex-row flex-*1 action">
         <button type="button" class="close-button">Close</button>
         <button type="button" class="filled add" disabled>Add</button>
+      </div>
+    </div>
+  </dialog>
+  <dialog is="c-modal" aria-labelledby="share" id="share-modal" variant="content-action">
+    <div class="overflow-auto flex-column">
+      <div class="content">
+        <h3 class="text-center" style="margin-bottom: 1.6rem;">Share Chat</h3>
+        <div style="margin-bottom: 0.6rem;" class="flex-column">
+          <p class="highlight">Share</p>
+        </div>
+      </div>
+      <div class="flex-row flex-*1 action">
+        <button type="button" class="close-button">Close</button>
       </div>
     </div>
   </dialog>
