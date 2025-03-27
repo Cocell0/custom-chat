@@ -7,6 +7,7 @@ const elements = {
   chat: {
     add: document.querySelector('#custom-chat-open-modal'),
     heading: document.getElementById('display-channel-name'),
+    share: document.getElementById('share-modal'),
   },
   __customChatModal__: document.querySelector('#custom-chat-modal'),
   get customChatModal() {
@@ -641,3 +642,8 @@ if (importChat) {
 window.addEventListener('open-chat', (e) => {
   elements.toolbar.share.hidden = false;
 });
+
+elements.chat.share.querySelector('button.close-button').addEventListener('click', () => elements.chat.share.closeModal());
+elements.toolbar.share.addEventListener('click', () => {
+  elements.chat.share.openModal();
+})
