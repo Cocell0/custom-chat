@@ -33,13 +33,12 @@ const app = {
       name: 'Table Dark',
       description: "A dark theme with cool, blue and purple shades."
     }
-  ]
+  ],
+  lastTheme: localStorage.getItem('lastTheme'),
 };
 
-const lastTheme = localStorage.getItem('lastTheme');
-
-if (lastTheme) {
-  document.documentElement.setAttribute('data-theme', lastTheme);
+if (app.lastTheme) {
+  document.documentElement.setAttribute('data-theme', app.lastTheme);
 } else {
   const prefersDarkmode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
@@ -47,7 +46,6 @@ if (lastTheme) {
 }
 
 themeSelection.innerHTML = '';
-
 
 app.themes.forEach((theme) => {
   const themeButton = document.createElement('button');
@@ -58,7 +56,7 @@ app.themes.forEach((theme) => {
 
   themeButton.addEventListener('click', () => {
     document.documentElement.setAttribute('data-theme', theme.name);
-    localStorage.setItem('lastTheme', theme.name);
+    localStorage.setItem('app.lastTheme', theme.name);
   });
 });
 
