@@ -637,3 +637,7 @@ if (importChat) {
   // renderChat(chat);
   // openChat(chat);
 }
+
+window.addEventListener('open-chat', (e) => {
+  elements.toolbar.share.hidden = false;
+});
