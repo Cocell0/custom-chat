@@ -33,8 +33,7 @@ const app = {
       name: 'Table Dark',
       description: "A dark theme with cool, blue and purple shades."
     }
-  ],
-  iconAxeConfig: ':opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200',
+  ]
 };
 
 const lastTheme = localStorage.getItem('lastTheme');
@@ -86,36 +85,6 @@ settings.fullscreen.addEventListener('click', () => {
   settings.$.closeModal();
   fullscreen(document.documentElement);
 });
-
-function getUsedIcons() {
-  const icons = document.querySelectorAll('mat-icon');
-  let iconList;
-  if (icons) {
-    iconList = new Set();
-    icons.forEach((item) => {
-      if (!iconList.has(item.innerHTML.trim())) {
-        iconList.add(item.innerHTML.trim());
-      }
-    });
-  }
-
-  return iconList;
-}
-
-const iconStyle = document.createElement('link');
-document.body.appendChild(iconStyle);
-
-function injectIcon() {
-  const iconList = getUsedIcons();
-
-  const iconNames = Array.from(iconList).sort().join(',');
-  const queryString = `&icon_names=${iconNames}`;
-  iconStyle.setAttribute('rel', 'stylesheet');
-
-  if (iconStyle.getAttribute('href') !== `https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded${app.iconAxeConfig}${queryString}`) {
-    iconStyle.setAttribute('href', `https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded${app.iconAxeConfig}${queryString}`)
-  }
-}
 
 function renderMD(source) {
   console.log(`Source:\n${source}`);
