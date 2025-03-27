@@ -177,7 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
   hamburger.style.fontSize = '1.5rem';
   hamburger.style.paddingBottom = '4px';
 
-  if (Math.random() <= 0.001) {
+  if (Math.random() <= 0.0005) {
     icon.remove()
     button.appendChild(hamburger);
   }
@@ -238,6 +238,8 @@ function toggleMenu() {
     if (currentWidth !== previousWidth) {
       if (window.innerWidth <= mediaPhone) {
         appBody.classList.remove(toggle);
+
+        menuButton.focus();
         appNavigationWrapper.setAttribute('inert', '');
         appNavigationWrapper.ariaHidden = true;
       } else {
@@ -256,10 +258,3 @@ function toggleMenu() {
     appNavigationWrapper.ariaHidden = true;
   }
 })();
-
-document.addEventListener('DOMContentLoaded', () => {
-  injectIcon();
-  setInterval(() => {
-    injectIcon();
-  }, 1000);
-});
