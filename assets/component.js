@@ -261,6 +261,17 @@ class MatIcon extends HTMLElement {
     matIcons.push(this.innerText);
     const cleaned = [...new Set(matIcons)];
     window.matIcons = cleaned.sort();
+
+    let link = document.head.querySelector('link.mat-icon');
+
+    if (link) {
+      link.href = `https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded${app.iconAxeConfig || ':opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200'}&icon_names=${window.matIcons}`;
+    } else {
+      link = document.createElement('link');
+      link.setAttribute('rel', 'stylesheet');
+      link.setAttribute('class', 'mat-icon');
+      document.head.appendChild(link);
+    }
   }
 }
 
