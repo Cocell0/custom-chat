@@ -1,12 +1,13 @@
 if (window.location.href.includes('perchance.org/custom-chat')) {
   document.querySelector('base').href += 'custom-chat';
 }
-
 const elements = {
   navigation: document.querySelector('#app-navigation'),
   chat: {
     add: document.querySelector('#custom-chat-open-modal'),
+    picker: document.querySelector('#chat-picker'),
     heading: document.getElementById('display-channel-name'),
+    container: document.querySelector('#chat-container'),
     share: document.getElementById('share-modal'),
   },
   __customChatModal__: document.querySelector('#custom-chat-modal'),
@@ -18,18 +19,12 @@ const elements = {
     return this.__toolbar__;
   },
 };
-
 elements.toolbar.add = elements.toolbar.querySelector('.add-custom-chat-button-small');
 elements.toolbar.share = elements.toolbar.querySelector('#share')
-
 elements.customChatModal.nameInput = elements.customChatModal.querySelector('#custom-chat-name');
 elements.customChatModal.highlight = elements.customChatModal.querySelector('p.highlight');
 elements.customChatModal.addButton = elements.customChatModal.querySelector('.add');
 
-const chatContainer = document.querySelector('#chat-container');
-const chatPicker = document.querySelector('#chat-picker');
-
-// The array of global chats to be available by default
 const chats = [
   {
     type: 'system',
@@ -52,9 +47,7 @@ const chats = [
     channel: 'feedback'
   }
 ];
-// An empty array to populate it with custom chat objects later
 let chatsStack = [];
-
 const system = {
   currentChat: undefined,
   db: undefined,
@@ -114,15 +107,6 @@ const system = {
     store.delete(channel);
   }
 }
-
-chatPicker.parentElement.addEventListener('scroll', () => {
-  if (chatPicker.parentElement.scrollTop >= 100) {
-    elements.chat.add.classList.add('hide-text');
-  } else {
-    elements.chat.add.classList.remove('hide-text');
-  }
-}, { passive: true })
-
 function numericUUID() {
   const uuid = crypto.randomUUID();
   const pattern = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -134,9 +118,8 @@ function numericUUID() {
     return characters;
   }).join('');
 }
-
 class CustomChat {
-  constructor(name) {
+  constructor(name, channel, timestamp) {
     if (!name) {
       throw 'Name cannot be empty.';
     } else if (!name.trim()) {
@@ -159,18 +142,18 @@ class CustomChat {
     I had to use this is because every chat is public, and
     the unique ID makes sure no one can just randomly
     access a private chat. */
-    this.channel = crypto.randomUUID();
-    this.timestamp = Date.now();
+    this.channel = channel || crypto.randomUUID();
+    this.timestamp = timestamp || Date.now();
     this.modified = null;
     this.records = [];
   }
 }
-
 function slugify(source) {
   return source.toLowerCase().replace(/[^a-z0-9]/g, '-');
 }
 function openChat(chat) {
   const event = new Event('open-chat');
+  event.chatType = chat.type;
   event.channel = chat.channel;
   system.currentChat = chat;
 
@@ -180,7 +163,7 @@ function openChat(chat) {
     if (customChannel !== chat.channel) {
       customChannel = chat.channel;
       customLabel = chat.name;
-      chatContainer.innerHTML = __c__(custom);
+      elements.chat.container.innerHTML = __c__(custom);
     }
   } else {
     console.log(`\n\n$ Open chat\nName: ${chat.name}\nChannel: ${chat.channel}\n\n`)
@@ -287,12 +270,12 @@ function renderChat(chat) {
     modalElements.action.appendChild(modalElements.controls.delete);
   }
 
-  window.addEventListener('open-chat', (e) => {
+  window.addEventListener('open-chat', (event) => {
     if (button.classList.contains('active')) {
       button.classList.remove('active');
     }
 
-    if (e.channel === chat.channel) {
+    if (event.channel === chat.channel) {
       button.classList.add('active');
     }
   })
@@ -300,15 +283,15 @@ function renderChat(chat) {
     chat.name = nameInput.value;
     name.innerText = nameInput.value;
   });
-  button.addEventListener('keydown', (e) => {
-    if (e.key == ' ') {
-      e.preventDefault();
+  button.addEventListener('keydown', (event) => {
+    if (event.key == ' ') {
+      event.preventDefault();
       openChat(chat);
     }
   });
-  button.addEventListener('click', (e) => {
-    if (!e.ctrlKey) {
-      e.preventDefault();
+  button.addEventListener('click', (event) => {
+    if (!event.ctrlKey) {
+      event.preventDefault();
       openChat(chat);
     }
   });
@@ -329,17 +312,15 @@ function renderChat(chat) {
   })
   editButton.addEventListener('click', () => modal.openModal());
 
-  chatPicker.appendChild(card);
+  elements.chat.picker.appendChild(card);
 }
 function renderInterface() {
-  chatPicker.innerHTML = '';
+  elements.chat.picker.innerHTML = '';
 
   chats.forEach((chat) => renderChat(chat));
   chatsStack.forEach((chat) => renderChat(chat));
 }
-
 const systemDBOpenRequest = indexedDB.open('systemDB', 2);
-
 systemDBOpenRequest.onerror = (event) => {
   console.error('Database error:', event);
 };
@@ -392,15 +373,13 @@ systemDBOpenRequest.onupgradeneeded = (event) => {
     db.createObjectStore('customChats', { keyPath: 'id' });
   }
 };
-
 elements.chat.add.addEventListener('click', () => {
   elements.customChatModal.openModal();
-})
+}, { passive: true });
 elements.toolbar.add.addEventListener('click', () => {
   elements.customChatModal.openModal();
-})
+}, { passive: true });
 let customChat;
-
 elements.customChatModal.nameInput.addEventListener(('input'), () => {
   if (elements.customChatModal.nameInput.value.trim() !== '') {
     elements.customChatModal.addButton.disabled = false;
@@ -417,7 +396,7 @@ elements.customChatModal.nameInput.addEventListener(('input'), () => {
     elements.customChatModal.highlight.style.color = 'var(--error)';
     elements.customChatModal.highlight.style.fontFamily = '';
   }
-})
+}, { passive: true });
 elements.customChatModal.addButton.addEventListener('click', () => {
   system.add(customChat)
     .then(() => {
@@ -436,15 +415,15 @@ elements.customChatModal.addButton.addEventListener('click', () => {
       elements.customChatModal.highlight.style.fontFamily = '';
       console.error('Error adding chat:', error);
     });
-});
+}, { passive: true });
 elements.customChatModal.addEventListener('click', (event) => {
   if (event.target === elements.customChatModal) {
     elements.customChatModal.closeModal();
   }
-});
+}, { passive: true });
 elements.customChatModal.querySelector('button.close-button').addEventListener('click', () => {
   elements.customChatModal.closeModal();
-})
+}, { passive: true });
 
 const comments = [
   {
@@ -581,7 +560,6 @@ const comments = [
     "autoSent": false
   }
 ];
-
 // comments.forEach((comment) => {
 //   const container = document.querySelector("#chat-container > div");
 //   const commentElement = document.createElement('div');
@@ -595,18 +573,18 @@ const comments = [
 //   commentElement.appendChild(commentUsername);
 //   commentElement.appendChild(commentMessage);
 //   container.appendChild(commentElement);
-// })
-chatPicker.addEventListener('focusin', () => {
+// }, { passive: true });
+elements.chat.picker.addEventListener('focusin', () => {
   SpatialNavigation.add('chat-picker', {
     selector: '#chat-picker a, #chat-picker button',
     leaveFor: {
       left: "#app-toolbar > button",
     }
   });
-});
-chatPicker.addEventListener('focusout', () => {
+}, { passive: true });
+elements.chat.picker.addEventListener('focusout', () => {
   SpatialNavigation.remove('chat-picker');
-});
+}, { passive: true });
 
 // settings.$.addEventListener('focusin', () => {
 //   SpatialNavigation.add('settings', {
@@ -617,14 +595,14 @@ chatPicker.addEventListener('focusout', () => {
 //   SpatialNavigation.remove('settings');
 // });
 
-chatPicker.addEventListener('keydown', (e) => {
-  let links = chatPicker.querySelectorAll('a');
+elements.chat.picker.addEventListener('keydown', (e) => {
+  let links = elements.chat.picker.querySelectorAll('a');
   if (!links.length) return;
 
   if (document.activeElement === links[0] && e.key === 'ArrowUp') {
-    chatPicker.parentElement.scrollTop = 0;
+    elements.chat.picker.parentElement.scrollTop = 0;
   } else if (document.activeElement === links[links.length - 1] && e.key === 'ArrowDown') {
-    chatPicker.parentElement.scrollTop = chatPicker.parentElement.scrollHeight;
+    elements.chat.picker.parentElement.scrollTop = elements.chat.picker.parentElement.scrollHeight;
   }
 }, { passive: true });
 
@@ -633,17 +611,33 @@ document.documentElement.setAttribute('data-theme', 'Warm Dark');
 const importChat = new URLSearchParams(location.search).get('import');
 
 if (importChat) {
-  const chat = JSON.parse(importChat);
-  // system.add(chat);
-  // renderChat(chat);
-  // openChat(chat);
+  const importedChat = JSON.parse(importChat)
+  const chat = new CustomChat(importedChat.name, importedChat.channel, importedChat.timestamp);
+
+  system.add(chat);
+  renderChat(chat);
+  openChat(chat);
 }
 
 window.addEventListener('open-chat', (e) => {
-  elements.toolbar.share.hidden = false;
-});
+  if (e.chatType == 'custom') {
+    elements.toolbar.share.hidden = false;
+  } else {
+    elements.toolbar.share.hidden = true;
+  }
+}, { passive: true });
 
 elements.chat.share.querySelector('button.close-button').addEventListener('click', () => elements.chat.share.closeModal());
 elements.toolbar.share.addEventListener('click', () => {
+  const link = elements.chat.share.querySelector('a');
+  const chat = {
+    name: system.currentChat.name,
+    channel: system.currentChat.channel,
+    timestamp: system.currentChat.timestamp,
+  }
+
+  link.href = '?import=' + encodeURIComponent(JSON.stringify(chat));
+  link.innerText = 'Share ' + chat.name;
   elements.chat.share.openModal();
-})
+
+}, { passive: true });
